@@ -1,0 +1,320 @@
+@import "../common/colors.less";
+
+header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+
+	height: 75px;
+
+	background-color: fadeout(@primary, 10%);
+
+	display: flex;
+	justify-content: space-between;
+
+	z-index: 1000;
+
+	transition: background-color ease .25s;
+
+	&.menu-show {
+		background-color: @primary;
+	}
+
+	// Mobile
+	.menu-btn {
+		cursor: pointer;
+
+		height: 100%;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		user-select: none;
+		-webkit-user-select: none;
+	}
+
+	.icon-sm {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		.icon img {
+			width: 50px;
+		}
+	}
+
+	.menu {
+		position: absolute;
+		bottom: 0px;
+
+		width: 100%;
+		height: 0px;
+		padding: 2px 10px;
+
+		background-color: @primary;
+
+		display: flex;
+		flex-direction: column;
+
+		transition: height ease .3s;
+		transform: translateY(100%);
+
+		overflow: hidden;
+
+		&.show {
+			height: calc(100vh - 50px);
+		}
+
+		.account {
+			padding-bottom: 5px;
+			margin-bottom: 5px;
+			border-bottom: solid 1px #212121;
+
+			display: flex;
+			flex-direction: column;
+
+			.login {
+				margin-bottom: 2px;
+			}
+		}
+
+		> .options {
+			display: flex;
+			flex-direction: column;
+
+			color: #FFF;
+
+			> a.option {
+				padding-bottom: 2.5px;
+				margin-bottom: 2.5px;
+				margin-left: 2px;
+
+				text-transform: uppercase;
+
+				transition: color ease .3s;
+			}
+
+			> div.collapse-option {
+				padding-bottom: 2.5px;
+				margin-bottom: 2.5px;
+				margin-left: 2px;
+
+				display: inline-flex;
+				flex-direction: column;
+
+				&:hover {
+					> .visible {
+						color: saturate(lighten(@primary, 30%), 20%);
+					}
+
+					> .options {
+						display: flex;
+					}
+				}
+
+				> .visible {
+					position: relative;
+					cursor: pointer;
+
+					width: fit-content;
+					height: 16.5px;
+
+					text-transform: uppercase;
+
+					display: flex;
+					align-items: center;
+
+					> i {
+						position: absolute;
+						right: -24px;
+					}
+				}
+
+				> .options {
+					margin-left: .2rem;
+					padding: 5px 10px 2px 10px;
+
+					display: none;
+					flex-direction: column;
+					row-gap: 5px;
+
+					overflow: hidden;
+
+					> a.option {
+						cursor: pointer;
+						margin-left: 0px;
+
+						transition: none;
+					}
+				}
+			}
+		}
+	}
+
+	// Desktop
+	.left {
+		padding-left: 1rem;
+
+		display: flex;
+		align-items: center;
+
+		.icon img {
+			width: 64px;
+		}
+
+		> .options {
+			margin-left: calc(2rem - 10px);
+			color: #FFF;
+
+			> a.option {
+				margin-left: 10px;
+
+				text-transform: uppercase;
+
+				&:hover {
+					color: saturate(lighten(@primary, 30%), 20%);
+				}
+			}
+
+			> div.collapse-option {
+				position: relative;
+
+				margin-left: 10px;
+
+				display: inline-flex;
+
+				&:hover {
+					> .visible {
+						color: saturate(lighten(@primary, 30%), 20%);
+					}
+
+					> .options {
+						display: flex;
+					}
+				}
+
+				> .visible {
+					cursor: pointer;
+
+					text-transform: uppercase;
+
+					display: flex;
+					align-items: center;
+				}
+
+				> .options {
+					position: absolute;
+					top: 100%;
+
+					margin-left: calc(1rem - 10px);
+					padding: 5px 0px;
+
+					color: #999;
+					background: #FFF;
+					border: solid 1px #999;
+					box-shadow: 0px 2px 3px #0005;
+
+					display: none;
+					flex-direction: column;
+
+					z-index: 1000;
+
+					> a.option {
+						cursor: pointer;
+						margin-left: 0px;
+						padding: 5px 10px;
+
+						transition: none;
+
+						&:hover {
+							color: #FFF;
+							background: @primary;
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	.right {
+		margin-right: 1rem;
+		display: flex;
+		align-items: center;
+
+		.buttons {
+			padding: 5px 5px;
+			
+			color: #FFF;
+
+			border: solid 2px #a5e422;
+			border-radius: 50px;
+
+			display: flex;
+			
+			.signup {
+				padding: 7px 5px;
+				margin-right: 5px;				
+
+				border-radius: 50px;
+
+				transition: background-color ease .3s;
+
+				&:hover {
+
+					& +.login {
+						background-color: transparent;
+					}
+
+					
+					background-color: #61bd8a;
+				}
+			}
+
+			.login {
+				padding: 7px 5px;
+				
+				background-color: #7abd61;
+
+				border-radius: 50px;
+
+				transition: background-color ease .3s;
+			}
+		}
+	}
+}
+
+
+.header-separator {
+	margin-bottom: 1rem;
+	height: 75px;
+	display: block;
+}
+
+@media screen and (min-width: 650px) {
+	header {
+		.menu-btn, .icon-sm, .menu {
+			display: none;
+		}
+	}
+}
+
+
+@media screen and (max-width: 650px) {
+	header {
+		height: 50px;
+
+		display: grid;
+		grid-template-columns: 1fr 10fr 1fr;
+		
+		.left, .right {
+			display: none;
+		}
+	}
+
+	.header-separator {
+		height: 50px;
+	}
+}

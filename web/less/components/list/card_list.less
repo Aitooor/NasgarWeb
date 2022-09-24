@@ -1,0 +1,47 @@
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  
+  &-element {
+    cursor: pointer;
+    width: 100%;
+    padding: 0.5rem 1rem;
+
+    background: #fff;
+    border: solid 2px transparent;
+    border-radius: 5px;
+    box-shadow: 0px 2px 3px -1px #999;
+    box-sizing: border-box;
+
+    display: flex;
+    row-gap: 5px;
+    flex-direction: column;
+
+    transition: background ease 0.3s;
+
+    &:hover {
+      background: #ddd;
+    }
+
+    &:active {
+      background: #ccc;
+    }
+
+    &__title {
+      max-height: 1.8rem * 3;
+      font-size: 1.65rem;
+      font-weight: 300;
+
+      text-overflow: ellipsis;
+      line-break: strict;
+      word-wrap: break-word;
+
+      overflow: hidden;
+    }
+
+    &__footer {
+      padding: 0 1rem;
+    }
+  }
+}

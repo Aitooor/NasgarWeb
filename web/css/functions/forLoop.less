@@ -1,0 +1,7 @@
+
+.-for-loop(@from, @to, @callback) when (@from <= @to) {
+    @i: @from;
+    @callback();
+
+    .-for-loop(@from + 1, @to, @callback);
+}

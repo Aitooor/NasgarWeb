@@ -1,0 +1,67 @@
+.-button-colors(@text-color, @main-color) {
+	t-color: @text-color;
+	p-color: @main-color;
+}
+
+@primary-button-colors: { .-button-colors(#FFFFFF, @primary); }
+@success-button-colors: { .-button-colors(#FFFFFF, @success); }
+@warning-button-colors: { .-button-colors(#000000, @warning); }
+@danger-button-colors: 	{ .-button-colors(#FFFFFF, @danger); }
+
+
+#btn() {
+	.common(@color_map) {
+		@main-color: @color_map[p-color];
+		@semi-dark-color: darken(@main-color, @semi-light-modify);
+		@dark-color: darken(@main-color, @light-modify);
+		@text-color: @color_map[t-color];
+		
+		cursor: pointer;
+
+		padding: 5px 10px;
+
+		border: solid 2px transparent;
+		border-radius: 2px;
+
+		transition: background ease .3s, color ease .3s, border-color ease .3s;
+	}
+
+	.fill {
+		color: @text-color;
+		background-color: @main-color;
+
+		&:hover {
+			background-color: @semi-dark-color;
+		}
+
+		&:active {
+			background-color: @dark-color;
+		}
+	}
+
+	.outline {
+		color: @main-color;
+		background-color: transparent;
+		border-color: @main-color;
+
+		&:hover {
+			color: @text-color;
+			background-color: @main-color;
+		}
+
+		&:active {
+			color: @text-color;
+			background-color: @dark-color;
+			border-color: @dark-color;
+		}
+	}
+}
+
+
+.onhover(@color) {
+	background: @color;
+	
+	&:hover {
+		background: desaturate(@color, 20%);
+	}
+}

@@ -1,0 +1,66 @@
+@import "./common.less";
+@import "../button.less";
+
+.login-card {
+	.card();
+	padding: .5rem;
+	display: flex;
+
+	.card-body {
+		height: 100%;
+		display: flex;
+	}
+
+	.card-body form {
+		width: 100%;
+		height: 100%;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 10px;
+
+		> [type="submit"]:last-of-type {
+			width: 30%;
+			margin: 1rem auto 0px auto;
+		}
+
+		> .progress-line {
+			--line-color: @primary;
+			--line-width: 100%;
+			position: relative;
+			width: 100%;
+			display: flex;
+
+			&::after {
+				content:"";
+				position: absolute;
+				top: -3px;
+				width: var(--line-width);
+	
+				border: none;
+				border-top: solid 3px var(--line-color);
+
+				transition: width .2s ease;
+			}
+		}
+	}
+
+	.adv-warning {
+		padding: 10px;
+
+		background-color: @warning;
+		border-top: solid 2px #000;
+		border-bottom-left-radius: 7px;
+		border-bottom-right-radius: 7px;
+
+		i.material {
+			font-size: 28px;
+		}
+
+		a {
+			color: #005e63;
+			text-decoration: underline;
+		}
+	}
+}

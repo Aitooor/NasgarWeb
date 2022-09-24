@@ -1,0 +1,160 @@
+.nav-container {
+    height: 10%;
+    width: 100%;
+    background-color: #1F4068;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    margin: 0px;
+}
+
+.nav-container .coll {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.nav-container .colr {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.nav-btn {
+    color: white;
+    text-decoration: none;
+    transition-duration: 0.3s;
+}
+
+.nav-btn:hover {
+    color: #67baff;
+}
+
+.left-container {
+    height: 100%;
+    width: 15%;
+    background-color: #122b4a;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    transition-duration: 0.3s;
+    padding-top: 150px;
+    color: aliceblue;
+}
+
+.left-container li {
+    padding: 2px 0px;
+    text-align: center;
+}
+
+.left-container ul {
+    list-style: none;
+    font-weight: bolder;
+    padding: 0px;
+}
+
+.left-container a {
+    color: aliceblue;
+    text-decoration: none;
+    transition-duration: 0.3s;
+}
+
+
+.left-container li {
+    padding-bottom: 10px;
+}
+
+.left-container a:hover {
+    color: #4390ee;
+}
+
+#leftBTN  {
+    font-size: 0px;
+}
+
+.colm form, .colm{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-top: 0px;
+}
+
+.colm form {
+    width: 100%;
+}
+
+.colm input{
+    margin: 0px 10px;
+}
+
+@media (max-width: 768px) {
+    .left-container {
+        width: 100%;
+        height: 100% !important;
+        position: fixed;
+        padding: 0px;
+        transition-duration: 0.7s;
+    }
+
+    #leftBTN {
+        transition-duration: 0.7s;
+    }
+
+    .active {
+        top: 182px;
+    }
+
+    .active #leftBTN {
+        rotate: 90deg;
+    }
+
+    .unactive {
+        bottom: -182px !important;
+        top: 94% !important;
+    }
+
+    .nav-container .col-1 {
+        width: 0px;
+        padding: 0px;
+    }
+
+    .nav-container .col-5 {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .nav-container {
+        padding: 20px;
+        height: auto;
+    }
+
+    .left-container li {
+        padding-bottom: 0px;
+    }
+    .nav-container .col-2 {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .colm form{
+        padding: 15px 0px 15px 0px !important;
+    }
+
+    #leftBTN {
+        font-size: 30px;
+        rotate: 270deg;
+        border-radius: 100%;
+    }
+
+    .leftBTNC {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0px;
+    }
+}

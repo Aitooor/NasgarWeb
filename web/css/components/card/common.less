@@ -1,0 +1,128 @@
+@import "../../common/colors.less";
+@import "../../functions/forLoop.less";
+
+.card {
+  --primary-bg: @primary-bg;
+  --primary-fg: @primary-fg;
+  --background: @white;
+
+  body.dark & {
+    --primary-bg: @primary-dark-bg;
+    --primary-fg: @primary-dark-fg;
+    --background: @gray-dark-4;
+
+    box-shadow: none;
+
+    > .card-body {
+      border: solid 1px #9999;
+      border-top: none;
+    }
+  }
+
+  background: var(--background);
+  border-radius: 2px;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  &.dp-0 {
+    box-shadow: none;
+  }
+
+  @-dp: {
+    &.dp-@{i} {
+      box-shadow: e("0px @{i}px 3px -1px #999");
+    }
+  }
+
+  .-for-loop(1, 5, @-dp);
+
+  &.embed.primary {
+    background: var(--primary-bg);
+
+    > .card-header {
+      padding: 0.2rem 0.3rem;
+      background: transparent;
+      color: #fff;
+    }
+
+    > .card-body {
+      padding: 0.4rem;
+      background: #fff;
+      border-radius: 10px 10px 0 0;
+    }
+  }
+
+  > .card-header {
+    padding: 0.5rem 1rem;
+
+    line-height: 1.5;
+    font-size: 1.3rem;
+    background: @primary;
+    color: #fff;
+  }
+
+  > .card-body {
+    padding: 0.5rem 1rem;
+
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+
+    &.centered {
+      justify-content: center;
+
+      > .card-separator[data-text]::before {
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    > .card-separator {
+      position: relative;
+      margin: 0.9rem 0;
+      width: 100%;
+
+      font-size: 0px;
+
+      border: none;
+      border-bottom: solid 2px #999;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: clamp(4px, 10%, 30px);
+
+        background: #fff;
+        color: currentColor;
+
+        font-size: 1rem;
+
+        transform: translate(0, -50%);
+
+        body.dark & {
+          background: darken(#fff, 85%);
+          color: #fff;
+        }
+      }
+
+      &[data-text]::before {
+        content: attr(data-text);
+        padding: 0.1rem 0.2rem;
+      }
+    }
+  }
+
+  &.primary:not(.embed) {
+    > .card-header {
+      background: var(--primary-bg);
+      color: #fff;
+    }
+
+    > .card-body {
+      padding: 0.3rem 0.5rem;
+    }
+  }
+}

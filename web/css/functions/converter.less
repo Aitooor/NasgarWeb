@@ -1,0 +1,7 @@
+.rem2px(@rem: number) {
+  @result: @rem * 24px;
+}
+
+.usePX(@px) when (isnumber(@px)) {
+  @result: if(ispixel(@px), @px, if(isunit(@px, rem), .rem2px(@px), @px));
+}

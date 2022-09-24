@@ -1,0 +1,20 @@
+@import "../colors.less";
+
+.text-style-code {
+  padding: .1rem .3rem;
+  background-color: #272727;
+  color: #fff;
+  font-family: monospace;
+  font-size: .9em;
+  white-space: pre;
+
+  .code {
+    &-active {
+      color: @complement;
+    }
+    &-comment {
+      color: #ccc;
+      font-style: italic;
+    }
+  }
+}

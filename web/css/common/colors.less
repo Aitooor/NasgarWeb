@@ -1,0 +1,83 @@
+// Basic colors
+@white: #FFF;
+@white-bg: #EEEEEE;
+@black: #000;
+@black-bg: #212121;
+
+// Light gray
+@gray-light-0: @white-bg;
+@gray-light-1: darken(@gray-light-0, 10%);
+@gray-light-2: darken(@gray-light-0, 15%);
+@gray-light-3: darken(@gray-light-0, 20%);
+@gray-light-4: darken(@gray-light-0, 25%);
+@gray-light-5: darken(@gray-light-0, 30%);
+
+// Dark gray
+@gray-dark-5: @black-bg;
+@gray-dark-4: lighten(@gray-dark-5, 10%);
+@gray-dark-3: lighten(@gray-dark-5, 15%);
+@gray-dark-2: lighten(@gray-dark-5, 20%);
+@gray-dark-1: lighten(@gray-dark-5, 25%);
+@gray-dark-0: lighten(@gray-dark-5, 30%);
+
+// Main Colours
+@primary: #3880be;
+@secondary: #878787;
+@complement: #07ba84; //#5C9;
+@success: #28a745;
+@warning: #f0b503;
+@danger: #ED4245;
+
+// Complement Colors
+@primary-bg: @primary;
+@primary-fg: #FFF;
+
+@secondary-bg: @secondary;
+@secondary-fg: #000;
+
+@complement-bg: @complement;
+@complement-fg: #FFF;
+
+@success-bg: @success;
+@success-fg: #FFF;
+
+@warning-bg: @warning;
+@warning-fg: #000;
+
+@danger-bg: @danger;
+@danger-fg: #FFF;
+
+
+
+// Main Dark Colors
+@primary-dark: desaturate(@primary, 10%);
+@secondary-dark: darken(@secondary, 35%);
+@complement-dark: desaturate(@complement, 15%);
+@success-dark: darken(@success, 35%);
+@warning-dark: darken(@warning, 35%);
+@danger-dark: darken(@danger, 35%);
+
+// Complement Dark Colors
+@primary-dark-bg: @primary-dark;
+@primary-dark-fg: #FFF;
+
+@secondary-dark-bg: @secondary-dark;
+@secondary-dark-fg: #FFF;
+
+@complement-dark-bg: @complement-dark;
+@complement-dark-fg: #FFF;
+
+@success-dark-bg: @success-dark;
+@success-dark-fg: #FFF;
+
+@warning-dark-bg: @warning-dark;
+@warning-dark-fg: #000;
+
+@danger-dark-bg: @danger-dark;
+@danger-dark-fg: #FFF;
+
+
+
+// Modifiers
+@semi-light-modify: 10%;
+@light-modify: 20%;

@@ -1,0 +1,155 @@
+@import (once) "../../common/super.less";
+@import (once) "../../components/button.less";
+
+.selector-list {
+
+  @background-light: @white;
+  @background-dark: @gray-dark-1;
+  @gray-light: @gray-light-4;
+  @gray-dark: @gray-dark-1;
+
+  @background: var(--background);
+  @gray: var(--gray);
+
+  --background: @background-light;
+  --gray: @gray-light;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: .5rem;
+  // max-width: 305px;
+  
+  background: @background;
+  border: 1px solid @gray;
+  border-radius: 3px;
+  box-shadow: 0 0 5px @gray;
+
+  display: none;
+  flex-direction: column;
+  z-index: 9999;
+  overflow: hidden;
+
+  &.active, &:hover {
+    display: flex;
+  }
+
+  &__hint {
+    width: 100%;
+    font-size: .8rem;
+    color: @gray-dark-0;
+    margin-bottom: .5rem;
+  }
+
+  &__header {
+    display: flex;
+
+    input {
+      width: 100%;
+      height: 2.5rem;
+      margin-bottom: .2rem;
+      font-size: 1.1rem;
+    }
+  }
+
+  &__body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__selectors {
+    display: flex;
+    border: solid 1px @gray;
+    border-bottom: none;
+    background-color: @gray-light-3;
+  }
+
+  @table-column: {
+    position: relative;
+    padding: .1rem .2rem;
+    overflow: hidden;
+    word-break: keep-all;
+
+    &:not(:first-child):last-child {
+      text-align: right;
+    }
+
+    &:not(:first-child)::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+
+      width: 1px;
+      background-color: @gray;
+    }
+
+    &.fit {
+      width: max-content;
+    }
+
+    &.small {
+      width: 3rem;
+    }
+
+    &.medium {
+      width: .rem2px(5)[];
+    }
+
+    &.large {
+      width: .rem2px(10)[];
+    }
+
+    &.auto {
+      width: 100%;
+    }
+  }
+
+  &__selector {
+    @table-column();
+  }
+
+  &__list {
+    max-height: 20rem;
+    overflow-y: auto;
+    border: solid 1px @gray;
+  }
+
+  &-item {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    padding: .1rem;
+
+    &:not(:last-child)::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      height: 1px;
+      background-color: @gray;
+
+      z-index: 1;
+    }
+    
+    &__column {
+      @table-column();
+    }
+
+    &:hover {
+      background-color: @gray-light-0;
+    }
+
+    &:nth-child(even) {
+      background-color: @gray-light-1;
+      &:hover {
+        background-color: @gray-light-0;
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+<nav class="nav-container row">
+  <div class="col-1"></div>
+  <div class="col-5 coll">
+    <a href="/"><img src="/img/logo-480x.png" alt="" height="50px"></a>
+  </div>
+  <div class="col-5 colr">
+    <a href="/news" class="nav-btn">News</a>
+    <a href="/shop" class="nav-btn">Shop</a>
+    <a href="/bans" class="nav-btn">Bans</a>
+    <a href="https://www.40servidoresmc.es/nasgar-network-votar" class="nav-btn" target="_blank">Vote</a>
+    <% if(user) {%>
+      <a class="nav-btn" href="/panel"><%- user.username %> </a>
+    <% } else { %>
+      <a class="nav-btn" href="/login">Login</a>
+    <% } %>
+  </div>
+  <div class="col-1"></div>
+</nav>

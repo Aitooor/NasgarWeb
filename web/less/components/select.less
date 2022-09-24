@@ -1,0 +1,97 @@
+@import "../common/super.less";
+
+:host {
+	position: relative;
+	display: flex;
+
+	& > .trigger {
+		cursor: pointer;
+
+		min-width: 70px;
+		height: 25px;
+		padding: 2px 2px 2px 5px;
+
+		background: #CCC;
+		border: solid 2px transparent;
+		box-shadow: 0px 1px 3px #555;
+
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		&:hover { background: #BBB; }
+		&:active { background: #AAA; }
+
+		& span {
+			max-width: 75px;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+
+		& > i {
+			user-select: none;
+			max-width: 100px;
+			margin-left: 1rem;
+			display: flex;
+
+			transition: transform ease .5s;
+			transform: rotateX(0deg);
+		}
+	}
+
+	& > .options {
+		position: absolute;
+		top: 0%;
+		left: 2px;
+
+		min-width: 100px;
+		width: auto;
+
+		background: #FFF;
+		border-radius: 5px;
+		box-shadow: 0px 2px 5px #555;
+
+		line-height: 1.5;
+		z-index: 100;
+		overflow: hidden;
+
+		transform: scale(0) translateY(-100%);
+		transition: transform ease .3s,  top ease .3s;
+
+		option {
+			cursor: pointer;
+			user-select: none;
+		
+			padding: 5px 8px;
+			border-bottom: solid 2px #BBB;
+		
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		
+			&:last-of-type { border-bottom: none; }
+			&:hover { background: #0002; }
+			&:active { background: #0005; }
+		
+			&[selected]::after {
+				.material-icons();
+				content: "check_circle";
+				color: #090;
+			}
+		}
+	}
+}
+
+:host([aria-active="true"]) {
+	& > .trigger {
+		& > i {
+			transform: rotateX(180deg);
+		}
+	}
+
+	& > .options {
+		top: 90%;
+		transform: scale(1) translateY(0%);
+	}
+}

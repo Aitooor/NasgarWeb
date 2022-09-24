@@ -1,0 +1,231 @@
+@import "../common/super.less";
+@import "../mixins/button.less";
+@import "../components/toasts.less";
+@import "../components/card/common.less";
+@import "../partials/nav.less";
+@import "../partials/alert.less";
+
+body {
+  background-color: @white-bg;
+}
+
+body.dark {
+  background-color: @black-bg;
+  color: #fff;
+}
+
+.present {
+  position: relative;
+
+  width: 100%;
+  height: 300px;
+
+  background-color: lighten(@primary, @semi-light-modify);
+  background-image: url("/img/background.png");
+  background-repeat: no-repeat;
+  background-position: center 30%;
+  background-size: cover;
+  background-blend-mode: multiply;
+
+  display: flex;
+
+  .banner-ip {
+    cursor: pointer;
+    box-sizing: border-box;
+
+    position: absolute;
+    top: 26.55%;
+    left: 2rem;
+
+    width: 250px;
+    height: 220px;
+
+    background-image: url("/img/bannerIP-3.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .banner-discord {
+    cursor: pointer;
+    box-sizing: border-box;
+
+    position: absolute;
+    top: 41.15%;
+    right: 2rem;
+
+    width: 200px;
+    height: 200px;
+
+    background-image: url("/img/bannerDiscord-3.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .svg-back {
+    position: absolute;
+    bottom: 0;
+
+    width: 100%;
+    height: 150px;
+
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+
+    svg path {
+      transform: scaleX(5) translateX(-25%);
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    height: 500px;
+
+    .banner-ip {
+      top: 30%;
+      left: calc(50% - 125px);
+
+      height: 102.5px;
+
+      background-image: url("/img/bannerIP-2.png");
+    }
+
+    .banner-discord {
+      top: auto;
+      bottom: 5rem;
+      right: auto;
+      left: calc(50% - 100px);
+
+      height: 81.2px;
+
+      background-image: url("/img/bannerDiscord-2.png");
+    }
+  }
+}
+
+.main {
+  > .body {
+    width: 100%;
+
+    padding-bottom: 5rem;
+    display: grid;
+    grid-template-columns: auto 25%;
+    grid-template-rows: 1fr;
+
+    @media screen and (max-width: 1000px) {
+      & {
+        grid-template-columns: auto 35%;
+      }
+    }
+
+    > main {
+      padding: 0.5rem 2rem;
+    }
+
+    > aside {
+      padding-top: 10px;
+      padding-right: 2px;
+      display: flex;
+      flex-direction: column;
+      row-gap: 10px;
+    }
+  }
+}
+
+.card-members {
+  > .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .status {
+      display: inline-block;
+
+      &::after {
+        content: "offline";
+        padding: 0px 5px;
+
+        background-color: @danger;
+        border-radius: 50px;
+        border: solid 2px darken(@danger, 5%);
+
+        font-size: 1rem;
+      }
+
+      &.online::after {
+        content: "online";
+        background-color: @success;
+        border: solid 2px darken(@success, 5%);
+      }
+
+      &.offline::after {
+        content: "offline";
+        background-color: @danger;
+        border: solid 2px darken(@danger, 5%);
+      }
+
+      &.mantent::after {
+        content: "mantenimiento";
+        color: #000;
+        background-color: @warning;
+        border: solid 2px darken(@warning, 5%);
+      }
+    }
+  }
+
+  > .card-body {
+    font-size: 1.1rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.discord-members {
+  width: calc(100%);
+  height: 40rem;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+div.card-40servidoresmc {
+  > .card-header > a {
+    position: relative;
+    > i {
+      position: absolute;
+      top: -5px;
+      right: -13px;
+      font-size: 15px;
+      font-weight: 400;
+    }
+  }
+
+  > .card-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .main {
+    .body {
+      padding: 0.1rem;
+      grid-template-columns: auto;
+      grid-template-rows: 2fr;
+    }
+  }
+}
+
+@keyframes blob-live {
+  30% {
+    color: #fff;
+  }
+
+  50% {
+    color: @danger;
+  }
+}

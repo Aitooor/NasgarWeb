@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width,initial-scale=1" name="viewport">
+  <meta content="Official page of Nasgar Networks" name="description">
+  <meta content="nasgar network mc minecraft server servidor official oficial" name="keywords">
+  <meta content="/robots.txt" name="robots">
+  <link href="/manifest.json" rel="manifest">
+  <link href="/img/logo-128x.png" rel="icon">
+  <link href="/img/logo-128x.png" rel="apple-touch-icon">
+  <meta content="#3880be" name="theme">
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="/css/normalize.min.css" rel="stylesheet">
+  <script src="/js/common/common.js" type="systemjs-module"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/6.12.1/s.min.js"></script>
+  <title>Nasgar Network</title>
+  <meta href="/" rel="canonical">
+  <link href="/less/pags/index.less" rel="stylesheet/less">
+  <script src="https://unpkg.com/less@4.1.1/dist/less.min.js" data-log-level="1"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <link rel="shortcut icon" href="/img/logo-128x.png" type="image/x-icon">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nasgar.online">
+  <meta name="og:title" content="Nasgar Network!">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="og:icon" content="/img/logo-128x.png">
+  <meta name="description"
+  content="description">
+  <meta name="og:description"
+  content="description">
+</head>
+
+<body>
+  <nav class="">
+    <div class="desktop">
+      <div></div>
+      <div class="tabs">
+        <div class="left"><a class="tab" href="/news">Noticias</a> <a class="tab" href="/shop">Tienda</a></div><a class="logo"
+          href="/"><img alt="Nasgar Network" src="/img/logo-128x.png"></a>
+        <div class="right"><a class="tab" href="/bans">Baneos</a> <a class="tab" href="/vote">Votar</a></div>
+      </div>
+      <% if(user){ %>
+        <a class="login" href="/panel"><%- user.username %> </a></div>
+      <% }else {%>
+        <a class="login" href="/login">Iniciar sesión</a></div>
+      <% } %>   
+    </div>
+    <div class="mobile">
+      <div class="header"><a class="logo" href="/"><img alt="Nasgar Network" src="/img/logo-128x.png"> </a><button
+          class="menu"><i class="material">Menu</i></button></div>
+      <div class="tabs"><a class="tab selected" href="/">Inicio</a> <a class="tab" href="/news">Noticias</a> <a class="tab"
+          href="/shop">Shop</a> <a class="tab" href="/bans">Baneos</a> <a class="tab" href="/vote">Votar</a> 
+          
+          <% if(user){ %>
+            <a class="tab login" href="/panel"><%- user.username %> </a></div>
+          <% }else {%>
+            <a class="tab login" href="/login">Iniciar sesión</a></div>
+          <% } %>   
+    </div>
+  </nav>
+  <div class="nav_transparent_height" style="height: 0px;"></div>
+  <div class="landing-header">
+    <div class="tabs">
+      <div class="left"><a class="tab" href="/news">Noticias</a> <a class="tab" href="/shop">Tienda</a></div>
+      <div class="logo"><img alt="Nasgar Network" src="/img/logo-128x.png"></div>
+      <div class="right"><a class="tab" href="/bans">Baneos</a> <a class="tab" href="/vote">Votar</a></div>
+    </div>
+  </div>
+  <% if(user){ %>
+    <div class="desktop-login"><a class="tab login" href="/panel"><%- user.username %> </a></div>
+  <% }else {%>
+    <div class="desktop-login"><a class="tab login" href="/login">Iniciar sesión</a></div>
+  <% } %>   
+  <div class="landing">
+    <div class="ip" onclick='globalThis.copyToClipboard("nasgar.online")' title="Copy">nasgar.online</div>
+    <div class="desc"><span>Juega en <b>Nasgar</b> Hoy.</span> <span>1.7 - 1.17.x</span></div>
+    <div class="discord"><img alt="Discord Icon" src="/img/discord-logo.svg"
+        onclick='globalThis.open("https://ds.nasgar.online","_blank")' title="Ir a Nasgar Network"></div>
+  </div>
+  <footer><span>Nasgar <b>no</b> esta asociado con <b>Mojang, Minecraft o Microsoft</b>, este sitio no esta asociado con estas compañias y es propiedad de <b>Nasgar Network</b>.</span><br><span>© Copyright 2022 <b>Nasgar
+        Network</b>.</span></footer>
+  <div class="toasts"></div>
+</body>
+<script>
+  AOS.init();
+</script>
+
+</html>

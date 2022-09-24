@@ -1,0 +1,119 @@
+@import "../mixins/button.less";
+@import "../common/colors.less";
+
+.toasts {
+	position: fixed;
+	right: 2rem;
+	bottom: 2rem;
+
+	width: 20rem;
+
+	user-select: none;
+
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: flex-end;
+}
+
+.toast {
+	max-width: 100%;
+	width: auto;
+	min-width: 15rem;
+	margin-top: 20px;
+
+	background-color: #FFF;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px #000A;
+
+	animation: ToastIn .5s forwards;
+
+	.toast-header {
+		padding: 5px;
+		font-size: 1.2rem;
+		font-weight: 600;
+	}
+
+	.toast-body {
+		padding: 10px;
+	}
+
+	.toast-actions {
+		padding: 2px 5px 5px 5px;
+		display: flex;
+		justify-content: flex-end;
+
+		button[class*="action-"] {
+			margin-left: 5px;
+
+			.render(@color) {
+				#btn.common(@color);
+				
+				&:not([class*="action-out"]) {
+					#btn.fill();
+				}
+	
+				&[class*="action-out-"] {
+					#btn.outline();
+				}
+			}
+
+			&[class*="-primary"] { .render(@primary-button-colors); }
+			&[class*="-success"] { .render(@success-button-colors); }
+			&[class*="-warning"] { .render(@warning-button-colors); }
+			&[class*="-danger"]  { .render(@danger-button-colors); }
+		}
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.toasts {
+		left: 1rem;
+		right: 1rem;
+		width: auto;
+	}
+	.toast {
+		width: 100%;
+
+		.toast-body {
+			padding: 2px 10px 0px 10px;
+		}
+
+		.toast-actions {
+			padding: 1px 2px 2px 2px;
+
+			button[class*="action-"] {
+				.render(@color) {
+					font-weight: 500;
+					color: @color[p-color] !important;
+					background-color: transparent !important;
+					border-color: transparent !important;
+				}
+
+				&[class*="-primary"] { .render(@primary-button-colors); }
+				&[class*="-success"] { .render(@success-button-colors); }
+				&[class*="-warning"] { .render(@warning-button-colors); }
+				&[class*="-danger"]  { .render(@danger-button-colors); }
+			}
+		}
+	}
+}
+
+@keyframes ToastIn {
+	from {
+		transform: translateX(100vh);
+	}
+
+	to {
+		transform: translateX(0vh);
+	}
+}
+
+@keyframes ToastOut {
+	from {
+		transform: translateY(0vh);
+	}
+
+	to {
+		transform: translateY(50vw);
+	}
+}

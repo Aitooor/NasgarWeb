@@ -1,0 +1,52 @@
+@import "../common/super.less";
+@import "../components/button.less";
+@import "../components/toasts.less";
+@import "../components/card/index.less";
+@import "../partials/nav.less";
+@import "../partials/alert.less";
+
+button[type="submit"] {
+	width: 50% !important;
+
+	box-shadow: 0px 2px 3px #0005;
+}
+
+
+body {
+	background: #EEE;
+
+	> .logo {
+		margin-top: 50px;
+		display: flex;
+		justify-content: center;
+
+		> a {
+			filter: drop-shadow(0px 2px 3px #0005);
+		}
+	}
+
+	> .login-card {
+		max-width: 300px;
+		margin: auto;
+
+		border-radius: 4px;
+	}
+
+	> .links {
+		margin-top: 20px;
+
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		row-gap: 5px;
+
+		span.ask {
+			font-weight: 500;
+		}
+
+		a {
+			color: @primary;
+			font-weight: 500;
+		}
+	}
+}

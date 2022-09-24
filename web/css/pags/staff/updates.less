@@ -1,0 +1,191 @@
+@import "../../common/super.less";
+@import "../../common/colors.less";
+@import "../../components/list/card_list.less";
+@import "../../partials/nav_modern.less";
+@import "../../components/modal/base.less";
+@import "../../partials/body_end.less";
+
+.page {
+  &-header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+  }
+}
+
+.body {
+  padding: 1rem;
+}
+
+.page {
+  &-header {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    justify-content: space-between;
+
+    &-actions {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+
+      &__action {
+        cursor: pointer;
+        padding: 2px 5px;
+        margin: 0;
+
+        color: @primary;
+        background: transparent;
+        border: solid 2px transparent;
+        border-radius: 5px;
+
+        @hover: {
+          color: lighten(@primary, 15%);
+        };
+
+        @media screen and (min-width: 900px) {
+          &.hover {
+            @hover();
+          }
+        }
+
+        &:active {
+          color: lighten(@primary, 25%);
+        }
+
+        i {
+          font-size: 1.4rem;
+        }
+
+        &.anim {
+          @hover();
+
+          &.refresh i {
+            animation: refresh-anim 1s ease infinite;
+          }
+
+          &.filter i {
+            animation: filter-anim 1s ease;
+          }
+
+          &.add i {
+            transform-origin: center center;
+            animation: add-anim 1s ease;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes refresh-anim {
+  from {
+    transform: rotateZ(0deg);
+  }
+
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
+@keyframes filter-anim {
+  from {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(3px);
+  }
+
+  to {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes add-anim {
+  from {
+    transform: rotateZ(0deg);
+  }
+
+  to {
+    transform: rotateZ(180deg);
+  }
+}
+
+
+// Material icons to mde
+.mde-icons {
+  .icon(@icon) {
+    &::before {
+      .material-icons();
+      content: @icon;
+    }
+  }
+
+  &__bold {
+    .icon('format_bold');
+  }
+
+  &__italic {
+    .icon('format_italic');
+  }
+
+  &__strikethrough {
+    .icon('strikethrough_s');
+  }
+
+  &__code {
+    .icon('code');
+  }
+  
+  &__heading {
+    .icon('title');
+  }
+
+  &__quote {
+    .icon('format_quote');
+  }
+
+  &__unordered-list {
+    .icon('format_list_bulleted');
+  }
+
+  &__ordered-list {
+    .icon('format_list_numbered');
+  }
+
+  &__link {
+    .icon('link');
+  }
+
+  &__image {
+    .icon('image');
+  }
+
+  &__table {
+    .icon('border_all');
+  }
+
+  &__preview {
+    .icon('visibility');
+  }
+
+  &__side-by-side {
+    .icon('compare');
+  }
+
+  &__fullscreen {
+    .icon('fullscreen');
+  }
+  
+  &__guide {
+    .icon('book');
+  }
+}
