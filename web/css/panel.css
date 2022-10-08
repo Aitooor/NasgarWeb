@@ -143,5 +143,9 @@ form{
         bottom: -114px !important;
         top: 94% !important;
     }
+
+    main {
+        margin-top: 160px !important;
+    }
 }
     

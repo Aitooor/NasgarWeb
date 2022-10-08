@@ -111,17 +111,19 @@
             <i id="leftBTN" class="fa-solid fa-forward-step"></i>
         </div>
         <ul>
-            <% if(user && user._doc.admin){ %>
-                <li><a href="/panel">Panel</a></li>
-                <% } %>
-                    <li><a href="/shop">Todos los productos</a></li>
+            <hr><li><a class="optionTitle1" href="/">Home</a></li>
+                <li><a class="optionTitle1" href="/panel">Panel</a></li>
+                
+                <hr>
+                    
 
                     <li>
-                        <p for="customRange1" class="form-label" id="priceRange">Precio máximo: </p>
+                        <p for="customRange1" class="form-label" id="priceRange">Max Price: </p>
                         <input type="range" class="form-range" id="priceRangeVar" name="maxPrice">
-                        <a href="/shop" class="btn btn-primary" style="width: 100%;" id="max-btn">Buscar</a>
+                        <a href="/shop" class="btn btn-primary" style="width: 100%;" id="max-btn">Find</a>
 
                     </li>
+                <hr>
 
 
                     <script>
@@ -134,9 +136,10 @@
                         }, 10);
                     </script>
 
-                    <li class="category">
-                        <p>Categorías</p>
+                    <li>
+                        <p class="optionTitle1">Productos</p>
                     </li>
+
                     
                     <% const types1 =new Set(); const types2 =new Set(); const types3 =new Set()%>
                     <% all.forEach( news=> { %>
@@ -145,7 +148,7 @@
 
                     <% types1.forEach( news=> { %>
                         <% if(pos[0] == news) {%> 
-                            <li class="categoryT"><%- news %></li>
+                            <li><a class="option1" href="/shop?type1=<%- news %> "><%- news %></a></li>
                             <% if (content.filter(c => c.categories.length > 1).length > 0) {%>
                                 <% content.filter(c => c.categories.length > 1).forEach(c=>{ %>
                                     <% types2.add(c.categories[1]) %>
@@ -153,27 +156,28 @@
                                 <!-- 2d -->
                                 <% types2.forEach( p=> { %>
                                     <% if(pos[1] == p) {%> 
-                                        <li class="categoryT2"><%- p %></li>
+                                        <li><a class="option2" href="/shop?type1=<%- news %>&type2=<%- p %>  "><%- p %></a></li>
                                         <% if (content.filter(c => c.categories.length > 2).length > 0) {%>
                                             <% content.filter(c => c.categories.length > 2).forEach(c=>{ %>
                                                 <% types3.add(c.categories[1]) %>
                                             <% }) %> 
                                             <% types3.forEach( c=> { %>
-                                                <li class="categorySub2"><a href="/shop?type1=<%- news %>&type2=<%- p %>&type3=<%- c %>   "><%- c %></a></li>
+                                                <li class="option3"><a href="/shop?type1=<%- news %>&type2=<%- p %>&type3=<%- c %>   "><%- c %></a></li>
                                             <% }) %>
             
 
             
                                         <% } %> 
-                                    <% } else {%> <li class="categorySub1"><a href="/shop?type1=<%- news %>&type2=<%- p %>  "><%- p %></a></li><% } %> 
+                                    <% } else {%> <li class="option2"><a href="/shop?type1=<%- news %>&type2=<%- p %>  "><%- p %></a></li><% } %> 
                                 <% }) %>
 
                                 <!-- 2d -->
 
                             <% } %> 
-                        <% } else {%> <li class="category"><a href="/shop?type1=<%- news %> "><%- news %></a></li><% } %> 
+                        <% } else {%> <li><a class="option1" href="/shop?type1=<%- news %> "><%- news %></a></li><% } %> 
                     <% }) %>
                     
+                    <hr>
 
 
 

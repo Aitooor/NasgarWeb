@@ -15,10 +15,10 @@ router.get('/panel', async (req, res) => {
 router.get('/panel/lang/:lang', async (req, res) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const user = await userModel.findOne({
-    id: req.user._doc.id
+    username: req.user._doc.username
   })
   user.lang = req.params.lang
-  user.save()
+  await user.save()
   res.redirect('/panel')
 })
 

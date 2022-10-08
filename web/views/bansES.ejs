@@ -64,14 +64,17 @@
             <i id="leftBTN" class="fa-solid fa-forward-step"></i>
         </div>
             <ul>
-                <li><a href="/bans">Todos</a></li>
-                <li><a href="/bans?type=BAN">Baneado</a></li>
-                <li><a href="/bans?type=WARN">Advertido</a></li>
-                <li><a href="/bans?type=KICK">Expulsado</a></li>
-                <li><a href="/bans?type=MUTE">Muteado</a></li>
-                <% if(user && user._doc.admin){ %>
-                    <li><a href="/panel">Panel</a></li>
-                <% } %>  
+                <hr>
+                <li><a class="optionTitle1" href="/">Home</a></li>
+                <li><a class="optionTitle1" href="/panel">Panel</a></li>
+                <hr>
+                <li><a href="/bans" class="optionTitle1">Lista de Sanciones</a></li>
+                <li><a class="option1" href="/bans">Todos</a></li>
+                <li><a class="option1" href="/bans?type=BAN">Baneado</a></li>
+                <li><a class="option1" href="/bans?type=WARN">Advertido</a></li>
+                <li><a class="option1" href="/bans?type=KICK">Expulsado</a></li>
+                <li><a class="option1" href="/bans?type=MUTE">Muteado</a></li>
+            <hr>
             </ul>
         </div>
 

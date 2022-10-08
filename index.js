@@ -1,4 +1,4 @@
-const webApp = require('./web/web')
+
 
 const fs = require('fs');
 const https = require('https');
@@ -9,8 +9,12 @@ const credentials = { key: privateKey, cert: certificate };
 const mongoose = require('mongoose');
 const mysql = require('promise-mysql')
 
-
+global.mongo = mongoose
 require('dotenv').config()
+
+const webApp = require('./web/web')
+
+
 
 
 async function start() {
@@ -26,3 +30,4 @@ async function start() {
 }
 
 start()
+

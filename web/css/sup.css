@@ -46,7 +46,8 @@
 
 .left-container li {
     padding: 2px 0px;
-    text-align: center;
+    text-align: left;
+    margin-left: 15px;
 }
 
 .left-container ul {
@@ -89,6 +90,27 @@
     margin: 0px 10px;
 }
 
+.optionTitle1 {
+    color: white;
+    margin: 0px !important;
+}
+
+.option1 {
+    color: rgba(240, 248, 255, 0.843) !important;
+    margin-left: 20px;
+}
+
+.option2 {
+    color: rgba(240, 248, 255, 0.567) !important;
+    margin-left: 35px;
+}
+
+
+.option3 {
+    color: rgba(240, 248, 255, 0.567) !important;
+    margin-left: 45px;
+}
+
 @media (max-width: 768px) {
     .left-container {
         width: 100%;
@@ -103,7 +125,7 @@
     }
 
     .active {
-        top: 182px;
+        top: 182px !important;
     }
 
     .active #leftBTN {
