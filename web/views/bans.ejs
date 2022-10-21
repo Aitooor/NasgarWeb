@@ -81,10 +81,14 @@
 
         <main>
             <div class="row">
+                <div class="col-12">
+                    <a href="<%- ref %> " class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+                  </div>
                 <% content.forEach( ban=> { %>
                     <div class="col-4">
                         <div class="card" data-aos="zoom-out-down">
-                            <div class="card-body">
+                            <div class="card-body" data-bs-toggle="modal"
+                            data-bs-target="<%- "#modal_"+ban.uuid %>">
                                 <div>
                                     <img src="https://crafatar.com/avatars/<%- ban.targetID %> " alt="" width="100px"
                                         height="100px">
@@ -96,8 +100,7 @@
                                     <%- ban.addedReason %><br><strong>Type:</strong>
                                         <%- ban.type.charAt(0).toUpperCase() + ban.type.slice(1).toLowerCase() %>
                                 </p>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="<%- "#modal_"+ban.uuid %>">
+                                <button type="button" class="btn btn-primary" >
                                     Info
                                 </button>
                             </div>

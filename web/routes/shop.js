@@ -19,14 +19,14 @@ router.get('/shop', async (req, res) => {
   }
   if (req.query.max) products = products.filter(p => p.price < req.query.max)
   if (req.query.product) products = products.filter(p => p.name.toLowerCase().includes(req.query.product.toLowerCase()) || p.description.toLowerCase().includes(req.query.product.toLowerCase()))
-  if (req.user && req.user._doc.lang == 'es') return res.render('shopES', { content: products, user: req.user, all: all, paypalClient: process.env.PAYPALID, pos: pos });
-  res.render('shop', { content: products, user: req.user, all: all, paypalClient: process.env.PAYPALID, pos: pos })
+  if (req.user && req.user._doc.lang == 'es') return res.render('shopES', { content: products, user: req.user, all: all, paypalClient: process.env.PAYPALID, pos: pos , ref: req.headers.referer});
+  res.render('shop', { content: products, user: req.user, all: all, paypalClient: process.env.PAYPALID, pos: pos, ref: req.headers.referer })
 })
 
 router.get('/shop/:id', async (req, res) => {
   const product = await productModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/shop')
-  res.render('product', { content: product, user: req.user })
+  res.render('product', { content: product, user: req.user, ref: req.headers.referer })
 })
 
 router.post('/shop/verify', (req, res, next) => {

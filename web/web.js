@@ -56,5 +56,4 @@ app.get('/sw.js', (req,res)=> res.sendFile(path.join(__dirname, '/js/sw.js')))
 registerRoutes(path.join(__dirname, 'routes'), app)
 
 
-
 module.exports = app

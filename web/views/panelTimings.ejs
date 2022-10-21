@@ -38,7 +38,6 @@
           <li><a class="optionTitle1" href="/panel">Panel home</a></li>
           <li><a class="optionTitle1" href="/panel/news">News</a></li>
           <li><a class="optionTitle1" href="/panel/shop">Shop</a></li>
-          <li><a class="optionTitle1" href="/panel/category">Category</a></li>
           <li><a class="optionTitle1" href="/panel/timings">StaffTimings</a></li>
           <li><a class="option1" href="/panel/timings">All staff members</a></li>
           <li><a class="option1" href="/panel/timings/group/owner">Owners</a></li>
@@ -57,6 +56,14 @@
     <main>
       <div class="row">
         <% if(type=='main' ){ %>
+          <div class="col-12">
+            <a href="/panel" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+          </div>
+              <form action="/panel/timings/user" method="get" class="col-12 d-flex">
+                <input type="text" name="username" placeholder="Staff member username" class="form-control">
+                <input type="submit" value="Search" class="btn btn-primary">
+            </form>
+
           <div class="col-12">
             <table class="table">
               <thead>
@@ -87,6 +94,9 @@
             </table>
           </div>
           <% } else if (type=='manage' ){%>
+            <div class="col-12">
+              <a href="/panel/timings" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+            </div>
 
             <div class="col-12">
               <table class="table">

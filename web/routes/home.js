@@ -7,5 +7,8 @@ router.get('/', async (req, res) => {
 })
 
 
+router.get("/vote", (req,res)=>{
+  res.redirect("https://www.40servidoresmc.es/nasgar-network")
+})
 
 module.exports = { router }

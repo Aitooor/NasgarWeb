@@ -54,7 +54,6 @@
           <li><a class="optionTitle1" href="/panel">Inicio</a></li>
           <li><a class="optionTitle1" href="/panel/news">Noticias</a></li>
           <li><a class="optionTitle1" href="/panel/shop">Tienda</a></li>
-          <li><a class="optionTitle1" href="/panel/category">Categoría</a></li>
           <li><a class="optionTitle1" href="/panel/timings">StaffTimings</a></li>
           <li><a class="option1" href="/panel/timings">Todos</a></li>
           <li><a class="option1" href="/panel/timings/group/owner">Dueños</a></li>
@@ -72,6 +71,9 @@
     <main>
       <div class="row">
         <% if(type=='main' ){ %>
+          <div class="col-12">
+            <a href="/panel " class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+          </div>
           <div class="col-12">
             <table class="table">
               <thead>
@@ -102,6 +104,9 @@
             </table>
           </div>
           <% } else if (type=='manage' ){%>
+            <div class="col-12">
+              <a href="<%- ref %> " class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+            </div>
 
             <div class="col-12">
               <table class="table">
@@ -151,8 +156,6 @@
                 </tbody>
               </table>
             </div>
-
-
 
             <% } %>
       </div>

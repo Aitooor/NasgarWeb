@@ -40,11 +40,14 @@
       <% if(user.admin) {%>
           <ul>
             <hr>
-              <li><a href="/panel">Panel home</a></li>
-              <li><a href="/panel/news">News</a></li>
-              <li><a href="/panel/shop">Shop</a></li>
-              <li><a href="/panel/timings">StaffTimings</a></li>
-              <li><a href="/panel/category">Categories</a></li>
+            <li><a class="optionTitle1" href="/panel">Panel home</a></li>
+            <li><a class="optionTitle1" href="/panel/news">News</a></li>
+            <li><a class="optionTitle1" href="/panel/shop">Shop</a></li>
+            <li><a class="option1" href="/panel/shop">Products</a></li>
+            <li><a class="option1" href="/panel/category">Categories</a></li>
+            <li><a class="option2" href="/panel/category">All categories</a></li>
+            <li><a class="option2" href="/panel/category/create">Create</a></li>
+            <li><a class="optionTitle1" href="/panel/timings">StaffTimings</a></li>
             <hr>
           </ul>
       <% } else { %> 
@@ -57,6 +60,9 @@
     <main>
         <div class="row">
             <% if(type == 'main'){ %>
+              <div class="col-12">
+                <a href="/panel" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+              </div>
                 <div class="col-12">
                     <table class="table">
                         <thead>
@@ -79,6 +85,9 @@
                   <a href="/panel/category/create" class="btn btn-primary">Create</a>
                 </div>
             <% } else if (type == 'create'){%>
+              <div class="col-12">
+                <a href="/panel/category" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+              </div>
                 <div class="col-12">
                   <form method="post" action="/panel/category/create">
                     <div class="mb-3">
@@ -91,10 +100,13 @@
                 </div>  
             <% } else if (type == 'manage'){%>
               <div class="col-12">
+                <a href="/panel/category" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+              </div>
+              <div class="col-12">
                 <form method="post" action="/panel/category/<%- content.id %>">
                   <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="<%- content.name %> ">
                   </div>
 
                   <button type="submit" class="btn btn-primary">Edit</button>

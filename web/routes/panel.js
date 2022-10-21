@@ -8,8 +8,8 @@ const dayjs = require('dayjs');
 
 router.get('/panel', async (req, res) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
-  if (req.user && req.user._doc.lang == 'es') return res.render('panelHomeES', { user: req.user._doc });
-  res.render('panelHome', { user: req.user._doc })
+  if (req.user && req.user._doc.lang == 'es') return res.render('panelHomeES', { user: req.user._doc, ref: req.headers.referer });
+  res.render('panelHome', { user: req.user._doc, ref: req.headers.referer })
 })
 
 router.get('/panel/lang/:lang', async (req, res) => {
@@ -30,8 +30,8 @@ router.get('/panel/timings', (req, res, next) => {
   next()
 }, async (req, res) => {
   const timings = await getStaffTimings()
-  if (req.user && req.user._doc.lang == 'es') return res.render('panelTimingsES', { content: timings, type: 'main', user: req.user._doc });
-  res.render('panelTimings', { content: timings, type: 'main', user: req.user._doc })
+  if (req.user && req.user._doc.lang == 'es') return res.render('panelTimingsES', { content: timings, type: 'main', user: req.user._doc, ref: req.headers.referer });
+  res.render('panelTimings', { content: timings, type: 'main', user: req.user._doc, ref: req.headers.referer })
 })
 
 router.get('/panel/timings/member/:id', (req, res, next) => {
@@ -71,6 +71,7 @@ router.get('/panel/timings/member/:id', (req, res, next) => {
     }
   });
   res.render('panelTimings', {
+    ref: req.headers.referer,
     content: timings.get(req.params.id), type: 'manage', user: req.user._doc, getTime: (ms) => {
       ms = Number(ms)
       let text = ""
@@ -109,10 +110,23 @@ router.get('/panel/timings/group/:name', (req, res, next) => {
   let timings = await getStaffTimings()
   if (!req.params.name) req.params.name = ''
   timings = [...timings.values()].filter(m => m.primary_group == req.params.name.toLowerCase() || m.permissions.permission.includes(req.params.name.toLowerCase()))
-  if (req.user && req.user._doc.lang == 'es') return res.render('panelTimingsES', { content: timings, type: 'main', user: req.user._doc });
-  res.render('panelTimings', { content: timings, type: 'main', user: req.user._doc })
+  if (req.user && req.user._doc.lang == 'es') return res.render('panelTimingsES', { content: timings, type: 'main', user: req.user._doc, ref: req.headers.referer });
+  res.render('panelTimings', { content: timings, type: 'main', user: req.user._doc, ref: req.headers.referer })
 })
 
+
+router.get('/panel/timings/user', (req, res, next) => {
+  if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
+  const u = req.user._doc
+  if (!u.admin) return res.redirect('/panel')
+  next()
+}, async (req, res) => {
+  let timings = await getStaffTimings()
+  if (!req.query.name) req.query.name = ''
+  timings = [...timings.values()].filter(m => m.username.toLowerCase() == req.query.username.toLowerCase())
+  if (req.user && req.user._doc.lang == 'es') return res.render('panelTimingsES', { content: timings, type: 'main', user: req.user._doc, ref: req.headers.referer });
+  res.render('panelTimings', { content: timings, type: 'main', user: req.user._doc, ref: req.headers.referer })
+})
 //#endregion
 
 async function getStaffTimings() {
@@ -144,9 +158,9 @@ router.get('/panel/news', (req, res, next) => {
   next()
 }, async (req, res) => {
   const products = await newModel.find({})
-  if (req.user && req.user._doc.lang == 'es') return res.render('panelNewsES', { content: products, type: 'main', user: req.user._doc });
+  if (req.user && req.user._doc.lang == 'es') return res.render('panelNewsES', { content: products, type: 'main', user: req.user._doc, ref: req.headers.referer });
 
-  res.render('panelNews', { content: products, type: 'main', user: req.user._doc })
+  res.render('panelNews', { content: products, type: 'main', user: req.user._doc, ref: req.headers.referer })
 })
 
 router.get('/panel/news/:id', (req, res, next) => {
@@ -157,14 +171,14 @@ router.get('/panel/news/:id', (req, res, next) => {
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/news')
   if (req.params.id == 'create') {
-    if (req.user && req.user._doc.lang == 'es') return res.render('panelNewsES',  { type: 'create', user: req.user._doc });
-    return res.render('panelnews', { type: 'create', user: req.user._doc })
+    if (req.user && req.user._doc.lang == 'es') return res.render('panelNewsES', { type: 'create', user: req.user._doc, ref: req.headers.referer });
+    return res.render('panelnews', { type: 'create', user: req.user._doc, ref: req.headers.referer })
   }
   const product = await newModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/news')
-  if (req.user && req.user._doc.lang == 'es') return res.render('panelNewsES', { content: product, type: 'manage', user: req.user._doc });
+  if (req.user && req.user._doc.lang == 'es') return res.render('panelNewsES', { content: product, type: 'manage', user: req.user._doc, ref: req.headers.referer });
 
-  res.render('panelNews', { content: product, type: 'manage', user: req.user._doc })
+  res.render('panelNews', { content: product, type: 'manage', user: req.user._doc, ref: req.headers.referer })
 })
 
 router.get('/panel/news/:id/delete', (req, res, next) => {
@@ -190,7 +204,8 @@ router.post('/panel/news/create', (req, res, next) => {
     content: content || 'Content',
     image: image || '/img/background.png',
     id: dayjs().unix(),
-    createdAt: dayjs()
+    createdAt: dayjs(),
+    lang: req.body.lang || 'en'
   })
   res.redirect('/panel/news')
 })
@@ -202,13 +217,14 @@ router.post('/panel/news/:id', (req, res, next) => {
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/news')
-  if (req.params.id == 'create') return res.render('panelNews', { type: 'create' })
+  if (req.params.id == 'create') return res.render('panelNews', { type: 'create', ref: req.headers.referer })
   const product = await newModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/news')
-  const { title, content, image, } = req.body
+  const { title, content, image, lang } = req.body
   product.image = image || product.image
   product.title = title || product.title
   product.content = content || product.content
+  product.lang = lang || product.lang
   await product.save()
   res.redirect('/panel/news')
 })
@@ -220,7 +236,7 @@ router.get('/panel/news/:id/clone', (req, res, next) => {
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/news')
-  if (req.params.id == 'create') return res.render('panelNews', { type: 'create' })
+  if (req.params.id == 'create') return res.render('panelNews', { type: 'create', ref: req.headers.referer })
   const product = await newModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/news')
 
@@ -229,7 +245,8 @@ router.get('/panel/news/:id/clone', (req, res, next) => {
     content: product.content || 'Content',
     image: product.image || '/img/background.png',
     id: dayjs().unix(),
-    createdAt: dayjs()
+    createdAt: dayjs(),
+    lang: product.lang
   })
 
   res.redirect('/panel/news')
@@ -244,10 +261,13 @@ router.get('/panel/shop', (req, res, next) => {
   if (!u.admin) return res.redirect('/panel')
   next()
 }, async (req, res) => {
-  const products = await productModel.find({})
-  if (req.user && req.user._doc.lang == 'es') return res.render('panelShopES', { content: products, type: 'main', user: req.user._doc });
+  let products = await productModel.find({})
+  if(req.query.category) {
+    products = products.filter(c => c.categories.includes(req.query.category))
+  }
+  if (req.user && req.user._doc.lang == 'es') return res.render('panelShopES', { content: products, type: 'main', user: req.user._doc, ref: req.headers.referer, categories: await categoryModel.find({}) });
 
-  res.render('panelShop', { content: products, type: 'main', user: req.user._doc })
+  res.render('panelShop', { content: products, type: 'main', user: req.user._doc, ref: req.headers.referer, categories: await categoryModel.find({}) })
 })
 
 router.get('/panel/shop/:id', (req, res, next) => {
@@ -259,15 +279,15 @@ router.get('/panel/shop/:id', (req, res, next) => {
   if (!req.params.id) return res.redirect('/panel/shop')
   if (req.params.id == 'create') {
 
-    if (req.user && req.user._doc.lang == 'es') return res.render('panelShopES',   { type: 'create', user: req.user._doc, categories: await categoryModel.find({}) });
+    if (req.user && req.user._doc.lang == 'es') return res.render('panelShopES', { type: 'create', user: req.user._doc, categories: await categoryModel.find({}), ref: req.headers.referer });
 
-    return res.render('panelShop', { type: 'create', user: req.user._doc, categories: await categoryModel.find({}) })
+    return res.render('panelShop', { type: 'create', user: req.user._doc, categories: await categoryModel.find({}), ref: req.headers.referer })
   }
   const product = await productModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/shop')
-  if (req.user && req.user._doc.lang == 'es') return res.render('panelShopES',  { content: product, type: 'manage', user: req.user._doc, categories: await categoryModel.find({}) });
+  if (req.user && req.user._doc.lang == 'es') return res.render('panelShopES', { content: product, ref: req.headers.referer, type: 'manage', user: req.user._doc, categories: await categoryModel.find({}) });
 
-  res.render('panelShop', { content: product, type: 'manage', user: req.user._doc, categories: await categoryModel.find({}) })
+  res.render('panelShop', { content: product, type: 'manage', ref: req.headers.referer, user: req.user._doc, categories: await categoryModel.find({}) })
 })
 
 router.get('/panel/shop/:id/delete', (req, res, next) => {
@@ -310,7 +330,7 @@ router.get('/panel/shop/:id/clone', (req, res, next) => {
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/shop')
-  if (req.params.id == 'create') return res.render('panelShop', { type: 'create', user: req.user._doc })
+  if (req.params.id == 'create') return res.render('panelShop', { type: 'create', ref: req.headers.referer, user: req.user._doc })
   const product = await productModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/shop')
   await productModel.create({
@@ -334,7 +354,7 @@ router.post('/panel/shop/:id', (req, res, next) => {
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/shop')
-  if (req.params.id == 'create') return res.render('panelShop', { type: 'create', user: req.user._doc, categories: await categoryModel.find({}) })
+  if (req.params.id == 'create') return res.render('panelShop', { type: 'create', user: req.user._doc, categories: await categoryModel.find({}), ref: req.headers.referer })
   const product = await productModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/shop')
   const productCategories = Object.keys(req.body).filter(c => c.includes('c_')).map(c => req.body[c])
@@ -347,7 +367,7 @@ router.post('/panel/shop/:id', (req, res, next) => {
   product.commands = commands ? commands.split(',') : product.commands
   console.log(req.body)
   await product.save()
-  res.render('panelShop', { content: product, type: 'manage', user: req.user._doc, categories: await categoryModel.find({}) })
+  res.render('panelShop', { content: product, type: 'manage', user: req.user._doc, categories: await categoryModel.find({}), ref: req.headers.referer })
 })
 
 
@@ -362,8 +382,8 @@ router.get('/panel/category', (req, res, next) => {
   next()
 }, async (req, res) => {
   const products = await categoryModel.find({})
-  if (req.user && req.user._doc.lang == 'es') return res.render('panelCategoryES',  { content: products, type: 'main', user: req.user._doc });
-  res.render('panelCategory', { content: products, type: 'main', user: req.user._doc })
+  if (req.user && req.user._doc.lang == 'es') return res.render('panelCategoryES', { content: products, type: 'main', user: req.user._doc, ref: req.headers.referer });
+  res.render('panelCategory', { content: products, type: 'main', user: req.user._doc, ref: req.headers.referer })
 })
 
 router.get('/panel/category/:id', (req, res, next) => {
@@ -374,14 +394,14 @@ router.get('/panel/category/:id', (req, res, next) => {
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/category')
   if (req.params.id == 'create') {
-    if (req.user && req.user._doc.lang == 'es') return res.render('panelCategoryES',   { type: 'create', user: req.user._doc });
-    return res.render('panelCategory', { type: 'create', user: req.user._doc })
+    if (req.user && req.user._doc.lang == 'es') return res.render('panelCategoryES', { type: 'create', user: req.user._doc, ref: req.headers.referer });
+    return res.render('panelCategory', { type: 'create', user: req.user._doc, ref: req.headers.referer })
   }
   const product = await categoryModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/category')
-  if (req.user && req.user._doc.lang == 'es') return res.render('panelCategoryES',  { content: product, type: 'manage', user: req.user._doc });
+  if (req.user && req.user._doc.lang == 'es') return res.render('panelCategoryES', { content: product, type: 'manage', user: req.user._doc, ref: req.headers.referer });
 
-  res.render('panelCategory', { content: product, type: 'manage', user: req.user._doc })
+  res.render('panelCategory', { content: product, type: 'manage', user: req.user._doc, ref: req.headers.referer })
 })
 
 router.get('/panel/shop/:id/delete', (req, res, next) => {
@@ -417,7 +437,7 @@ router.get('/panel/category/:id/clone', (req, res, next) => {
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/category')
-  if (req.params.id == 'create') return res.render('panelCategory', { type: 'create', user: req.user._doc })
+  if (req.params.id == 'create') return res.render('panelCategory', { type: 'create', user: req.user._doc, ref: req.headers.referer })
   const product = await categoryModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/category')
   await categoryModel.create({
@@ -434,15 +454,15 @@ router.post('/panel/category/:id', (req, res, next) => {
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/category')
-  if (req.params.id == 'create') return res.render('panelCategory', { type: 'create', user: req.user._doc })
+  if (req.params.id == 'create') return res.render('panelCategory', { type: 'create', user: req.user._doc, ref: req.headers.referer })
   const product = await productModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/category')
   const { name } = req.body
   product.name = name || product.name
   await product.save()
-  if (req.user && req.user._doc.lang == 'es') return res.render('panelCategoryES',  { content: product, type: 'manage', user: req.user._doc });
+  if (req.user && req.user._doc.lang == 'es') return res.render('panelCategoryES', { content: product, type: 'manage', user: req.user._doc, ref: req.headers.referer });
 
-  res.render('panelCategory', { content: product, type: 'manage', user: req.user._doc })
+  res.render('panelCategory', { content: product, type: 'manage', user: req.user._doc, ref: req.headers.referer })
 })
 
 
