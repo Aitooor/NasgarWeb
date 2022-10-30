@@ -4,7 +4,7 @@ const {
   createConnection
 } = require('mongoose');
 
-const con    = createConnection(process.env.MONGO_URL.replace("Web", "StaffCore"));
+const con = createConnection(process.env.MONGO_URL.replace("Web", "StaffCore"));
 
 module.exports = con.model('Punishments', new Schema({
   uuid: String,

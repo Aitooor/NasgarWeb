@@ -86,7 +86,7 @@
 
     <main>
         <div class="row">
-            <div class="col-12">
+            <div class="col-12" style="padding-bottom: 30px !important;">
                 <a href="<%- ref %> " class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Volver</a>
               </div>
             <% content.forEach( news=> { %>
@@ -102,7 +102,12 @@
                             </div>
                             <div class="new-item-content">
                                 <p>
-                                    <%- news.content %>
+                                    <% if(news.content.length > 30 || news.content.split('<br>').length > 1) {%>
+                                        <%- news.content.split(0,30)[0].split('<br>')[0]+"..." %>
+                                    <% } else { %>
+                                        <%- news.content %>
+                                    <% } %> 
+                                    
                                 </p>
                             </div>
                             <div class="new-item-date">

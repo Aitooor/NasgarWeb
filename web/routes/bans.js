@@ -9,8 +9,9 @@ router.get('/bans', async (req, res) => {
   if (req.query.victimName) filter.victimName = req.query.victimName
 
   const bans = await punishModel.find(filter)
-  if (req.user && req.user._doc.lang == 'es') return res.render('bansES', { content: bans, user: req.user, dayjs: require('dayjs'), ref: req.headers.referer });
-  res.render('bans', { content: bans, user: req.user, dayjs: require('dayjs'), ref: req.headers.referer });
+  if (req.query.lang && req.query.lang == 'es') return res.render('bansES', { content: bans, user: req.user, dayjs: require('dayjs'), ref: req.headers.referer, translate: true });
+  if (req.user && req.user._doc.lang == 'es') return res.render('bansES', { content: bans, user: req.user, dayjs: require('dayjs'), ref: req.headers.referer, translate: false });
+  res.render('bans', { content: bans, user: req.user, dayjs: require('dayjs'), ref: req.headers.referer, translate: false });
 })
 
 

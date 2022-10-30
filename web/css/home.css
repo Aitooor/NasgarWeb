@@ -1,0 +1,164 @@
+* {
+  padding: 0px;
+  margin: 0px !important;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  transition-duration: 0.3s;
+}
+
+body,
+html,
+.row {
+  height: 100%;
+  background-color: #F4F4F4;
+}
+
+.nasgar-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.col-8,
+.col-4 {
+  height: 84%;
+}
+
+.col-12 {
+  height: 8%;
+}
+
+.nasgar-content {
+  width: 100%;
+}
+
+h1 {
+  font-size: 80px !important;
+  text-align: center;
+  width: 100%;
+  font-weight: bolder;
+  color: #5271FF;
+  margin-bottom: 10px !important;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0px 10%;
+  margin-bottom: 20px !important;
+
+}
+
+.i {
+  color: #5271FF;
+  font-size: 25px;
+}
+
+.i:hover {
+  transform: translateY(-5px);
+}
+
+.ib {
+  padding: 0px 30%;
+}
+
+.btn {
+  width: 20%;
+  border-radius: 0px;
+}
+
+.btn-primary a {
+  text-decoration: none;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #5271FF;
+  border-color: #5271FF;
+  font-weight: bold;
+}
+
+.navigator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 35%;
+}
+
+.navigator a {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.663);
+  font-weight: bolder;
+}
+
+.navigator a:hover {
+  text-decoration: none;
+  color: #5271FF;
+  font-weight: bolder;
+}
+
+
+.row {
+  background-image: url('/img/bg.png') !important;
+  background-size: cover;
+}
+
+
+
+@media (max-width: 768px) {
+
+  .col-8,
+  .col-4 {
+    width: 100%;
+  }
+
+  .col-4 {
+    height: 0px;
+  }
+
+  .buttons {
+    padding: 0px;
+  }
+
+  .btn {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn-outline-primary i {
+    font-size: 0px !important;
+  }
+
+  .fot {
+    font-size: 10px !important;
+    padding-bottom: 10px !important;
+  }
+
+  .navigator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10%;
+    background-color: #336ed2;
+    position: fixed;
+    top: 0px;
+    height: 50px;
+  }
+
+  .rowc {
+    margin-top: 50px !important;
+  }
+
+  .navigator a {
+    color: #F4F4F4;
+  }
+
+  html {
+    
+  }
+
+}

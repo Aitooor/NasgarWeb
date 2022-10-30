@@ -404,7 +404,7 @@ router.get('/panel/category/:id', (req, res, next) => {
   res.render('panelCategory', { content: product, type: 'manage', user: req.user._doc, ref: req.headers.referer })
 })
 
-router.get('/panel/shop/:id/delete', (req, res, next) => {
+router.get('/panel/category/:id/delete', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
   if (!u.admin) return res.redirect('/panel')
@@ -455,7 +455,7 @@ router.post('/panel/category/:id', (req, res, next) => {
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/category')
   if (req.params.id == 'create') return res.render('panelCategory', { type: 'create', user: req.user._doc, ref: req.headers.referer })
-  const product = await productModel.findOne({ id: req.params.id })
+  const product = await categoryModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/category')
   const { name } = req.body
   product.name = name || product.name

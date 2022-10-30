@@ -3,7 +3,8 @@ const router = express.Router();
 const productModel = require('../../database/Product');
 const fetch = require('node-fetch')
 const orderModel = require('../../database/Order')
-const categoryModel = require('../../database/Category');
+const marked = require("marked")
+
 
 router.get('/shop', async (req, res) => {
   let products = await productModel.find({})
@@ -17,6 +18,14 @@ router.get('/shop', async (req, res) => {
     products = products.filter(p => p.categories[1] == req.query.type2)
     pos.push(req.query.type2)
   }
+
+  products = products.map(n => {
+    n.description = n.description.replaceAll('<br>', '\n')
+    n.description = marked.marked.parse(n.description)
+    return n
+  })
+
+
   if (req.query.max) products = products.filter(p => p.price < req.query.max)
   if (req.query.product) products = products.filter(p => p.name.toLowerCase().includes(req.query.product.toLowerCase()) || p.description.toLowerCase().includes(req.query.product.toLowerCase()))
   if (req.user && req.user._doc.lang == 'es') return res.render('shopES', { content: products, user: req.user, all: all, paypalClient: process.env.PAYPALID, pos: pos , ref: req.headers.referer});
@@ -43,7 +52,6 @@ router.post('/shop/verify', (req, res, next) => {
     }
   })).json()
 
-  console.log(data, getOrder)
   if (data.details.status == 'COMPLETED' && getOrder.status == "COMPLETED") {
     const product = await productModel.findOne({ id: data.productID })
     await orderModel.create({
@@ -55,9 +63,7 @@ router.post('/shop/verify', (req, res, next) => {
       user: data.user
     })
   }
-
-
-
+  
   res.send({ message: 'ok' })
 })
 
