@@ -20,10 +20,16 @@
   <meta name="description" content="description">
   <meta name="og:description" content="description">
 
+  <% if(!translate && user) {%>
+  <script>
+    userLang = user.lang
+  </script>
+  <% } %>
+
   <% if(!user && !translate){ %>
   <script type="text/javascript">
     var userLang = navigator.language || navigator.userLanguage;
-    if (userLang.toLowerCase().includes('es')) window.location.assign('/news/<%- content.id%>/?lang=es')
+    if (userLang.toLowerCase().includes('es')) window.location.assign('/news/<%- content.id %>/?lang=es')
   </script>
   <% } %>
 

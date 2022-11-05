@@ -22,7 +22,12 @@
   <meta name="description" content="description">
   <meta name="og:description" content="description">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+  <% if(!translate && user) {%>
+    <script>
+      userLang = user.lang
+    </script>
+    <% } %>
+    
   <% if(!user && !translate){ %>
   <script type="text/javascript">
     var userLang = navigator.language || navigator.userLanguage;
@@ -37,7 +42,7 @@
 
     .card-body:hover {
       bottom: 30px;
-      transform: translateY(-30px);
+      transform: translateY(-5px);
       font-weight: bolder !important;
     }
   </style>
@@ -52,7 +57,7 @@
     </div>
     <div class="col-4 colm">
       <form action="/bans" method="get">
-        <input type="text" name="victimName" placeholder="Search" class="form-control">
+        <input type="text" name="victimName" placeholder="Username" class="form-control">
         <input type="submit" value="Search" class="btn btn-primary">
       </form>
     </div>

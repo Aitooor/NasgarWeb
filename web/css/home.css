@@ -105,6 +105,11 @@ h1 {
   background-size: cover;
 }
 
+.btn-outline-primary:hover {
+  background-color: #5271FF;
+  border-color: #5271FF;
+}
+
 
 
 @media (max-width: 768px) {

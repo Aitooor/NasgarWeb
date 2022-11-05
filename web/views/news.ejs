@@ -39,6 +39,12 @@
     }
   </style>
 
+  <% if(!translate && user) {%>
+  <script>
+    userLang = user.lang
+  </script>
+  <% } %>
+
   <% if(!user && !translate){ %>
   <script type="text/javascript">
     var userLang = navigator.language || navigator.userLanguage;

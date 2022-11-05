@@ -69,7 +69,7 @@
 
     .card-body:hover {
       bottom: 30px;
-      transform: translateY(-30px);
+      transform: translateY(-10px);
       font-weight: bolder !important;
     }
 
@@ -92,6 +92,24 @@
     }
   </style>
   <script src="https://www.paypal.com/sdk/js?client-id=<%- paypalClient %>&components=buttons"></script>
+
+  <script>
+    var userLang = navigator.language || navigator.userLanguage;
+  </script>
+
+
+  <% if(!translate && user) {%>
+  <script>
+    userLang = user.lang
+  </script>
+  <% } %>
+
+  <% if(!user && !translate){ %>
+  <script type="text/javascript">
+    var userLang = navigator.language || navigator.userLanguage;
+    if (userLang.toLowerCase().includes('es')) window.location.assign('/shop?lang=es')
+  </script>
+  <% } %>
 
 </head>
 
@@ -150,7 +168,7 @@
         const find = document.getElementById("max-btn")
         setInterval(() => {
           priceRange.textContent = "Max Price: $" + document.getElementById("priceRangeVar").value + " usd"
-          find.attributes.href.value = '/shop/?max=' + document.getElementById("priceRangeVar").value
+          find.attributes.href.value = ('/shop/?max=' + document.getElementById("priceRangeVar").value) + (userLang.toLowerCase().includes('es') ? "&lang=es" : "")
         }, 10);
       </script>
 
@@ -161,6 +179,8 @@
 
       <% const types1 =new Set(); const types2 =new Set(); const types3 =new Set()%>
       <% all.forEach( news=> { %>
+      <% news.categories = news.categories.filter(c => c!="") %>
+
       <% types1.add(news.categories[0]) %>
       <% }) %>
 
@@ -177,7 +197,7 @@
       <li><a class="option2" href="/shop?type1=<%- news %>&type2=<%- p %>  "><%- p %></a></li>
       <% if (content.filter(c => c.categories.length > 2).length > 0) {%>
       <% content.filter(c => c.categories.length > 2).forEach(c=>{ %>
-      <% types3.add(c.categories[1]) %>
+      <% types3.add(c.categories[2]) %>
       <% }) %>
       <% types3.forEach( c=> { %>
       <li><a class="option3" href="/shop?type1=<%- news %>&type2=<%- p %>&type3=<%- c %>   "><%- c %></a></li>
