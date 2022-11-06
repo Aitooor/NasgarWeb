@@ -59,9 +59,18 @@
       <li><a class="optionTitle1" href="/panel/news">Noticias</a></li>
       <li><a class="optionTitle1" href="/panel/shop">Tienda</a></li>
       <li><a class="option1" href="/panel/shop">Productos</a></li>
+      <% if(categoryType == "main"){ %>
       <li><a class="option1" href="/panel/category">Categorías</a></li>
       <li><a class="option2" href="/panel/category">Todas Categorías</a></li>
       <li><a class="option2" href="/panel/category/create">Crear</a></li>
+      <li><a class="option1" href="/panel/subcategory">Subcategorías</a></li>
+      <% } else {%>
+      <li><a class="option1" href="/panel/category">Categorías</a></li>
+      <li><a class="option1" href="/panel/subcategory">Subcategorías</a></li>
+      <li><a class="option2" href="/panel/subcategory">Todas Subcategorías</a></li>
+      <li><a class="option2" href="/panel/subcategory/create">Crear</a></li>
+      <% } %>
+
       <li><a class="optionTitle1" href="/panel/timings">StaffTimings</a></li>
       <hr>
     </ul>
