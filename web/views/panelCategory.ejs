@@ -26,10 +26,28 @@
   <meta name="og:description" content="description">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+
 </head>
 
 <body>
-  <%- include('./templates/nav.ejs') %>
+  <nav class="nav-container row">
+    <div class="col-1"></div>
+    <div class="col-5 coll">
+      <a href="/"><img src="/img/logo-480x.png" alt="" height="50px"></a>
+    </div>
+    <div class="col-5 colr">
+      <a href="/news" class="nav-btn">News</a>
+      <a href="/shop" class="nav-btn">Shop</a>
+      <a href="/bans" class="nav-btn">Bans</a>
+      <a href="https://www.40servidoresmc.es/nasgar-network-votar" class="nav-btn" target="_blank">Vote</a>
+      <% if(user) {%>
+      <a class="nav-btn" href="/panel"><%- user.username %> </a>
+      <% } else { %>
+      <a class="nav-btn" href="/login">Login</a>
+      <% } %>
+    </div>
+    <div class="col-1"></div>
+  </nav>
   <div class="left-container unactive" id="left-container">
     <div class="leftBTNC">
       <i id="leftBTN" class="fa-solid fa-forward-step"></i>
@@ -64,6 +82,7 @@
 
   </div>
   <main>
+    <% if(categoryType == "main") {%>
     <div class="row">
       <% if(type == 'main'){ %>
       <div class="col-12">
@@ -92,7 +111,7 @@
       </div>
       <% } else if (type == 'create'){%>
       <div class="col-12">
-        <a href="/panel/category" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        <a href="<%- ref %> " class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
       </div>
       <div class="col-12">
         <form method="post" action="/panel/category/create">
@@ -106,13 +125,10 @@
       </div>
       <% } else if (type == 'manage'){%>
       <div class="col-12">
-        <a href="/panel/category" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
-      </div>
-      <div class="col-12">
         <form method="post" action="/panel/category/<%- content.id %>">
           <div class="mb-3">
             <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" name="name" value="<%- content.name %> ">
+            <input type="text" class="form-control" id="name" name="name" placeholder="<%- content.name %> ">
           </div>
 
           <button type="submit" class="btn btn-primary">Edit</button>
@@ -124,6 +140,65 @@
       <% } %>
     </div>
     <div class="separator"></div>
+    <% } else { %>
+    <div class="row">
+      <% if(type == 'main'){ %>
+      <div class="col-12">
+        <a href="/panel" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+      </div>
+      <div class="col-12">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Manage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% content.forEach(item=>{ %>
+            <tr>
+              <td><%- item.id %></td>
+              <td><%- item.name %> </td>
+              <td><a href="<%- `/panel/subcategory/${item.id}` %>" class="btn btn-outline-primary">Manage</a> </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <a href="/panel/subcategory/create" class="btn btn-primary">Create</a>
+      </div>
+      <% } else if (type == 'create'){%>
+      <div class="col-12">
+        <a href="<%- ref %> " class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+      </div>
+      <div class="col-12">
+        <form method="post" action="/panel/subcategory/create">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="name">
+          </div>
+
+          <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+      </div>
+      <% } else if (type == 'manage'){%>
+      <div class="col-12">
+        <form method="post" action="/panel/subcategory/<%- content.id %>">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="<%- content.name %> ">
+          </div>
+
+          <button type="submit" class="btn btn-primary">Edit</button>
+          <a href="/panel/subcategory/<%- content.id %>/clone" class="btn btn-primary">Clone</a>
+          <a href="/panel/subcategory/<%- content.id %>/delete" class="btn btn-danger">Delete</a>
+        </form>
+      </div>
+
+      <% } %>
+    </div>
+    <div class="separator"></div>
+    <% } %>
   </main>
   <script>
     const leftBTN = document.getElementById("leftBTN")

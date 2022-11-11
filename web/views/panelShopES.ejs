@@ -190,9 +190,63 @@
             <input type="text" class="form-control" id="server" name="server">
           </div>
           <div class="mb-3">
-            <label for="commands" class="form-label">Comandos (Separados por comas)</label>
-            <input type="text" class="form-control" id="commands" name="commands">
-          </div>
+            <div class="mb-3" style="display: none;">
+              <input type="text" class="form-control" id="commands" name="commands">
+            </div>
+
+            <label for="commands" class="form-label">Comandos</label>
+            <div class="commandsContainer mb-3" id="commandsContainer">
+              <% for (i = 0; i < 0; i++){%>
+              <div class="commandBase mb-3 d-flex" id="<%- "command-"+i %>">
+                <input type="text" class="commandAdded form-control" value="">
+                <div class="btn btn-danger deleteCommand" id="<%- "commandBTN-"+i %>">-</div>
+              </div>
+              <% } %>
+            </div>
+
+            <div class="mb-3">
+              <div class="btn btn-primary" id="addCommand">Añadir Comando +</div>
+            </div>
+            
+
+            <script>
+              const commandsBase = document.getElementById("commandsContainer");
+
+              [...commandsBase.getElementsByClassName("deleteCommand")].map(c => {
+                c.addEventListener("click", (ev) => {
+                  const cmd = document.getElementById(c.id.replace("BTN", ""))
+                  cmd.remove()
+                })
+              })
+
+              const add = document.getElementById("addCommand")
+              add.addEventListener("click", (ev) => {
+                const commandContainer = document.getElementById("commandsContainer")
+                const commandBase = document.createElement("div")
+                const commandInput = document.createElement("input")
+                const commandDel = document.createElement("div")
+                commandBase.className = "commandBase mb-3 d-flex"
+                commandBase.id = "command-" + [...commandsBase.getElementsByClassName("commandAdded")].length
+                commandContainer.insertAdjacentElement("beforeend", commandBase)
+                commandInput.className = "commandAdded form-control"
+                commandBase.insertAdjacentElement("afterbegin", commandInput)
+                commandDel.className = "btn btn-danger deleteCommand"
+                commandDel.textContent = "-"
+                commandDel.id =  "commandBTN-" + [...commandsBase.getElementsByClassName("commandAdded")].length
+                commandBase.insertAdjacentElement("beforeend", commandDel)
+                commandDel.addEventListener("click", (ev) => {
+                  const cmd = document.getElementById(c.id.replace("BTN", ""))
+                  cmd.remove()
+                })
+              })
+
+              setInterval(() => {
+                const commandsBase = document.getElementById("commandsContainer")
+                const commands = [...commandsBase.getElementsByClassName("commandAdded")].filter(c => c.value.trim() != "").map(c => c.value.trim())
+                const commandInput = document.getElementById("commands")
+                commandInput.value = commands.join(",")
+              }, 10);
+            </script>
 
           <button type="submit" class="btn btn-primary">Crear</button>
         </form>
@@ -250,10 +304,63 @@
 
               </div>
             </div>
-            <div class="mb-3">
-              <label for="commands" class="form-label">Comandos (Separados por comas)</label>
+            <div class="mb-3" style="display: none;">
               <input type="text" class="form-control" id="commands" name="commands" value="<%- content.commands.join(", ") %> ">
             </div>
+
+            <label for="commands" class="form-label">Comandos</label>
+            <div class="commandsContainer mb-3" id="commandsContainer">
+              <% for (i = 0; i < content.commands.length; i++){%>
+              <div class="commandBase mb-3 d-flex" id="<%- "command-"+i %>">
+                <input type="text" class="commandAdded form-control" value="<%- content.commands[i]%>">
+                <div class="btn btn-danger deleteCommand" id="<%- "commandBTN-"+i %>">-</div>
+              </div>
+              <% } %>
+            </div>
+
+            <div class="mb-3">
+              <div class="btn btn-primary" id="addCommand">Añadir Comando +</div>
+            </div>
+            
+
+            <script>
+              const commandsBase = document.getElementById("commandsContainer");
+
+              [...commandsBase.getElementsByClassName("deleteCommand")].map(c => {
+                c.addEventListener("click", (ev) => {
+                  const cmd = document.getElementById(c.id.replace("BTN", ""))
+                  cmd.remove()
+                })
+              })
+
+              const add = document.getElementById("addCommand")
+              add.addEventListener("click", (ev) => {
+                const commandContainer = document.getElementById("commandsContainer")
+                const commandBase = document.createElement("div")
+                const commandInput = document.createElement("input")
+                const commandDel = document.createElement("div")
+                commandBase.className = "commandBase mb-3 d-flex"
+                commandBase.id = "command-" + [...commandsBase.getElementsByClassName("commandAdded")].length
+                commandContainer.insertAdjacentElement("beforeend", commandBase)
+                commandInput.className = "commandAdded form-control"
+                commandBase.insertAdjacentElement("afterbegin", commandInput)
+                commandDel.className = "btn btn-danger deleteCommand"
+                commandDel.textContent = "-"
+                commandDel.id =  "commandBTN-" + [...commandsBase.getElementsByClassName("commandAdded")].length
+                commandBase.insertAdjacentElement("beforeend", commandDel)
+                commandDel.addEventListener("click", (ev) => {
+                  const cmd = document.getElementById(c.id.replace("BTN", ""))
+                  cmd.remove()
+                })
+              })
+
+              setInterval(() => {
+                const commandsBase = document.getElementById("commandsContainer")
+                const commands = [...commandsBase.getElementsByClassName("commandAdded")].filter(c => c.value.trim() != "").map(c => c.value.trim())
+                const commandInput = document.getElementById("commands")
+                commandInput.value = commands.join(",")
+              }, 10);
+            </script>
 
             <button type="submit" class="btn btn-primary">Editar</button>
             <a href="/panel/shop/<%- content.id %>/clone" class="btn btn-primary">Clonar</a>
@@ -346,7 +453,8 @@
         height: '600px',
         initialEditType: 'markdown',
         previewStyle: 'vertical',
-        plugins: [colorSyntax]
+        plugins: [colorSyntax],
+        initialValue: document.getElementById("content").value.replaceAll("<br>", "\n")
       });
 
       btn.addEventListener("click", () => closeEditor(el, btn, editor, bg))

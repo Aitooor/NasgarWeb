@@ -172,62 +172,50 @@
       </script>
 
       <li>
-        <a href="/shop?lang=es" class="optionTitle1">Productos</a>
+        <p class="optionTitle1">Productos</p>
       </li>
 
-      <%
-      const types = new Map()
-      all.forEach(item => {
-        if(!types.has(item.categories[0]) && item.categories[0] != "") {
 
-          types.set(item.categories[0], new Map())
-
-          const type1 = types.get(item.categories[0])
-
-          if(!type1.has(item.categories[1]) && item.categories[1] != "") {
-            type1.set(item.categories[1], new Map())
-            const type2 = type1.get(item.categories[1])
-            if(!type2.has(item.categories[2]) && item.categories[2] != "") {
-              type2.set(item.categories[2], new Map())
-            }
-          }
-        }
-      }); 
-      %>
-
-      <% [...types.keys()].forEach(key => {  %>
-      <% if(key == pos[0]) {%>
-      <li><a class="option1" href="/shop?type1=<%- key %>&lang=es"><%- key %></a></li>
-
-
-      <% [...types.get(key).keys()].forEach(subkey => {  %>
-        <% if(subkey == pos[1]) {%>
-          <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>&lang=es"><%- subkey %></a></li>
-
-
-          <% [...types.get(key).get(subkey).keys()].forEach(subsubkey => {  %>
-            <% if(subsubkey == pos[2]) {%>
-              <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>&lang=es"><%- subsubkey %></a></li>
-        
-            <% } else { %>
-              <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>&lang=es"><%- subsubkey %></a></li>
-            <% } %>
+      <% const types1 =new Set(); const types2 =new Set(); const types3 =new Set()%>
       
-          <% }) %>
+      <% all.forEach( news=> { %>
 
-
-    
-        <% } else { %>
-          <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>&lang=es"><%- subkey %></a></li>
-        <% } %>
-  
+      <% news.categories = news.categories.filter(c => c!="") %>
+      <% if(news.categories.length > 0) types1.add(news.categories[0]) %>
       <% }) %>
 
-      <% } else { %>
-      <li><a class="option1" href="/shop?type1=<%- key %>&lang=es"><%- key %></a></li>
+
+      <% types1.forEach( news => { %>
+      <% if(pos[0] == news) {%>
+      <li><a class="option1" href="/shop?type1=<%- news %>&lang=es"><%- news %></a></li>
+      <% if (content.filter(c => c.categories.length > 1).length > 0) {%>
+      <% content.filter(c => c.categories.length > 1).forEach(c=>{ %>
+      <% types2.add(c.categories[1]) %>
+      <% }) %>
+      <!-- 2d -->
+      <% types2.forEach( p=> { %>
+      <% if(pos[1] == p) {%>
+      <li><a class="option2" href="/shop?type1=<%- news %>&type2=<%- p %>&lang=es"><%- p %></a></li>
+      <% if (content.filter(c => c.categories.length > 2).length > 0) {%>
+      <% content.filter(c => c.categories.length > 2).forEach(c=>{ %>
+      <% types3.add(c.categories[2]) %>
+      <% }) %>
+      <% types3.forEach( c=> { %>
+      <li><a class="option3" href="/shop?type1=<%- news %>&type2=<%- p %>&type3=<%- c %>&lang=es"><%- c %></a></li>
+      <% }) %>
+
+
+
       <% } %>
-
+      <% } else {%> <li><a class="option2" href="/shop?type1=<%- news %>&type2=<%- p %>&lang=es"><%- p %></a></li><% } %>
       <% }) %>
+
+      <!-- 2d -->
+
+      <% } %>
+      <% } else {%> <li><a class="option1" href="/shop?type1=<%- news %>&lang=es"><%- news %></a></li><% } %>
+      <% }) %>
+
       <hr>
 
 

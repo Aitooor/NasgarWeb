@@ -8,7 +8,7 @@ const marked = require("marked")
 
 router.get('/shop', async (req, res) => {
   let products = await productModel.find({})
-  const all = products
+  const all = await productModel.find({})
   const pos = []
   if (req.query.type1) {
     products = products.filter(p => p.categories[0] == req.query.type1)

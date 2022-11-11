@@ -82,6 +82,7 @@
 
   </div>
   <main>
+    <% if(categoryType == "main") {%>
     <div class="row">
       <% if(type == 'main'){ %>
       <div class="col-12">
@@ -115,7 +116,7 @@
       <div class="col-12">
         <form method="post" action="/panel/category/create">
           <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
+            <label for="name" class="form-label">Nombre</label>
             <input type="text" class="form-control" id="name" name="name">
           </div>
 
@@ -126,11 +127,11 @@
       <div class="col-12">
         <form method="post" action="/panel/category/<%- content.id %>">
           <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
+            <label for="name" class="form-label">Nombre</label>
             <input type="text" class="form-control" id="name" name="name" placeholder="<%- content.name %> ">
           </div>
 
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-primary">Editar</button>
           <a href="/panel/category/<%- content.id %>/clone" class="btn btn-primary">Clonar</a>
           <a href="/panel/category/<%- content.id %>/delete" class="btn btn-danger">Eliminar</a>
         </form>
@@ -139,6 +140,65 @@
       <% } %>
     </div>
     <div class="separator"></div>
+    <% } else { %>
+    <div class="row">
+      <% if(type == 'main'){ %>
+      <div class="col-12">
+        <a href="/panel" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+      </div>
+      <div class="col-12">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Administrar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% content.forEach(item=>{ %>
+            <tr>
+              <td><%- item.id %></td>
+              <td><%- item.name %> </td>
+              <td><a href="<%- `/panel/subcategory/${item.id}` %>" class="btn btn-outline-primary">Administrar</a> </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <a href="/panel/subcategory/create" class="btn btn-primary">Crear</a>
+      </div>
+      <% } else if (type == 'create'){%>
+      <div class="col-12">
+        <a href="<%- ref %> " class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+      </div>
+      <div class="col-12">
+        <form method="post" action="/panel/subcategory/create">
+          <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="name" name="name">
+          </div>
+
+          <button type="submit" class="btn btn-primary">Crear</button>
+        </form>
+      </div>
+      <% } else if (type == 'manage'){%>
+      <div class="col-12">
+        <form method="post" action="/panel/subcategory/<%- content.id %>">
+          <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="<%- content.name %> ">
+          </div>
+
+          <button type="submit" class="btn btn-primary">Editar</button>
+          <a href="/panel/subcategory/<%- content.id %>/clone" class="btn btn-primary">Clonar</a>
+          <a href="/panel/subcategory/<%- content.id %>/delete" class="btn btn-danger">Eliminar</a>
+        </form>
+      </div>
+
+      <% } %>
+    </div>
+    <div class="separator"></div>
+    <% } %>
   </main>
   <script>
     const leftBTN = document.getElementById("leftBTN")
