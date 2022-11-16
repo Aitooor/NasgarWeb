@@ -191,7 +191,7 @@
             <div class="mb-3">
               <div class="btn btn-primary" id="addCommand">Add Command +</div>
             </div>
-            
+
 
             <script>
               const commandsBase = document.getElementById("commandsContainer");
@@ -216,7 +216,7 @@
                 commandBase.insertAdjacentElement("afterbegin", commandInput)
                 commandDel.className = "btn btn-danger deleteCommand"
                 commandDel.textContent = "-"
-                commandDel.id =  "commandBTN-" + [...commandsBase.getElementsByClassName("commandAdded")].length
+                commandDel.id = "commandBTN-" + [...commandsBase.getElementsByClassName("commandAdded")].length
                 commandBase.insertAdjacentElement("beforeend", commandDel)
                 commandDel.addEventListener("click", (ev) => {
                   const cmd = document.getElementById(c.id.replace("BTN", ""))
@@ -257,17 +257,31 @@
 
                 <% if(i == 0){ %>
                 <option value="<% "c_"+i %>" selected>Select a category</option>
+                
                 <% categories.filter(c => c.type == 'main').forEach(c=> { %>
-                <option value=<%-c.name %>>
-                  <%- c.name %>
-                </option>
+                <% if(content.categories[0] == c.name) {%>
+                  <option value="<%-c.name %>"selected>
+                    <%- c.name %>
+                  </option>
+                <% } else { %>
+                  <option value="<%-c.name %>">
+                    <%- c.name %>
+                  </option>
+                <% } %>
+
                 <% }); %>
                 <% } else {%>
                 <option value="<% "c_"+i %>" selected>Select a subcategory</option>
                 <% categories.filter(c => c.type == 'sub').forEach(c=> { %>
-                <option value=<%-c.name %>>
-                  <%- c.name %>
-                </option>
+                  <% if(content.categories[i] == c.name) {%>
+                    <option value="<%-c.name %>"selected>
+                      <%- c.name %>
+                    </option>
+                  <% } else { %>
+                    <option value="<%-c.name %>">
+                      <%- c.name %>
+                    </option>
+                  <% } %>
                 <% }); %>
                 <% } %>
 
@@ -310,7 +324,7 @@
             <div class="mb-3">
               <div class="btn btn-primary" id="addCommand">Add Command +</div>
             </div>
-            
+
 
             <script>
               const commandsBase = document.getElementById("commandsContainer");
@@ -335,7 +349,7 @@
                 commandBase.insertAdjacentElement("afterbegin", commandInput)
                 commandDel.className = "btn btn-danger deleteCommand"
                 commandDel.textContent = "-"
-                commandDel.id =  "commandBTN-" + [...commandsBase.getElementsByClassName("commandAdded")].length
+                commandDel.id = "commandBTN-" + [...commandsBase.getElementsByClassName("commandAdded")].length
                 commandBase.insertAdjacentElement("beforeend", commandDel)
                 commandDel.addEventListener("click", (ev) => {
                   const cmd = document.getElementById(c.id.replace("BTN", ""))

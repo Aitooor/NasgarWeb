@@ -88,7 +88,7 @@
               Seleccionar Categoría
             </option>
 
-            <% categories.forEach(c=> { %>
+            <% categories.filter(c => c.type == 'main').forEach(c=> { %>
             <option value=<%-c.name %>>
               <%- c.name %>
             </option>
@@ -144,24 +144,29 @@
             <label for="name" class="form-label">Nombre</label>
             <input type="text" class="form-control" id="name" name="name">
           </div>
-          <% const l =  categories.length >= 3 ? 3 : categories.length %>
 
-          <% if(categories.length > 0 ){for (let i = 0; i < l ; i++) { %>
+          <% const l =  categories.filter(c => c.type == "sub").length + 1 >= 3 ? 3 : categories.filter(c => c.type == "sub").length + 1 %>
+
+          <% if(categories.filter(c => c.type == "sub").length + 1> 0 ){for (let i = 0; i < l ; i++) { %>
           <div class="mb-3">
-            <select class="form-select form-select-sm" aria-label=".form-select-sm" id="<% "c_"+i %>" name="<% "c_"+i %>">
+            <select class="form-select form-select-sm" aria-label=".form-select-sm" id="<%- "c_"+i %>" name="<%- "c_"+i %>">
 
               <% if(i == 0){ %>
               <option value="<% "c_"+i %>" selected>Selecciona una categoría</option>
-              <% } else {%>
-              <option value="<% "c_"+i %>" selected>Selecciona una subcategoría</option>
-              <% } %>
-
-
-              <% categories.forEach(c=> { %>
+              <% categories.filter(c => c.type == 'main').forEach(c=> { %>
               <option value=<%-c.name %>>
                 <%- c.name %>
               </option>
               <% }); %>
+              <% } else {%>
+              <option value="<% "c_"+i %>" selected>Selecciona una subcategoría</option>
+              <% categories.filter(c => c.type == 'sub').forEach(c=> { %>
+              <option value=<%-c.name %>>
+                <%- c.name %>
+              </option>
+              <% }); %>
+              <% } %>
+
 
             </select>
           </div>
@@ -263,28 +268,46 @@
               <input type="text" class="form-control" id="name" name="name" value="<%- content.name %> ">
             </div>
 
-            <% const l =  categories.length >= 3 ? 3 : categories.length %>
+            <% const l =  categories.filter(c => c.type == "sub").length + 1 >= 3 ? 3 : categories.filter(c => c.type == "sub").length + 1 %>
 
-            <% if(categories.length > 0 ){for (let i = 0; i < l ; i++) { %>
+            <% if(categories.filter(c => c.type == "sub").length + 1> 0 ){for (let i = 0; i < l ; i++) { %>
             <div class="mb-3">
               <select class="form-select form-select-sm" aria-label=".form-select-sm" id="<%- "c_"+i %>" name="<%- "c_"+i %>">
-
+  
                 <% if(i == 0){ %>
-                <option value="<%- content.categories[i] || "" %>" selected><%- content.categories[i] || "Selecciona una categoría" %></option>
-                <% } else {%>
-                <option value="<%- content.categories[i] || "" %>" selected><%- content.categories[i] || "Selecciona una subcategoría" %></option>
+                <option value="<% "c_"+i %>" selected>Selecciona una categoría</option>
+                
+                <% categories.filter(c => c.type == 'main').forEach(c=> { %>
+                <% if(content.categories[0] == c.name) {%>
+                  <option value="<%-c.name %>"selected>
+                    <%- c.name %>
+                  </option>
+                <% } else { %>
+                  <option value="<%-c.name %>">
+                    <%- c.name %>
+                  </option>
                 <% } %>
-
-
-                <% categories.forEach(c=> { %>
-                <option value=<%-c.name %>>
-                  <%- c.name %>
-                </option>
+  
                 <% }); %>
-
+                <% } else {%>
+                <option value="<% "c_"+i %>" selected>Selecciona una subcategoría</option>
+                <% categories.filter(c => c.type == 'sub').forEach(c=> { %>
+                  <% if(content.categories[i] == c.name) {%>
+                    <option value="<%-c.name %>"selected>
+                      <%- c.name %>
+                    </option>
+                  <% } else { %>
+                    <option value="<%-c.name %>">
+                      <%- c.name %>
+                    </option>
+                  <% } %>
+                <% }); %>
+                <% } %>
+  
+  
               </select>
             </div>
-
+  
             <% }} %>
 
             <div class="mb-3">
