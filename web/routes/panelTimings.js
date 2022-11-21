@@ -3,22 +3,6 @@ const router = express.Router();
 const userModel = require('../../database/User')
 const dayjs = require('dayjs');
 
-router.get('/panel', async (req, res) => {
-  if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
-  if (req.user && req.user._doc.lang == 'es') return res.render('panelHomeES', { user: req.user._doc, ref: req.headers.referer });
-  res.render('panelHome', { user: req.user._doc, ref: req.headers.referer })
-})
-
-router.get('/panel/lang/:lang', async (req, res) => {
-  if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
-  const user = await userModel.findOne({
-    username: req.user._doc.username
-  })
-  user.lang = req.params.lang
-  await user.save()
-  res.redirect('/panel')
-})
-
 //#region Timings
 router.get('/panel/timings', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
@@ -40,7 +24,7 @@ router.get('/panel/timings/member/:id', (req, res, next) => {
   const timings = await getStaffTimings()
   if (!timings.has(req.params.id)) return res.redirect('/panel/timings')
   if (req.user && req.user._doc.lang == 'es') return res.render('panelTimingsES', {
-    content: timings.get(req.params.id), type: 'manage', user: req.user._doc, getTime: (ms) => {
+    content: timings.get(req.params.id), type: 'manage', user: req.user._doc, ref: req.headers.referer, getTime: (ms) => {
       ms = Number(ms)
       let text = ""
       if (ms >= 86400000) {
@@ -69,7 +53,7 @@ router.get('/panel/timings/member/:id', (req, res, next) => {
   });
   res.render('panelTimings', {
     ref: req.headers.referer,
-    content: timings.get(req.params.id), type: 'manage', user: req.user._doc, getTime: (ms) => {
+    content: timings.get(req.params.id), type: 'manage', user: req.user._doc, ref: req.headers.referer, getTime: (ms) => {
       ms = Number(ms)
       let text = ""
       if (ms >= 86400000) {

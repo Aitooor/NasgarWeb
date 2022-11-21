@@ -7,8 +7,7 @@ const {
 module.exports = model('Category', new Schema({
   id: String,
   name: String,
-  type: {
-    default: "main",
-    type: String
-  }
+  type: String,
+  subCategories: [String],
+  subsubCategories: [String]
 }));

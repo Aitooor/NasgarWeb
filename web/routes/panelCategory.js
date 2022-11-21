@@ -56,7 +56,9 @@ router.post('/panel/category/create', (req, res, next) => {
   const product = await categoryModel.create({
     name: name || 'Name',
     id: dayjs().unix(),
-    type: "main"
+    type: "main",
+    subCategories: req.body.subcategories.split(','),
+    subsubCategories: req.body.subcategories.split(',')
   })
   res.redirect('/panel/category')
 })
@@ -74,6 +76,8 @@ router.get('/panel/category/:id/clone', (req, res, next) => {
   await categoryModel.create({
     name: product.name,
     id: product.id,
+    subcategories: product.subCategories,
+    subsubCategories: product.subsubcategories,
     type: "main"
   })
   res.redirect('/panel/category')
@@ -89,8 +93,11 @@ router.post('/panel/category/:id', (req, res, next) => {
   if (req.params.id == 'create') return res.render('panelCategory', { type: 'create', user: req.user._doc, ref: req.headers.referer, categoryType: "main" })
   const product = await categoryModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/category')
-  const { name } = req.body
+  const { name, subcategories, subsubcategories } = req.body
   product.name = name || product.name
+  product.subCategories = subcategories.split(',') || product.subCategories
+  product.subsubCategories = subsubcategories.split(',') || product.subsubCategories
+  
   await product.save()
   if (req.user && req.user._doc.lang == 'es') return res.render('panelCategoryES', { content: product, type: 'manage', user: req.user._doc, ref: req.headers.referer, categoryType: "main" });
 
