@@ -118,13 +118,28 @@ async function getStaffTimings() {
   const pMap = new Map()
   await Promise.all(lPlayers.map(async (player, pos) => {
     const lp = lPermissions.find(p => p.uuid == player.uuid)
-    const utm = sTm.filter(t => t.UUID == player.uuid)
+    let utm = sTm.filter(t => t.UUID == player.uuid)
 
     if (lp && (lp.permission.includes('owner') || lp.permission.includes('admin') || lp.permission.includes('mod') || lp.permission.includes('*'))) {
       player.permissions = lp
+      utm = utm.map(u => {
+        const d = new Date()
+        const parts = u.DATE.split('_')
+        d.setFullYear(parts[2])
+        d.setMonth(parts[1])
+        d.setDate(parts[0])
+
+        u.timestamp = dayjs(d).unix()
+        return u
+      })
+
+      utm = utm.sort((a, b) => a.timestamp - b.timestamp).reverse()
+
       player.timings = utm
+
+
       pMap.set(player.uuid, player)
-      console.log(player)
+
     }
 
   }))

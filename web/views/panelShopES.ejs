@@ -144,33 +144,68 @@
             <input type="text" class="form-control" id="name" name="name">
           </div>
 
-          <% const l =  categories.filter(c => c.type == "sub").length + 1 >= 3 ? 3 : categories.filter(c => c.type == "sub").length + 1 %>
-
-          <% if(categories.filter(c => c.type == "sub").length + 1> 0 ){for (let i = 0; i < l ; i++) { %>
           <div class="mb-3">
-            <select class="form-select form-select-sm" aria-label=".form-select-sm" id="<%- "c_"+i %>" name="<%- "c_"+i %>">
-
-              <% if(i == 0){ %>
-              <option value="<% "c_"+i %>" selected>Selecciona una categoría</option>
-              <% categories.filter(c => c.type == 'main').forEach(c=> { %>
-              <option value=<%-c.name %>>
-                <%- c.name %>
-              </option>
-              <% }); %>
-              <% } else {%>
-              <option value="<% "c_"+i %>" selected>Selecciona una subcategoría</option>
-              <% categories.filter(c => c.type == 'sub').forEach(c=> { %>
-              <option value=<%-c.name %>>
-                <%- c.name %>
-              </option>
-              <% }); %>
+            <select class="form-select form-select-sm" aria-label=".form-select-sm" id="c_0" name="c_0">
+              <option value="c_0" selected>Selecciona categoría</option>
+              <% for( let i = 0; i < categories.length; i++ ) { %>
+              <option value="<%- categories[i].name %>"><%- categories[i].name %> </option>
               <% } %>
-
-
             </select>
           </div>
 
-          <% }} %>
+          <div class="mb-3">
+            <select class="form-select form-select-sm" aria-label=".form-select-sm" id="c_1" name="c_1">
+              <option value="" selected>Selecciona subcategoría</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <select class="form-select form-select-sm" aria-label=".form-select-sm" id="c_2" name="c_2">
+              <option value="" selected>Selecciona subsubcategoría</option>
+            </select>
+          </div>
+
+          <script>
+            const categories = <%- "[" + categories.map(c => {
+              c._id = null
+              return c
+            }) + "]"%>
+
+            const c_0 = document.getElementById("c_0")
+            const c_1 = document.getElementById("c_1")
+            const c_2 = document.getElementById("c_2")
+
+
+            c_0.addEventListener("change", (e) => {
+              [...c_1.getElementsByTagName("option")].map(c => {
+                if (c.value != "") {
+                  c.remove()
+                }
+              });
+              [...c_2.getElementsByTagName("option")].map(c => {
+                if (c.value != "") {
+                  c.remove()
+                }
+              });
+              const category = categories.find(c => c.name == c_0.value) || {
+                subCategories: [],
+                subsubCategories: []
+              }
+              category.subCategories.map(s => {
+                const element = document.createElement("option")
+                element.value = s
+                element.textContent = s
+                c_1.insertAdjacentElement("beforeend", element)
+              })
+
+              category.subsubCategories.map(s => {
+                const element = document.createElement("option")
+                element.value = s
+                element.textContent = s
+                c_2.insertAdjacentElement("beforeend", element)
+              })
+            })
+          </script>
 
           <div class="mb-3">
             <label for="price" class="form-label">Precio</label>
@@ -211,7 +246,7 @@
             <div class="mb-3">
               <div class="btn btn-primary" id="addCommand">Añadir Comando +</div>
             </div>
-            
+
 
             <script>
               const commandsBase = document.getElementById("commandsContainer");
@@ -236,7 +271,7 @@
                 commandBase.insertAdjacentElement("afterbegin", commandInput)
                 commandDel.className = "btn btn-danger deleteCommand"
                 commandDel.textContent = "-"
-                commandDel.id =  "commandBTN-" + [...commandsBase.getElementsByClassName("commandAdded")].length
+                commandDel.id = "commandBTN-" + [...commandsBase.getElementsByClassName("commandAdded")].length
                 commandBase.insertAdjacentElement("beforeend", commandDel)
                 commandDel.addEventListener("click", (ev) => {
                   const cmd = document.getElementById(c.id.replace("BTN", ""))
@@ -252,7 +287,7 @@
               }, 10);
             </script>
 
-          <button type="submit" class="btn btn-primary">Crear</button>
+            <button type="submit" class="btn btn-primary">Crear</button>
         </form>
       </div>
       <% } else if (type=='manage' ){%>
@@ -267,47 +302,99 @@
               <input type="text" class="form-control" id="name" name="name" value="<%- content.name %> ">
             </div>
 
-            <% const l =  categories.filter(c => c.type == "sub").length + 1 >= 3 ? 3 : categories.filter(c => c.type == "sub").length + 1 %>
-
-            <% if(categories.filter(c => c.type == "sub").length + 1> 0 ){for (let i = 0; i < l ; i++) { %>
             <div class="mb-3">
-              <select class="form-select form-select-sm" aria-label=".form-select-sm" id="<%- "c_"+i %>" name="<%- "c_"+i %>">
-  
-                <% if(i == 0){ %>
-                <option value="<% "c_"+i %>" selected>Selecciona una categoría</option>
-                
-                <% categories.filter(c => c.type == 'main').forEach(c=> { %>
-                <% if(content.categories[0] == c.name) {%>
-                  <option value="<%-c.name %>"selected>
-                    <%- c.name %>
-                  </option>
-                <% } else { %>
-                  <option value="<%-c.name %>">
-                    <%- c.name %>
-                  </option>
-                <% } %>
-  
-                <% }); %>
+              <label for="name" class="form-label">Categoría</label>
+              <select class="form-select form-select-sm" aria-label=".form-select-sm" id="c_0" name="c_0">
+                <option value="c_0" selected>Selecciona categoría</option>
+                <% for( let i = 0; i < categories.length; i++ ) { %>
+                <% if (categories[i].name == content.categories[0]) { %>
+                <option value="<%- categories[i].name %>" selected><%- categories[i].name %> </option>
                 <% } else {%>
-                <option value="<% "c_"+i %>" selected>Selecciona una subcategoría</option>
-                <% categories.filter(c => c.type == 'sub').forEach(c=> { %>
-                  <% if(content.categories[i] == c.name) {%>
-                    <option value="<%-c.name %>"selected>
-                      <%- c.name %>
-                    </option>
-                  <% } else { %>
-                    <option value="<%-c.name %>">
-                      <%- c.name %>
-                    </option>
-                  <% } %>
-                <% }); %>
+                <option value="<%- categories[i].name %>"><%- categories[i].name %> </option>
                 <% } %>
-  
-  
+
+                <% } %>
               </select>
             </div>
-  
-            <% }} %>
+
+            <div class="mb-3">
+              <label for="name" class="form-label">Subcategoría</label>
+              <select class="form-select form-select-sm" aria-label=".form-select-sm" id="c_1" name="c_1">
+                <option value="" selected>Selecciona subcategoría</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="name" class="form-label">Subsubcategoría</label>
+              <select class="form-select form-select-sm" aria-label=".form-select-sm" id="c_2" name="c_2">
+                <option value="" selected>Selecciona subsubcategoría</option>
+              </select>
+            </div>
+
+            <script>
+              const categories = <%- "[" + categories.map(c => {
+                c._id = null
+                return c
+              }) + "]"%>
+
+              <% content._id = null%>
+              <% content.createdAt = null%>
+
+              const content = <%- content %>
+
+              const c_0 = document.getElementById("c_0")
+              const c_1 = document.getElementById("c_1")
+              const c_2 = document.getElementById("c_2")
+
+
+              function changeProps(ws) {
+                [...c_1.getElementsByTagName("option")].map(c => {
+                  if (c.value != "") {
+                    c.remove()
+                  }
+                });
+                [...c_2.getElementsByTagName("option")].map(c => {
+                  if (c.value != "") {
+                    c.remove()
+                  }
+                });
+                const category = categories.find(c => c.name == c_0.value) || {
+                  subCategories: [],
+                  subsubCategories: []
+                }
+                category.subCategories.map(s => {
+                  const element = document.createElement("option")
+                  element.value = s
+                  element.textContent = s
+                  if (ws && content.categories[1] == s) {
+                    element.selected = true
+                    c_1.insertAdjacentElement("beforeend", element)
+
+                  } else {
+                    c_1.insertAdjacentElement("beforeend", element)
+                  }
+                })
+
+                category.subsubCategories.map(s => {
+                  const element = document.createElement("option")
+                  element.value = s
+                  element.textContent = s
+                  if (ws && content.categories[2] == s) {
+                    element.selected = true
+                    c_2.insertAdjacentElement("beforeend", element)
+
+                  } else {
+                    c_2.insertAdjacentElement("beforeend", element)
+                  }
+                })
+              }
+
+              changeProps(true)
+
+              c_0.addEventListener("change", (e) => {
+                changeProps(false)
+              })
+            </script>
 
             <div class="mb-3">
               <label for="price" class="form-label">Precio</label>
@@ -343,7 +430,7 @@
             <div class="mb-3">
               <div class="btn btn-primary" id="addCommand">Añadir Comando +</div>
             </div>
-            
+
 
             <script>
               const commandsBase = document.getElementById("commandsContainer");
@@ -368,7 +455,7 @@
                 commandBase.insertAdjacentElement("afterbegin", commandInput)
                 commandDel.className = "btn btn-danger deleteCommand"
                 commandDel.textContent = "-"
-                commandDel.id =  "commandBTN-" + [...commandsBase.getElementsByClassName("commandAdded")].length
+                commandDel.id = "commandBTN-" + [...commandsBase.getElementsByClassName("commandAdded")].length
                 commandBase.insertAdjacentElement("beforeend", commandDel)
                 commandDel.addEventListener("click", (ev) => {
                   const cmd = document.getElementById(c.id.replace("BTN", ""))
