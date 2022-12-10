@@ -28,9 +28,9 @@ router.get('/shop', async (req, res) => {
 
   if (req.query.max) products = products.filter(p => p.price <= req.query.max)
   if (req.query.product) products = products.filter(p => p.name.toLowerCase().includes(req.query.product.toLowerCase()) || p.description.toLowerCase().includes(req.query.product.toLowerCase()))
-  if (req.query.lang && req.query.lang == 'es') return res.render('shopES', { content: products, user: req.user, all: all, paypalClient: process.env.PAYPALID, pos: pos , ref: req.headers.referer, translate: true });
-  if (req.user && req.user._doc.lang == 'es') return res.render('shopES', { content: products, user: req.user, all: all, paypalClient: process.env.PAYPALID, pos: pos , ref: req.headers.referer, translate: false});
-  res.render('shop', { content: products, user: req.user, all: all, paypalClient: process.env.PAYPALID, pos: pos, ref: req.headers.referer, translate: false })
+  if (req.query.lang && req.query.lang == 'es') return res.render('shopES', { content: products.filter(p => p.lang == 'es'), user: req.user, all: all.filter(p => p.lang == 'es'), paypalClient: process.env.PAYPALID, pos: pos , ref: req.headers.referer, translate: true });
+  if (req.user && req.user._doc.lang == 'es') return res.render('shopES', { content: products.filter(p => p.lang == 'es'), user: req.user, all: all.filter(p => p.lang == 'es'), paypalClient: process.env.PAYPALID, pos: pos , ref: req.headers.referer, translate: false});
+  res.render('shop', { content: products.filter(p => p.lang == 'en'), user: req.user, all: all.filter(p => p.lang == 'en'), paypalClient: process.env.PAYPALID, pos: pos, ref: req.headers.referer, translate: false })
 })
 
 router.get('/shop/:id', async (req, res) => {

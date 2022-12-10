@@ -19,7 +19,7 @@
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#36A2DF">
   <meta property="og:site_name" content="Nasgar.online">
-  <meta name="og:title" content="Nasgar Network!">
+  <meta name="og:title" content="Nasgar Network | Tienda">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="og:icon" content="/img/logo-128x.png">
   <meta name="description" content="description">
@@ -146,7 +146,7 @@
 
           <div class="mb-3">
             <select class="form-select form-select-sm" aria-label=".form-select-sm" id="c_0" name="c_0">
-              <option value="c_0" selected>Selecciona categoría</option>
+              <option value="" selected>Selecciona categoría</option>
               <% for( let i = 0; i < categories.length; i++ ) { %>
               <option value="<%- categories[i].name %>"><%- categories[i].name %> </option>
               <% } %>
@@ -228,6 +228,24 @@
             <label for="description" class="form-label">Nombre del server</label>
             <input type="text" class="form-control" id="server" name="server">
           </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label">Lenguaje del producto</label>
+
+            <select class="form-select form-select-sm" aria-label=".form-select-sm" id="lang" name="lang">
+
+
+              <option value="en">
+                Inglés
+              </option>
+              <option value="es">
+                Español
+              </option>
+
+
+            </select>
+          </div>
+
           <div class="mb-3">
             <div class="mb-3" style="display: none;">
               <input type="text" class="form-control" id="commands" name="commands">
@@ -305,7 +323,7 @@
             <div class="mb-3">
               <label for="name" class="form-label">Categoría</label>
               <select class="form-select form-select-sm" aria-label=".form-select-sm" id="c_0" name="c_0">
-                <option value="c_0" selected>Selecciona categoría</option>
+                <option value="" selected>Selecciona categoría</option>
                 <% for( let i = 0; i < categories.length; i++ ) { %>
                 <% if (categories[i].name == content.categories[0]) { %>
                 <option value="<%- categories[i].name %>" selected><%- categories[i].name %> </option>
@@ -413,6 +431,38 @@
 
               </div>
             </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Nombre del server</label>
+              <input type="text" class="form-control" id="server" name="server" value='<%- content.serverName %>'>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Lenguaje del producto</label>
+              <select class="form-select form-select-sm" aria-label=".form-select-sm" id="lang" name="lang">
+  
+                <% if(content.lang == 'es') {%>
+                  <option value="en">
+                    Inglés
+                  </option>
+                  <option value="es" selected>
+                    Español
+                  </option>
+                <% } else {%>
+                  <option value="en" selected>
+                    Inglés
+                  </option>
+                  <option value="es">
+                    Español
+                  </option>
+                <% } %>
+
+
+  
+  
+              </select>
+            </div>
+
             <div class="mb-3" style="display: none;">
               <input type="text" class="form-control" id="commands" name="commands" value="<%- content.commands.join(", ") %> ">
             </div>

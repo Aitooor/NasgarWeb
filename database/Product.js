@@ -13,4 +13,5 @@ module.exports = model('Product', new Schema({
     price: Number,
     commands: Array,
     serverName: String,
+    lang: String
 }));

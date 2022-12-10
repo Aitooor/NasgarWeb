@@ -59,7 +59,7 @@ router.post('/panel/shop/create', (req, res, next) => {
   if (!u.admin) return res.redirect('/panel')
   next()
 }, async (req, res) => {
-  const { name, description, image, type, price, commands, server } = req.body
+  const { name, description, image, type, price, commands, server, lang } = req.body
   const productCategories = Object.keys(req.body).filter(c => c.includes('c_')).map(c => req.body[c])
   const product = await productModel.create({
     name: name || 'Name',
@@ -70,7 +70,8 @@ router.post('/panel/shop/create', (req, res, next) => {
     commands: commands ? commands.split(',') : [],
     id: dayjs().unix(),
     createdAt: dayjs(),
-    serverName: server
+    serverName: server || "world",
+    lang: lang
   })
   res.redirect('/panel/shop')
 })
@@ -94,7 +95,8 @@ router.get('/panel/shop/:id/clone', (req, res, next) => {
     commands: product.commands,
     id: dayjs().unix(),
     createdAt: dayjs(),
-    serverName: product.server
+    serverName: product.server,
+    lang: product.lang
   })
   res.redirect('/panel/shop')
 })
@@ -110,15 +112,16 @@ router.post('/panel/shop/:id', (req, res, next) => {
   const product = await productModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/shop')
   const productCategories = Object.keys(req.body).filter(c => c.includes('c_')).map(c => req.body[c])
-  const { name, description, image, type, price, commands } = req.body
+  const { name, description, image, type, price, commands, lang } = req.body
   product.name = name || product.name
   product.description = description || product.description
   product.image = image || product.image
   product.categories = productCategories
   product.price = price || product.price
   product.commands = commands ? commands.split(',') : product.commands
-  console.log(req.body)
+  product.lang = lang || product.lang
   await product.save()
+  if (req.user && req.user._doc.lang == 'es') return res.render('panelShopES', { content: product, type: 'manage', user: req.user._doc, categories: await categoryModel.find({}), ref: req.headers.referer });
   res.render('panelShop', { content: product, type: 'manage', user: req.user._doc, categories: await categoryModel.find({}), ref: req.headers.referer })
 })
 
