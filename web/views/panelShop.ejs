@@ -73,7 +73,7 @@
             </option>
 
             <% categories.forEach(c=> { %>
-            <option value=<%-c.name %>>
+            <option value=<%-c.id %>>
               <%- c.name %>
             </option>
             <% }); %>
@@ -133,7 +133,7 @@
               <select class="form-select form-select-sm" aria-label=".form-select-sm" id="c_0" name="c_0">
                 <option value="" selected>Select a category</option>
                 <% for( let i = 0; i < categories.length; i++ ) { %>
-                <option value="<%- categories[i].name %>"><%- categories[i].name %> </option>
+                <option value="<%- categories[i].id %>"><%- categories[i].name %> </option>
                 <% } %>
               </select>
             </div>

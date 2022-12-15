@@ -1,0 +1,119 @@
+<div class="mb-3">
+  <label for="name" class="form-label">Nombre</label>
+  <input type="text" class="form-control" id="name-ES" name="name-ES" required>
+</div>
+
+<div class="mb-3" style="display: none;">
+  <input type="text" class="form-control" id="subcategories-ES" name="subcategories-ES">
+</div>
+
+<label for="subcategories" class="form-label">Subcategoría</label>
+<div class="subcategoriesContainer-ES mb-3" id="subcategoriesContainer-ES">
+  <% if(content) for (i = 0; i < content.es.subcategories.length; i++){%>
+  <div class="subcategorieBase-ES mb-3 d-flex" id="<%- "subcategorie-"+i +"-ES"%>">
+    <input type="text" class="subcategorieAdded-ES form-control" value="<%- content.es.subcategories[i] %> ">
+    <div class="btn btn-danger deletesubcategorie-ES" id="<%- "subcategorieBTN-"+i +"-ES"%>">-</div>
+  </div>
+  <% } %>
+</div>
+
+<div class="mb-3">
+  <div class="btn btn-primary" id="addsubcategorie-ES">Añadir subcategoría +</div>
+</div>
+
+<div class="mb-3" style="display: none;">
+  <input type="text" class="form-control" id="subsubcategories-ES" name="subsubcategories-ES">
+</div>
+
+<label for="subsubcategories" class="form-label">Subsubcategoría</label>
+<div class="subsubcategoriesContainer-ES mb-3" id="subsubcategoriesContainer-ES">
+  <% if(content) for (i = 0; i < content.es.subsubcategories.length; i++){%>
+  <div class="subsubcategorieBase-ES mb-3 d-flex" id="<%- "subsubcategorie-"+i+"-ES" %>">
+    <input type="text" class="subsubcategorieAdded-ES form-control" value="<%- content.es.subsubcategories[i] %> ">
+    <div class="btn btn-danger deletesubsubcategorie-ES" id="<%- "subsubcategorieBTN-"+i+"-ES" %>">-</div>
+  </div>
+  <% } %>
+</div>
+
+<div class="mb-3">
+  <div class="btn btn-primary" id="addsubsubcategorie-ES">Añadir subsubcategoría +</div>
+</div>
+
+<script>
+  function es() {
+    const subcategoriesBase = document.getElementById("subcategoriesContainer-ES");
+
+    [...subcategoriesBase.getElementsByClassName("deletesubcategorie-ES")].map(c => {
+      c.addEventListener("click", (ev) => {
+        const cmd = document.getElementById(c.id.replace("BTN", ""))
+        cmd.remove()
+      })
+    })
+
+    const add = document.getElementById("addsubcategorie-ES")
+    add.addEventListener("click", (ev) => {
+      const subcategorieContainer = document.getElementById("subcategoriesContainer-ES")
+      const subcategorieBase = document.createElement("div")
+      const subcategorieInput = document.createElement("input")
+      const subcategorieDel = document.createElement("div")
+      subcategorieBase.className = "subcategorieBase-ES mb-3 d-flex"
+      subcategorieBase.id = "subcategorie-" + [...subcategoriesBase.getElementsByClassName("subcategorieAdded-ES")].length + "-ES"
+      subcategorieContainer.insertAdjacentElement("beforeend", subcategorieBase)
+      subcategorieInput.className = "subcategorieAdded-ES form-control"
+      subcategorieBase.insertAdjacentElement("afterbegin", subcategorieInput)
+      subcategorieDel.className = "btn btn-danger deletesubcategorie-ES"
+      subcategorieDel.textContent = "-"
+      subcategorieDel.id = "subcategorieBTN-" + [...subcategoriesBase.getElementsByClassName("subcategorieAdded-ES")].length + "-ES"
+      subcategorieBase.insertAdjacentElement("beforeend", subcategorieDel)
+      subcategorieDel.addEventListener("click", (ev) => {
+        const cmd = document.getElementById(subcategorieBase.id.replace("BTN", ""))
+        cmd.remove()
+      })
+    })
+
+    setInterval(() => {
+      const subcategoriesBase = document.getElementById("subcategoriesContainer-ES")
+      const subcategories = [...subcategoriesBase.getElementsByClassName("subcategorieAdded-ES")].filter(c => c.value.trim() != "").map(c => c.value.trim())
+      const subcategorieInput = document.getElementById("subcategories-ES")
+      subcategorieInput.value = subcategories.join(",")
+    }, 10);
+
+    const subsubcategoriesBase = document.getElementById("subsubcategoriesContainer-ES");
+
+    [...subsubcategoriesBase.getElementsByClassName("deletesubsubcategorie-ES")].map(c => {
+      c.addEventListener("click", (ev) => {
+        const cmd = document.getElementById(c.id.replace("BTN", ""))
+        cmd.remove()
+      })
+    })
+
+    const addsub = document.getElementById("addsubsubcategorie-ES")
+    addsub.addEventListener("click", (ev) => {
+      const subsubcategorieContainer = document.getElementById("subsubcategoriesContainer-ES")
+      const subsubcategorieBase = document.createElement("div")
+      const subsubcategorieInput = document.createElement("input")
+      const subsubcategorieDel = document.createElement("div")
+      subsubcategorieBase.className = "subsubcategorieBase-ES mb-3 d-flex"
+      subsubcategorieBase.id = "subsubcategorie-" + [...subsubcategoriesBase.getElementsByClassName("subsubcategorieAdded-ES")].length + "-ES"
+      subsubcategorieContainer.insertAdjacentElement("beforeend", subsubcategorieBase)
+      subsubcategorieInput.className = "subsubcategorieAdded-ES form-control"
+      subsubcategorieBase.insertAdjacentElement("afterbegin", subsubcategorieInput)
+      subsubcategorieDel.className = "btn btn-danger deletesubsubcategorie-ES"
+      subsubcategorieDel.textContent = "-"
+      subsubcategorieDel.id = "subsubcategorieBTN-" + [...subsubcategoriesBase.getElementsByClassName("subsubcategorieAdded")].length + "-ES"
+      subsubcategorieBase.insertAdjacentElement("beforeend", subsubcategorieDel)
+      subsubcategorieDel.addEventListener("click", (ev) => {
+        const cmd = document.getElementById(subsubcategorieBase.id.replace("BTN", ""))
+        cmd.remove()
+      })
+    })
+
+    setInterval(() => {
+      const subsubcategoriesBase = document.getElementById("subsubcategoriesContainer-ES")
+      const subsubcategories = [...subsubcategoriesBase.getElementsByClassName("subsubcategorieAdded-ES")].filter(c => c.value.trim() != "").map(c => c.value.trim())
+      const subsubcategorieInput = document.getElementById("subsubcategories-ES")
+      subsubcategorieInput.value = subsubcategories.join(",")
+    }, 10);
+  }
+  es()
+</script>

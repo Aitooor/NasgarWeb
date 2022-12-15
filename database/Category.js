@@ -6,8 +6,16 @@ const {
 
 module.exports = model('Category', new Schema({
   id: String,
-  name: String,
-  type: String,
-  subCategories: [String],
-  subsubCategories: [String]
+  en: {
+    name: String,
+    subcategories: [String],
+    subsubcategories: [String]
+  },
+  es: {
+    name: String,
+    subcategories: [String],
+    subsubcategories: [String]
+  }
+
+
 }));

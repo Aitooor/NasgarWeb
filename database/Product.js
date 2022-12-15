@@ -5,13 +5,22 @@ const {
 
 module.exports = model('Product', new Schema({
     id: String,
-    name: String,
-    description: String,
     createdAt: Date,
-    image: String,
-    categories: [],
     price: Number,
-    commands: Array,
-    serverName: String,
-    lang: String
+    english: {
+        name: String,
+        description: String,
+        categories: [],
+        image: String,
+        commands: Array,
+        serverName: String
+    },
+    spanish: {
+        name: String,
+        description: String,
+        categories: [],
+        image: String,
+        commands: Array,
+        serverName: String
+    }
 }));

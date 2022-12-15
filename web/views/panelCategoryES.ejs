@@ -91,7 +91,7 @@
             <% content.forEach(item=>{ %>
             <tr>
               <td><%- item.id %></td>
-              <td><%- item.name %> </td>
+              <td><%- item.es.name %> </td>
               <td><a href="<%- `/panel/category/${item.id}` %>" class="btn btn-outline-primary">Administrar</a> </td>
             </tr>
             <% }) %>
@@ -100,135 +100,22 @@
         <a href="/panel/category/create" class="btn btn-primary">Crear</a>
       </div>
       <% } else if (type == 'create'){%>
-      <div class="col-12">
-        <a href="<%- ref %> " class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Atrás</a>
-      </div>
-      <div class="col-12">
-        <form method="post" action="/panel/category/create">
-          <div class="mb-3">
-            <label for="name" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="name" name="name">
-          </div>
-
-          <div class="mb-3" style="display: none;">
-            <input type="text" class="form-control" id="subcategories" name="subcategories">
-          </div>
-
-          <label for="subcategories" class="form-label">Subcategorías</label>
-          <div class="subcategoriesContainer mb-3" id="subcategoriesContainer">
-            <% for (i = 0; i < 0; i++){%>
-            <div class="subcategorieBase mb-3 d-flex" id="<%- "subcategorie-"+i %>">
-              <input type="text" class="subcategorieAdded form-control" value="">
-              <div class="btn btn-danger deletesubcategorie" id="<%- "subcategorieBTN-"+i %>">-</div>
-            </div>
-            <% } %>
-          </div>
-
-          <div class="mb-3">
-            <div class="btn btn-primary" id="addsubcategorie">Añadir subcategoría +</div>
-          </div>
-
-
-          <script>
-            const subcategoriesBase = document.getElementById("subcategoriesContainer");
-
-            [...subcategoriesBase.getElementsByClassName("deletesubcategorie")].map(c => {
-              c.addEventListener("click", (ev) => {
-                const cmd = document.getElementById(c.id.replace("BTN", ""))
-                cmd.remove()
-              })
-            })
-
-            const add = document.getElementById("addsubcategorie")
-            add.addEventListener("click", (ev) => {
-              const subcategorieContainer = document.getElementById("subcategoriesContainer")
-              const subcategorieBase = document.createElement("div")
-              const subcategorieInput = document.createElement("input")
-              const subcategorieDel = document.createElement("div")
-              subcategorieBase.className = "subcategorieBase mb-3 d-flex"
-              subcategorieBase.id = "subcategorie-" + [...subcategoriesBase.getElementsByClassName("subcategorieAdded")].length
-              subcategorieContainer.insertAdjacentElement("beforeend", subcategorieBase)
-              subcategorieInput.className = "subcategorieAdded form-control"
-              subcategorieBase.insertAdjacentElement("afterbegin", subcategorieInput)
-              subcategorieDel.className = "btn btn-danger deletesubcategorie"
-              subcategorieDel.textContent = "-"
-              subcategorieDel.id = "subcategorieBTN-" + [...subcategoriesBase.getElementsByClassName("subcategorieAdded")].length
-              subcategorieBase.insertAdjacentElement("beforeend", subcategorieDel)
-              subcategorieDel.addEventListener("click", (ev) => {
-                const cmd = document.getElementById(subcategorieBase.id.replace("BTN", ""))
-                cmd.remove()
-              })
-            })
-
-            setInterval(() => {
-              const subcategoriesBase = document.getElementById("subcategoriesContainer")
-              const subcategories = [...subcategoriesBase.getElementsByClassName("subcategorieAdded")].filter(c => c.value.trim() != "").map(c => c.value.trim())
-              const subcategorieInput = document.getElementById("subcategories")
-              subcategorieInput.value = subcategories.join(",")
-            }, 10);
-          </script>
-
-          <div class="mb-3" style="display: none;">
-            <input type="text" class="form-control" id="subsubcategories" name="subsubcategories">
-          </div>
-
-          <label for="subsubcategories" class="form-label">Subsubcategorías</label>
-          <div class="subsubcategoriesContainer mb-3" id="subsubcategoriesContainer">
-            <% for (i = 0; i < 0; i++){%>
-            <div class="subsubcategorieBase mb-3 d-flex" id="<%- "subsubcategorie-"+i %>">
-              <input type="text" class="subsubcategorieAdded form-control" value="">
-              <div class="btn btn-danger deletesubsubcategorie" id="<%- "subsubcategorieBTN-"+i %>">-</div>
-            </div>
-            <% } %>
-          </div>
-
-          <div class="mb-3">
-            <div class="btn btn-primary" id="addsubsubcategorie">Añadir subsubcategoría +</div>
-          </div>
-
-
-          <script>
-            const subsubcategoriesBase = document.getElementById("subsubcategoriesContainer");
-
-            [...subsubcategoriesBase.getElementsByClassName("deletesubsubcategorie")].map(c => {
-              c.addEventListener("click", (ev) => {
-                const cmd = document.getElementById(c.id.replace("BTN", ""))
-                cmd.remove()
-              })
-            })
-
-            const addsub = document.getElementById("addsubsubcategorie")
-            addsub.addEventListener("click", (ev) => {
-              const subsubcategorieContainer = document.getElementById("subsubcategoriesContainer")
-              const subsubcategorieBase = document.createElement("div")
-              const subsubcategorieInput = document.createElement("input")
-              const subsubcategorieDel = document.createElement("div")
-              subsubcategorieBase.className = "subsubcategorieBase mb-3 d-flex"
-              subsubcategorieBase.id = "subsubcategorie-" + [...subsubcategoriesBase.getElementsByClassName("subsubcategorieAdded")].length
-              subsubcategorieContainer.insertAdjacentElement("beforeend", subsubcategorieBase)
-              subsubcategorieInput.className = "subsubcategorieAdded form-control"
-              subsubcategorieBase.insertAdjacentElement("afterbegin", subsubcategorieInput)
-              subsubcategorieDel.className = "btn btn-danger deletesubsubcategorie"
-              subsubcategorieDel.textContent = "-"
-              subsubcategorieDel.id = "subsubcategorieBTN-" + [...subsubcategoriesBase.getElementsByClassName("subsubcategorieAdded")].length
-              subsubcategorieBase.insertAdjacentElement("beforeend", subsubcategorieDel)
-              subsubcategorieDel.addEventListener("click", (ev) => {
-                const cmd = document.getElementById(subsubcategorieBase.id.replace("BTN", ""))
-                cmd.remove()
-              })
-            })
-
-            setInterval(() => {
-              const subsubcategoriesBase = document.getElementById("subsubcategoriesContainer")
-              const subsubcategories = [...subsubcategoriesBase.getElementsByClassName("subsubcategorieAdded")].filter(c => c.value.trim() != "").map(c => c.value.trim())
-              const subsubcategorieInput = document.getElementById("subsubcategories")
-              subsubcategorieInput.value = subsubcategories.join(",")
-            }, 10);
-          </script>
-
-          <button type="submit" class="btn btn-primary">Crear</button>
-        </form>
-      </div>
+        <div class="col-12">
+          <a href="<%- ref %> " class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        </div>
+        <div class="col-12">
+          <form method="post" action="/panel/category/create">
+            <h1>English Category Options</h1>
+            <br>
+            <%- include("./panelCategory/es/createEN.ejs") %>
+            <hr>
+            <br>
+            <h1>Spanish Category Options</h1>
+            <br>
+            <%- include("./panelCategory/es/createES.ejs") %>
+            <button type="submit" class="btn btn-primary">Create</button>
+          </form>
+        </div>
       <% } else if (type == 'manage'){%>
       <div class="col-12">
         <form method="post" action="/panel/category/<%- content.id %>">

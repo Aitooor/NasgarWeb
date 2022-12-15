@@ -61,7 +61,7 @@ router.post('/panel/shop/create', (req, res, next) => {
 }, async (req, res) => {
   const { name, description, image, type, price, commands, server, lang } = req.body
   const productCategories = Object.keys(req.body).filter(c => c.includes('c_')).map(c => req.body[c])
-  const product = await productModel.create({
+  const productEN = await productModel.create({
     name: name || 'Name',
     description: description || 'Description',
     image: image || '/img/mine.png',
@@ -71,8 +71,22 @@ router.post('/panel/shop/create', (req, res, next) => {
     id: dayjs().unix(),
     createdAt: dayjs(),
     serverName: server || "world",
-    lang: lang
+    lang: "en"
   })
+
+  const productES = await productModel.create({
+    name: name || 'Nombre',
+    description: description || 'Descripción',
+    image: image || '/img/mine.png',
+    categories: productCategories,
+    price: price || 0,
+    commands: commands ? commands.split(',') : [],
+    id: dayjs().unix(),
+    createdAt: dayjs(),
+    serverName: server || "world",
+    lang: "es"
+  })
+
   res.redirect('/panel/shop')
 })
 

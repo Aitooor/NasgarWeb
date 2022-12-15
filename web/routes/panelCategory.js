@@ -24,8 +24,8 @@ router.get('/panel/category/:id', (req, res, next) => {
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/category')
   if (req.params.id == 'create') {
-    if (req.user && req.user._doc.lang == 'es') return res.render('panelCategoryES', { type: 'create', user: req.user._doc, ref: req.headers.referer, categoryType: "main" });
-    return res.render('panelCategory', { type: 'create', user: req.user._doc, ref: req.headers.referer, categoryType: "main" })
+    if (req.user && req.user._doc.lang == 'es') return res.render('panelCategoryES', { type: 'create', user: req.user._doc, ref: req.headers.referer, categoryType: "main",content:false });
+    return res.render('panelCategory', { type: 'create', user: req.user._doc, ref: req.headers.referer, categoryType: "main", content:false })
   }
   const product = await categoryModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/category')
@@ -51,15 +51,29 @@ router.post('/panel/category/create', (req, res, next) => {
   if (!u.admin) return res.redirect('/panel')
   next()
 }, async (req, res) => {
-  const { name } = req.body
-  console.log(req.body)
-  const product = await categoryModel.create({
-    name: name || 'Name',
-    id: dayjs().unix(),
-    type: "main",
-    subCategories: req.body.subcategories.split(','),
-    subsubCategories: req.body.subcategories.split(',')
+  const keysES = Object.keys(req.body).filter(k => k.endsWith("ES"))
+  const keysEN = Object.keys(req.body).filter(k => k.endsWith("EN"))
+
+  const en = {}
+  const es = {}
+
+  keysEN.forEach(k => {
+    if (k.includes("category") || k.includes("categorie")) en[k.replace('-EN', "")] = req.body[k].split(",").filter(v => v != "")
+    else en[k.replace('-EN', "")] = req.body[k]
   })
+
+  keysES.forEach(k => {
+    if (k.includes("category") || k.includes("categorie")) es[k.replace('-ES', "")] = req.body[k].split(",").filter(v => v != "")
+    else es[k.replace('-ES', "")] = req.body[k]
+  })
+
+  const productInfo = {
+    id: dayjs().unix(),
+    en: en,
+    es: es
+  }
+
+  const product = await categoryModel.create(productInfo)
   res.redirect('/panel/category')
 })
 
@@ -73,13 +87,9 @@ router.get('/panel/category/:id/clone', (req, res, next) => {
   if (req.params.id == 'create') return res.render('panelCategory', { type: 'create', user: req.user._doc, ref: req.headers.referer, categoryType: "main" })
   const product = await categoryModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/category')
-  await categoryModel.create({
-    name: product.name,
-    id: product.id,
-    subcategories: product.subCategories,
-    subsubCategories: product.subsubcategories,
-    type: "main"
-  })
+  product._doc.id = dayjs().unix()
+  product._doc._id = null
+  await categoryModel.create(product._doc)
   res.redirect('/panel/category')
 })
 
@@ -90,14 +100,37 @@ router.post('/panel/category/:id', (req, res, next) => {
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/category')
-  if (req.params.id == 'create') return res.render('panelCategory', { type: 'create', user: req.user._doc, ref: req.headers.referer, categoryType: "main" })
+  if (req.params.id == 'create') return res.render('panelCategory', { type: 'create', user: req.user._doc, ref: req.headers.referer, categoryType: "main", content:false })
   const product = await categoryModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/category')
-  const { name, subcategories, subsubcategories } = req.body
-  product.name = name || product.name
-  product.subCategories = subcategories.split(',') || product.subCategories
-  product.subsubCategories = subsubcategories.split(',') || product.subsubCategories
-  
+
+  const keysES = Object.keys(req.body).filter(k => k.endsWith("ES"))
+  const keysEN = Object.keys(req.body).filter(k => k.endsWith("EN"))
+
+  const en = {}
+  const es = {}
+
+  keysEN.forEach(k => {
+    if (k.includes("category") || k.includes("categorie")) en[k.replace('-EN', "")] = req.body[k].split(",")
+    else en[k.replace('-EN', "")] = req.body[k]
+  })
+
+  keysES.forEach(k => {
+    if (k.includes("category") || k.includes("categorie")) es[k.replace('-ES', "")] = req.body[k].split(",")
+    else es[k.replace('-ES', "")] = req.body[k]
+  })
+
+  const productInfo = {
+    id: dayjs().unix(),
+    en: en,
+    es: es
+  }
+
+  Object.keys(product).forEach(k => {
+    if(productInfo[k] != undefined) product[k] = productInfo[k]
+  })
+
+
   await product.save()
   if (req.user && req.user._doc.lang == 'es') return res.render('panelCategoryES', { content: product, type: 'manage', user: req.user._doc, ref: req.headers.referer, categoryType: "main" });
 
