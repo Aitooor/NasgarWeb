@@ -85,7 +85,6 @@
             <tr>
               <th scope="col">ID</th>
               <th scope="col">Título</th>
-              <th scope="col">Contenido</th>
               <th scope="col">Administrar</th>
               <th scope="col">Clonar</th>
               <th scope="col">Eliminar</th>
@@ -95,8 +94,7 @@
             <% content.forEach(item=>{ %>
             <tr>
               <td><%- item.id %></td>
-              <td><%- item.title %> </td>
-              <td><%- item._doc.content.length < 10 ? item._doc.content : item._doc.content.substring(10) + '...' %> </td>
+              <td><%- item.es.title %> </td>
               <td><a href="<%- `/panel/news/${item.id}` %>" class="btn btn-outline-primary">Administrar</a> </td>
               <td><a href="<%- `/panel/news/${item.id}/clone` %>" class="btn btn-outline-primary">Clonar</a> </td>
               <td><a href="<%- `/panel/news/${item.id}/delete` %>" class="btn btn-outline-danger">Eliminar</a> </td>
@@ -110,202 +108,197 @@
       <div class="col-12">
         <a href="<%- ref %> " class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Volver</a>
       </div>
-      <div class="col-12">
-        <form method="post" action="/panel/news/create">
-          <div class="mb-3">
-            <label for="title" class="form-label">Título</label>
-            <input type="text" class="form-control" id="title" name="title">
-          </div>
-          <div class="mb-3">
-            <label for="image" class="form-label">URL de la imagen</label>
-            <input type="text" class="form-control" id="image" name="image">
-          </div>
-          <div class="mb-3">
-            <label for="content" class="form-label">Contenido</label>
-            <div style="display: flex; justify-content: space-around;">
-              <input type="text" class="form-control" id="content" name="content">
-              <div class="btn btn-primary" onclick="openEditor()">Editor</div>
-              <div id="editor"></div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <select class="form-select form-select-sm" aria-label=".form-select-sm" id="lang" name="lang">
+      <form method="post" action="/panel/news/create">
+        <h1>Opciones de noticia en inglés</h1>
+        <br>
+        <%- include('./panelNews/es/createEN.ejs') %>
+        <hr>
+        <br>
+        <h1>Opciones de noticia en español</h1>
+        <br>
+        <%- include('./panelNews/es/createES.ejs') %>
+        <button type="submit" class="btn btn-primary">Crear</button>
+      </form>
+      <script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></script>
+      <!-- Editor -->
+      <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+      <!-- Editor's Plugin -->
+      <script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></script>
+      <script>
+        const leftBTN = document.getElementById("leftBTN")
+        const left = document.getElementById("left-container")
+        left.addEventListener('click', () => {
+          console.log('a')
+          if (left.classList.contains('active')) left.classList.replace('active', 'unactive')
+          else left.classList.replace('unactive', 'active')
+        })
+
+        function openEditor() {
+          const Editor = toastui.Editor;
+          const {
+            colorSyntax
+          } = Editor.plugin;
+
+          const el = document.createElement('div')
+
+          el.style.position = "fixed"
+          el.style.top = "50px"
+
+          el.style.background = 'white'
+          el.style.boxShadow = "black 0px 0px 10px"
+          el.style.zIndex = "50"
+
+          document.getElementById("editor").insertAdjacentElement("beforebegin", el)
+
+
+          const bg = document.createElement("div")
+
+          bg.style.width = "100%"
+          bg.style.height = "100%"
+          bg.style.background = '#ffffff96';
+          bg.style.zIndex = "49"
+          bg.style.position = "fixed"
+          bg.style.top = "0px"
+
+          const btn = document.createElement("div")
 
 
 
-              <option value="en">
-                Inglés
-              </option>
-              <option value="es">
-                Español
-              </option>
+          btn.className = "btn btn-primary"
+          btn.textContent = "Finish"
+          btn.style.position = "fixed"
+          btn.style.bottom = "20px"
+          btn.style.zIndex = "51"
+          btn.style.left = "57%"
+
+          document.body.insertAdjacentElement("afterend", bg)
+          document.body.insertAdjacentElement("afterend", btn)
 
 
-            </select>
-          </div>
+          const editor = new Editor({
+            el: el,
+            height: '600px',
+            initialEditType: 'markdown',
+            previewStyle: 'vertical',
+            plugins: [colorSyntax],
+            initialValue: "<% if (content) {%><%- content.es.description %> <% }%>"
+          });
 
-          <button type="submit" class="btn btn-primary">Crear</button>
-        </form>
-      </div>
+          btn.addEventListener("click", () => closeEditor(el, btn, editor, bg))
+
+
+
+        }
+
+        function closeEditor(el, btn, editor, bg) {
+          document.getElementById("content").value = editor.toastMark.lineTexts.join("<br>")
+          bg.remove()
+          el.remove()
+          btn.remove()
+        }
+      </script>
       <% } else if (type == 'manage'){%>
       <div class="col-12">
         <a href="<%- ref %> " class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Volver</a>
       </div>
-      <div class="col-12">
-        <form method="post" action="/panel/news/<%- content.id %>">
-          <div class="mb-3">
-            <label for="title" class="form-label">Título</label>
-            <input type="text" class="form-control" id="title" name="title" placeholder="<%- content.title %> ">
-          </div>
-          <div class="mb-3">
-            <label for="image" class="form-label">URL de la imagen</label>
-            <input type="text" class="form-control" id="image" name="image" placeholder="<%- content.image %> ">
-          </div>
-          <div class="mb-3">
-            <label for="content" class="form-label">Contenido</label>
-            <div style="display: flex; justify-content: space-around;">
-              <input type="text" class="form-control" id="content" name="content" placeholder="<%- content.content %> ">
-              <div class="btn btn-primary" onclick="openEditor()">Editor</div>
-              <div id="editor"></div>
+      <form method="post" action="/panel/news/<%- content.id %>">
+        <h1>Opciones de noticia en inglés</h1>
+        <br>
+        <%- include('./panelNews/es/createEN.ejs') %>
+        <hr>
+        <br>
+        <h1>Opciones de noticia en español</h1>
+        <br>
+        <%- include('./panelNews/es/createES.ejs') %>
+        <button type="submit" class="btn btn-primary">Editar</button>
+        <a class="btn btn-danger" href="/panel/news/<%- content.id %>/delete">Eliminar</a>
+        <a class="btn btn-primary" href="/panel/news/<%- content.id %>/clone">Clonar</a>
 
-            </div>
-          </div>
-          <div class="mb-3">
-            <select class="form-select form-select-sm" aria-label=".form-select-sm" id="lang" name="lang">
+      </form>
+      <script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></script>
+      <!-- Editor -->
+      <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+      <!-- Editor's Plugin -->
+      <script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></script>
+      <script>
+        const leftBTN = document.getElementById("leftBTN")
+        const left = document.getElementById("left-container")
+        left.addEventListener('click', () => {
+          console.log('a')
+          if (left.classList.contains('active')) left.classList.replace('active', 'unactive')
+          else left.classList.replace('unactive', 'active')
+        })
+
+        function openEditor(args) {
+          const Editor = toastui.Editor;
+          const {
+            colorSyntax
+          } = Editor.plugin;
+
+          const el = document.createElement('div')
+
+          el.style.position = "fixed"
+          el.style.top = "50px"
+
+          el.style.background = 'white'
+          el.style.boxShadow = "black 0px 0px 10px"
+          el.style.zIndex = "50"
+
+          document.getElementById("editor").insertAdjacentElement("beforebegin", el)
+
+
+          const bg = document.createElement("div")
+
+          bg.style.width = "100%"
+          bg.style.height = "100%"
+          bg.style.background = '#ffffff96';
+          bg.style.zIndex = "49"
+          bg.style.position = "fixed"
+          bg.style.top = "0px"
+
+          const btn = document.createElement("div")
 
 
 
-              <option value="en">
-                Inglés
-              </option>
-              <option value="es">
-                Español
-              </option>
+          btn.className = "btn btn-primary"
+          btn.textContent = "Finish"
+          btn.style.position = "fixed"
+          btn.style.bottom = "20px"
+          btn.style.zIndex = "51"
+          btn.style.left = "57%"
+
+          document.body.insertAdjacentElement("afterend", bg)
+          document.body.insertAdjacentElement("afterend", btn)
 
 
-            </select>
-          </div>
+          const editor = new Editor({
+            el: el,
+            height: '600px',
+            initialEditType: 'markdown',
+            previewStyle: 'vertical',
+            plugins: [colorSyntax],
+            initialValue: "<% if (content) {%><%- content.es.content %> <% }%>"
+          });
 
-          <button type="submit" class="btn btn-primary">Editar</button>
-          <a href="<%- `/panel/news/${content.id}/clone` %>" class="btn btn-primary">Clonar</a>
-          <a href="/panel/news/<%- content.id %>/delete" class="btn btn-danger">Eliminar</a>
-        </form>
-      </div>
+          btn.addEventListener("click", () => closeEditor(el, btn, editor, bg, args))
+
+
+
+        }
+
+        function closeEditor(el, btn, editor, bg, args) {
+          document.getElementById(args).value = editor.toastMark.lineTexts.join("<br>")
+          bg.remove()
+          el.remove()
+          btn.remove()
+        }
+      </script>
 
       <% } %>
     </div>
     <div class="separator"></div>
   </main>
-  <script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></script>
-  <!-- Editor -->
-  <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-  <!-- Editor's Plugin -->
-  <script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></script>
-  <script>
-    const leftBTN = document.getElementById("leftBTN")
-    const left = document.getElementById("left-container")
-    left.addEventListener('click', () => {
-      console.log('a')
-      if (left.classList.contains('active')) left.classList.replace('active', 'unactive')
-      else left.classList.replace('unactive', 'active')
-    })
 
-    function openEditor() {
-      const Editor = toastui.Editor;
-      const {
-        colorSyntax
-      } = Editor.plugin;
-
-      const el = document.createElement('div')
-
-      el.style.position = "fixed"
-      el.style.top = "50px"
-
-      el.style.background = 'white'
-      el.style.boxShadow = "black 0px 0px 10px"
-      el.style.zIndex = "50"
-
-      document.getElementById("editor").insertAdjacentElement("beforebegin", el)
-
-
-      const bg = document.createElement("div")
-
-      bg.style.width = "100%"
-      bg.style.height = "100%"
-      bg.style.background = '#ffffff96';
-      bg.style.zIndex = "49"
-      bg.style.position = "fixed"
-      bg.style.top = "0px"
-
-      const btn = document.createElement("div")
-
-
-
-      btn.className = "btn btn-primary"
-      btn.textContent = "Finish"
-      btn.style.position = "fixed"
-      btn.style.bottom = "20px"
-      btn.style.zIndex = "51"
-      btn.style.left = "57%"
-
-
-      // const keyCollection = new Set()
-
-      // document.body.addEventListener("keydown", (k)=>{
-      //   if(k.key == "Enter") keyCollection.add("enter")
-      //   if(k.shiftKey) keyCollection.add("shift")
-      //   if(keyCollection.size == 2) console.log(1)
-      // })
-
-      // document.body.addEventListener("keyup", (k)=>{
-      //   if(k.key == "Enter") keyCollection.delete("enter")
-      //   if(k.shiftKey) keyCollection.delete("shift")
-      //   if(keyCollection.size == 2) console.log(1)
-      // })
-
-
-
-
-      document.body.insertAdjacentElement("afterend", bg)
-      document.body.insertAdjacentElement("afterend", btn)
-
-
-      const editor = new Editor({
-        el: el,
-        height: '600px',
-        initialEditType: 'markdown',
-        previewStyle: 'vertical',
-        plugins: [colorSyntax]
-      });
-
-      btn.addEventListener("click", () => closeEditor(el, btn, editor, bg))
-
-
-
-      // const el = document.getElementById('content');
-      // const stackedit = new Stackedit();
-
-      // stackedit.openFile({
-      //   name: 'Filename', // with an optional filename
-      //   content: {
-      //     text: el.value // and the Markdown content.
-      //   }
-      // });
-
-      // stackedit.on('fileChange', (file) => {
-      //   el.value = file.content.text;
-      // });
-
-
-    }
-
-    function closeEditor(el, btn, editor, bg) {
-      document.getElementById("content").value = editor.toastMark.lineTexts.join("<br>")
-      bg.remove()
-      el.remove()
-      btn.remove()
-    }
-  </script>
 </body>
 
 </html>

@@ -1,0 +1,16 @@
+<div class="mb-3">
+  <label for="title" class="form-label">Título</label>
+  <input type="text" class="form-control" id="title-ES" name="title-ES" <% if (content) {%>value="<%- content.es.title %>" <% }%> required>
+</div>
+<div class="mb-3">
+  <label for="image" class="form-label">Imagen URL</label>
+  <input type="text" class="form-control" id="image-ES" name="image-ES" <% if (content) {%>value="<%- content.es.image %>" <% }%> required>
+</div>
+<div class="mb-3">
+  <label for="content" class="form-label">Contenido</label>
+  <div style="display: flex; justify-content: space-around;">
+    <input type="text" class="form-control" id="content-ES" name="content-ES" <% if (content) {%>value="<%- content.es.content %>" <% }%>>
+    <div class="btn btn-primary" onclick="openEditor('content-ES')">Editor</div>
+    <div id="editor"></div>
+  </div>
+</div>

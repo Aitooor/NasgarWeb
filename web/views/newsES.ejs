@@ -100,26 +100,26 @@
       <div class="col-6" data-aos="zoom-out-down">
         <div class="new-item-box">
           <a href="/news/<%- news.id %> ">
-            <div class="new-item-img" style="background-image: url(<%- news.image %>);">
+            <div class="new-item-img" style="background-image: url(<%- news.es.image %>);">
             </div>
             <div class="new-item-title">
               <p>
-                <%- news.title %>
+                <%- news.es.title %>
               </p>
             </div>
             <div class="new-item-content">
               <p>
-                <% if(news.content.length > 30 || news.content.split('<br>').length > 1) {%>
-                <%- news.content.split(0,30)[0].split('<br>')[0]+"..." %>
+                <% if(news.es.content.length > 30 || news.es.content.split('<br>').length > 1) {%>
+                <%- news.es.content.split(0,30)[0].split('<br>')[0]+"..." %>
                 <% } else { %>
-                <%- news.content %>
+                <%- news.es.content %>
                 <% } %>
 
               </p>
             </div>
             <div class="new-item-date">
               <p>
-                <%- news.date %>
+                <%- news.es.date %>
               </p>
             </div>
           </a>

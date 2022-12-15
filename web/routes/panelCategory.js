@@ -126,7 +126,7 @@ router.post('/panel/category/:id', (req, res, next) => {
     es: es
   }
 
-  Object.keys(product).forEach(k => {
+  Object.keys(product._doc).forEach(k => {
     if(productInfo[k] != undefined) product[k] = productInfo[k]
   })
 

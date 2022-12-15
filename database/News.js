@@ -5,9 +5,15 @@ const {
 
 module.exports = model('New', new Schema({
     id: String,
-    title: String,
-    content: String,
     date: String,
-    image: String,
-    lang: String
+    en: {
+        title: String,
+        content: String,
+        image: String,
+    },
+    es: {
+        title: String,
+        content: String,
+        image: String,
+    }
 }));

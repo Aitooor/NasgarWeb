@@ -26,8 +26,8 @@ router.get('/panel/news/:id', (req, res, next) => {
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/news')
   if (req.params.id == 'create') {
-    if (req.user && req.user._doc.lang == 'es') return res.render('panelNewsES', { type: 'create', user: req.user._doc, ref: req.headers.referer });
-    return res.render('panelnews', { type: 'create', user: req.user._doc, ref: req.headers.referer })
+    if (req.user && req.user._doc.lang == 'es') return res.render('panelNewsES', { type: 'create', user: req.user._doc, ref: req.headers.referer, content: false });
+    return res.render('panelnews', { type: 'create', user: req.user._doc, ref: req.headers.referer, content: false })
   }
   const product = await newModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/news')
@@ -53,15 +53,30 @@ router.post('/panel/news/create', (req, res, next) => {
   if (!u.admin) return res.redirect('/panel')
   next()
 }, async (req, res) => {
-  const { title, content, image } = req.body
-  const product = await newModel.create({
-    title: title || 'Title',
-    content: content || 'Content',
-    image: image || '/img/background.png',
-    id: dayjs().unix(),
-    createdAt: dayjs(),
-    lang: req.body.lang || 'en'
+  const keysES = Object.keys(req.body).filter(k => k.endsWith("ES"))
+  const keysEN = Object.keys(req.body).filter(k => k.endsWith("EN"))
+
+  const en = {}
+  const es = {}
+
+  keysEN.forEach(k => {
+    if (k.includes("category") || k.includes("categorie")) en[k.replace('-EN', "")] = req.body[k].split(",").filter(v => v != "")
+    else en[k.replace('-EN', "")] = req.body[k]
   })
+
+  keysES.forEach(k => {
+    if (k.includes("category") || k.includes("categorie")) es[k.replace('-ES', "")] = req.body[k].split(",").filter(v => v != "")
+    else es[k.replace('-ES', "")] = req.body[k]
+  })
+
+  const productInfo = {
+    id: dayjs().unix(),
+    date: new dayjs(),
+    en: en,
+    es: es
+  }
+
+  const product = await newModel.create(productInfo)
   res.redirect('/panel/news')
 })
 
@@ -71,17 +86,40 @@ router.post('/panel/news/:id', (req, res, next) => {
   if (!u.admin) return res.redirect('/panel')
   next()
 }, async (req, res) => {
+  console.log(req.body)
   if (!req.params.id) return res.redirect('/panel/news')
   if (req.params.id == 'create') return res.render('panelNews', { type: 'create', ref: req.headers.referer })
   const product = await newModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/news')
-  const { title, content, image, lang } = req.body
-  product.image = image || product.image
-  product.title = title || product.title
-  product.content = content || product.content
-  product.lang = lang || product.lang
+
+  const keysES = Object.keys(req.body).filter(k => k.endsWith("ES"))
+  const keysEN = Object.keys(req.body).filter(k => k.endsWith("EN"))
+
+  const en = {}
+  const es = {}
+
+  keysEN.forEach(k => {
+    if (k.includes("category") || k.includes("categorie")) en[k.replace('-EN', "")] = req.body[k].split(",")
+    else en[k.replace('-EN', "")] = req.body[k]
+  })
+
+  keysES.forEach(k => {
+    if (k.includes("category") || k.includes("categorie")) es[k.replace('-ES', "")] = req.body[k].split(",")
+    else es[k.replace('-ES', "")] = req.body[k]
+  })
+
+  const productInfo = {
+    id: dayjs().unix(),
+    en: en,
+    es: es
+  }
+
+  Object.keys(product._doc).forEach(k => {
+    if (productInfo[k] != undefined) product[k] = productInfo[k]
+  })
+  
   await product.save()
-  res.redirect('/panel/news')
+  res.redirect('/panel/news/' + req.params.id)
 })
 
 router.get('/panel/news/:id/clone', (req, res, next) => {
@@ -95,14 +133,9 @@ router.get('/panel/news/:id/clone', (req, res, next) => {
   const product = await newModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/news')
 
-  const clone = await newModel.create({
-    title: product.title || 'Title',
-    content: product.content || 'Content',
-    image: product.image || '/img/background.png',
-    id: dayjs().unix(),
-    createdAt: dayjs(),
-    lang: product.lang
-  })
+  product._doc.id = dayjs().unix()
+  product._doc._id = null
+  await newModel.create(product._doc)
 
   res.redirect('/panel/news')
 })
