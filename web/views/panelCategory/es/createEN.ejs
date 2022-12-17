@@ -9,9 +9,9 @@
 
 <label for="subcategories" class="form-label">Subcategoría</label>
 <div class="subcategoriesContainer-EN mb-3" id="subcategoriesContainer-EN">
-  <% if(content) for (i = 0; i < content.en.subcategories.length; i++){%>
+  <% if(content) for (i = 0; i < content.en.subcategories.length; i++) { %>
   <div class="subcategorieBase-EN mb-3 d-flex" id="<%- "subcategorie-"+i +"-EN"%>">
-    <input type="text" class="subcategorieAdded-EN form-control" value="<%- content.en.subcategories[0]">
+    <input type="text" class="subcategorieAdded-EN form-control" value="<%- content.en.subcategories[0] %>">
     <div class="btn btn-danger deletesubcategorie-EN" id="<%- "subcategorieBTN-"+i +"-EN"%>">-</div>
   </div>
   <% } %>
@@ -29,7 +29,7 @@
 <div class="subsubcategoriesContainer-EN mb-3" id="subsubcategoriesContainer-EN">
   <% if(content) for (i = 0; i < content.en.subsubcategories.length; i++){%>
   <div class="subsubcategorieBase-EN mb-3 d-flex" id="<%- "subsubcategorie-"+i+"-EN" %>">
-    <input type="text" class="subsubcategorieAdded-EN form-control" value="<%- content.en.subsubcategories[0]">
+    <input type="text" class="subsubcategorieAdded-EN form-control" value="<%- content.en.subsubcategories[0]%>">
     <div class="btn btn-danger deletesubsubcategorie-EN" id="<%- "subsubcategorieBTN-"+i+"-EN" %>">-</div>
   </div>
   <% } %>

@@ -1,0 +1,183 @@
+<fieldset>
+
+  <div class="mb-3">
+    <label for="name" class="form-label">Nombre</label>
+    <input type="text" class="form-control" id="name-ES" name="name-ES" <% if(content) {%> value="<%- content.es.name %> " <% } %> required>
+  </div>
+  <div class="mb-3">
+    <label for="name" class="form-label">Categoría</label>
+    <select class="form-select form-select-sm" aria-label=".form-select-sm" id="c_0-ES" name="c_0-ES">
+      <option value="" selected>Selecciona una Categoría</option>
+      <% for( let i = 0; i < categories.length; i++ ) { %>
+      <% if (content && categories[i].es.name == content.es.categories[0]) { %>
+      <option value="<%- categories[i].es.name %>" selected><%- categories[i].es.name %> </option>
+      <% } else {%>
+      <option value="<%- categories[i].es.name %>"><%- categories[i].es.name %> </option>
+      <% } %>
+      <% } %>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="name" class="form-label">Subcategoría</label>
+    <select class="form-select form-select-sm" aria-label=".form-select-sm" id="c_1-ES" name="c_1-ES">
+      <option value="" selected>Selecciona Subcategoría</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="name" class="form-label">Subsubcategoría</label>
+    <select class="form-select form-select-sm" aria-label=".form-select-sm" id="c_2-ES" name="c_2-ES">
+      <option value="" selected>Selecciona Subcategoría</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="type" class="form-label">Imagen URL</label>
+    <input type="text" class="form-control" id="type" name="image-ES" <% if(content){ %> value="<%- content.es.image %> " <% } %>>
+  </div>
+
+  <div class="mb-3">
+    <label for="content" class="form-label">Descripción</label>
+    <div style="display: flex; justify-content: space-around;">
+      <input type="text" class="form-control" id="content-ES" name="description-ES" <% if(content){ %> value='<%- content.es.description %>' <% } %>>
+      <div class="btn btn-primary" onclick="openEditor('content-ES')">Editor</div>
+      <div id="editor"></div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="description" class="form-label">Nombre del server</label>
+    <input type="text" class="form-control" id="serverName-ES" name="serverName-ES" <% if(content){ %> value='<%- content.es.serverName %>' <% } %>>
+  </div>
+
+  <div class="mb-3" style="display: none;">
+    <input type="text" class="form-control" id="commands-ES" name="commands-ES" <% if(content){ %> value='<%- content.es.commands.join(',')%>' <% } %>>
+  </div>
+
+  <label for="commands" class="form-label">Comandos</label>
+  <div class="commandsContainer-ES mb-3" id="commandsContainer-ES">
+    <% if(content) for (i = 0; i < content.es.commands.length; i++){%>
+    <div class="commandBase-ES mb-3 d-flex" id="<%- "command-"+i %>-ES">
+      <input type="text" class="commandAdded-ES form-control" value="<%- content.es.commands[i]%>">
+      <div class="btn btn-danger deleteCommand-ES" id="<%- "commandBTN-"+i+"-ES" %>">-</div>
+    </div>
+    <% } %>
+  </div>
+
+  <div class="mb-3">
+    <div class="btn btn-primary" id="addCommand-ES">Añadir comandos +</div>
+  </div>
+
+
+  <script>
+    function es() {
+
+
+      const categories = <%- "[" + categories.map(c => {
+      c._id = null
+      return c
+    }) + "]"%>
+
+      <% content._id = null%>
+      <% content.createdAt = null%>
+
+      const content = <%- content %>
+
+      const c_0 = document.getElementById("c_0-ES")
+      const c_1 = document.getElementById("c_1-ES")
+      const c_2 = document.getElementById("c_2-ES")
+
+
+      function changeProps(ws) {
+        [...c_1.getElementsByTagName("option")].map(c => {
+          if (c.value != "") {
+            c.remove()
+          }
+        });
+        [...c_2.getElementsByTagName("option")].map(c => {
+          if (c.value != "") {
+            c.remove()
+          }
+        });
+        const category = categories.find(c => c.es.name == c_0.value) || {
+          es: {
+            subcategories: [],
+            subsubcategories: []
+          }
+        }
+        category.es.subcategories.map(s => {
+          const element = document.createElement("option")
+          element.value = s
+          element.textContent = s
+          if (ws && content.es.categories[1] == s) {
+            element.selected = true
+            c_1.insertAdjacentElement("beforeend", element)
+
+          } else {
+            c_1.insertAdjacentElement("beforeend", element)
+          }
+        })
+
+        category.es.subsubcategories.map(s => {
+          const element = document.createElement("option")
+          element.value = s
+          element.textContent = s
+          if (ws && content.es.categories[2] == s) {
+            element.selected = true
+            c_2.insertAdjacentElement("beforeend", element)
+
+          } else {
+            c_2.insertAdjacentElement("beforeend", element)
+          }
+        })
+      }
+
+      changeProps(true)
+
+      c_0.addEventListener("change", (e) => {
+        changeProps(false)
+      })
+
+      const commandsBase = document.getElementById("commandsContainer-ES");
+
+      [...commandsBase.getElementsByClassName("deleteCommand-ES")].map(c => {
+        c.addEventListener("click", (ev) => {
+          const cmd = document.getElementById(c.id.replace("BTN", ""))
+          cmd.remove()
+        })
+      })
+
+      const add = document.getElementById("addCommand-ES")
+      add.addEventListener("click", (ev) => {
+        const commandContainer = document.getElementById("commandsContainer-ES")
+        const commandBase = document.createElement("div")
+        const commandInput = document.createElement("input")
+        const commandDel = document.createElement("div")
+        commandBase.className = "commandBase-ES mb-3 d-flex"
+        commandBase.id = "command-" + [...commandsBase.getElementsByClassName("commandAdded-ES")].length + "-ES"
+        commandContainer.insertAdjacentElement("beforeend", commandBase)
+        commandInput.className = "commandAdded-ES form-control"
+        commandBase.insertAdjacentElement("afterbegin", commandInput)
+        commandDel.className = "btn btn-danger deleteCommand-ES"
+        commandDel.textContent = "-"
+        commandDel.id = "commandBTN-" + ([...commandsBase.getElementsByClassName("commandAdded-ES")].length - 1) + "-ES"
+        commandBase.insertAdjacentElement("beforeend", commandDel)
+        commandDel.addEventListener("click", (ev) => {
+          console.log(commandDel.id)
+          const cmd = document.getElementById(commandDel.id.replace("BTN", ""))
+          cmd.remove()
+        })
+      })
+
+      setInterval(() => {
+        const commandsBase = document.getElementById("commandsContainer-ES")
+        const commands = [...commandsBase.getElementsByClassName("commandAdded-ES")].filter(c => c.value.trim() != "").map(c => c.value.trim())
+        const commandInput = document.getElementById("commands-ES")
+        commandInput.value = commands.join(",")
+      }, 10);
+    }
+
+    es()
+  </script>
+</fieldset>

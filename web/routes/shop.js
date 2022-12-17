@@ -11,26 +11,32 @@ router.get('/shop', async (req, res) => {
   const all = await productModel.find({})
   const pos = []
   if (req.query.type1) {
-    products = products.filter(p => p.categories[0] == req.query.type1)
+    products = products.filter(p => p.en.categories[0] == req.query.type1 || p.es.categories[0] == req.query.type1)
     pos.push(req.query.type1)
   }
   if (req.query.type2) {
-    products = products.filter(p => p.categories[1] == req.query.type2)
+    products = products.filter(p => p.en.categories[1] == req.query.type2 || p.es.categories[0] == req.query.type1)
     pos.push(req.query.type2)
   }
 
   products = products.map(n => {
-    n.description = n.description.replaceAll('<br>', '\n')
-    n.description = marked.marked.parse(n.description)
+    n.en.description = n.en.description.replaceAll('<br>', '\n')
+    n.en.description = marked.marked.parse(n.en.description)
+    n.es.description = n.es.description.replaceAll('<br>', '\n')
+    n.es.description = marked.marked.parse(n.es.description)
     return n
   })
 
 
   if (req.query.max) products = products.filter(p => p.price <= req.query.max)
   if (req.query.product) products = products.filter(p => p.name.toLowerCase().includes(req.query.product.toLowerCase()) || p.description.toLowerCase().includes(req.query.product.toLowerCase()))
-  if (req.query.lang && req.query.lang == 'es') return res.render('shopES', { content: products.filter(p => p.lang == 'es'), user: req.user, all: all.filter(p => p.lang == 'es'), paypalClient: process.env.PAYPALID, pos: pos , ref: req.headers.referer, translate: true });
-  if (req.user && req.user._doc.lang == 'es') return res.render('shopES', { content: products.filter(p => p.lang == 'es'), user: req.user, all: all.filter(p => p.lang == 'es'), paypalClient: process.env.PAYPALID, pos: pos , ref: req.headers.referer, translate: false});
-  res.render('shop', { content: products.filter(p => p.lang == 'en'), user: req.user, all: all.filter(p => p.lang == 'en'), paypalClient: process.env.PAYPALID, pos: pos, ref: req.headers.referer, translate: false })
+  if (req.query.lang && req.query.lang == 'es') return res.render('shopES', { content: products, user: req.user, all: all, paypalClient: process.env.PAYPALID, pos: pos, ref: req.headers.referer, translate: true });
+  if (req.user && req.user._doc.lang == 'es') return res.render('shopES', { content: products, user: req.user, all: all, paypalClient: process.env.PAYPALID, pos: pos, ref: req.headers.referer, translate: false });
+  res.render('shop', { content: products, user: req.user, all: all, paypalClient: process.env.PAYPALID, pos: pos, ref: req.headers.referer, translate: false })
+})
+
+router.get('/shop/cart', async (req, res) => {
+  res.render('cart', { user: req.user, paypalClient: process.env.PAYPALID, ref: req.headers.referer, translate: false })
 })
 
 router.get('/shop/:id', async (req, res) => {
@@ -54,17 +60,19 @@ router.post('/shop/verify', (req, res, next) => {
   })).json()
 
   if (data.details.status == 'COMPLETED' && getOrder.status == "COMPLETED") {
-    const product = await productModel.findOne({ id: data.productID })
+    const products = await Promise.all(data.products.map(async p => {
+      return await productModel.findOne({ id: p })
+    }))
     await orderModel.create({
       id: data.details.id,
-      product: product,
+      products: products,
       createdAt: new Date(),
       used: false,
       paid: true,
       user: data.user
     })
   }
-  
+
   res.send({ message: 'ok' })
 })
 

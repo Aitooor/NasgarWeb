@@ -7,7 +7,7 @@ module.exports = model('Product', new Schema({
     id: String,
     createdAt: Date,
     price: Number,
-    english: {
+    en: {
         name: String,
         description: String,
         categories: [],
@@ -15,7 +15,7 @@ module.exports = model('Product', new Schema({
         commands: Array,
         serverName: String
     },
-    spanish: {
+    es: {
         name: String,
         description: String,
         categories: [],

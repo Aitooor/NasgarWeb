@@ -89,12 +89,88 @@
       li p {
         font-size: 15px;
       }
+
+      .cart-item .col-2,.cart-item .col-5,.cart-item .col-1 {
+        display: flex !important;
+        width: 100%;
+        text-align: center !important;
+        justify-content: center !important;
+        align-items: center !important;
+      }
+
+      .cart-item .col-2 {
+        margin-bottom: 10px !important;
+      }
+
     }
   </style>
   <script src="https://www.paypal.com/sdk/js?client-id=<%- paypalClient %>&components=buttons"></script>
 
   <script>
     var userLang = navigator.language || navigator.userLanguage;
+
+    function removeItem(id) {
+      let deleted = false
+      cart.forEach((e, i) => {
+        if (e.product.id == id && !deleted) {
+          cart[i] = null
+          deleted = true
+        }
+      });
+      cart = cart.filter(e => e != null)
+      const cartBody = document.getElementById("cartBody");
+
+      [...document.getElementsByClassName("cart-item")].map(c => c.remove())
+
+      const unrealCart = new Map()
+
+      cart.forEach(p => {
+        if (unrealCart.has(p.product.id)) {
+          const v = unrealCart.get(p.product.id)
+          v.quantity += 1
+          unrealCart.set(p.product.id, v)
+        } else {
+          p.quantity = 1
+          unrealCart.set(p.product.id, p)
+        }
+      })
+
+
+
+      unrealCart.forEach(p => {
+        var html = `          <div class="cart-item row" id="${p.product.id}">
+            <hr>
+            <div class="cart-img col-2">
+              <img src="${p.product.en.image}" alt="" width="64" height="64">
+            </div>
+            <div class="col-5 cart-text" style="display: flex; justify-content: left; align-items: center;">
+              <div>
+                <strong>${p.product.en.name}</strong>
+                <p style="font-weight: lighter !important;">${p.product.en.description.length >= 20 ?  p.product.en.description.slice(0,20)+"..." : p.product.en.description}</p>
+              </div>
+            </div>
+            <div class="col-2" style="display: flex; justify-content: center; align-items: center;">
+              <p>$${p.product.price}</p>
+            </div>
+            <div class="col-1" style="display: flex; justify-content: center; align-items: center; text-align:center">
+              <p>x${p.quantity}</p>
+            </div>
+            <div class="col-2" style="display: flex; justify-content: center; align-items: center;">
+              <div class="deleteCartItem btn btn-danger cid-${p.product.id}" onclick=removeItem(${p.product.id})>
+                -
+              </div>
+            </div>
+            <hr>
+          </div>`;
+        cartBody.insertAdjacentHTML('afterbegin', html)
+      })
+
+
+
+      cartPrice.textContent = `Total Price: $${cart.reduce((prev,now)=>{
+      return prev += now.product.price
+    }, 0)}`
+    }
   </script>
 
 
@@ -111,9 +187,85 @@
   </script>
   <% } %>
 
+
+  <style>
+    .cart-icon {
+      background-color: #4f85c8;
+      width: 50px;
+      height: 50px;
+      position: fixed;
+      bottom: 50px;
+      right: 50px;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      transition-duration: 0.3s;
+      z-index: 30;
+    }
+
+    .cart-number {
+      position: absolute;
+      top: -2px;
+      left: 0px;
+      border-radius: 100%;
+      background-color: #1F4068;
+      width: 17px;
+      height: 17px;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .cart-icon:hover {
+      width: 55px;
+      height: 55px;
+    }
+
+    .modal-body * {
+      margin: 0px !important;
+    }
+
+    .modal-body img {
+      margin: 10px 0px !important;
+    }
+
+    .cart-text p {
+      font-weight: lighter !important;
+    }
+  </style>
+
 </head>
 
 <body>
+
+  <div class="cart-icon" data-bs-toggle="modal" data-bs-target="#cartModal">
+    <i class="fa-solid fa-cart-shopping"></i>
+    <div class="cart-number" id="cart-number">0</div>
+  </div>
+
+
+  <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Your Cart</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="cartBody">
+        </div>
+        <div class="modal-footer">
+          <p id="cartTotal">Total Price: $0</p>
+          <a href="/shop/cart" class="btn btn-primary">Checkout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <nav class="nav-container row">
     <div class="col-1"></div>
     <div class="col-2 coll">
@@ -180,17 +332,17 @@
       <%
       const types = new Map()
       all.forEach(item => {
-        if(!types.has(item.categories[0]) && item.categories[0] != "") {
+        if(!types.has(item.en.categories[0]) && item.en.categories[0] != "") {
 
-          types.set(item.categories[0], new Map())
+          types.set(item.en.categories[0], new Map())
 
-          const type1 = types.get(item.categories[0])
+          const type1 = types.get(item.en.categories[0])
 
-          if(!type1.has(item.categories[1]) && item.categories[1] != "") {
-            type1.set(item.categories[1], new Map())
-            const type2 = type1.get(item.categories[1])
-            if(!type2.has(item.categories[2]) && item.categories[2] != "") {
-              type2.set(item.categories[2], new Map())
+          if(!type1.has(item.en.categories[1]) && item.en.categories[1] != "") {
+            type1.set(item.en.categories[1], new Map())
+            const type2 = type1.get(item.en.categories[1])
+            if(!type2.has(item.en.categories[2]) && item.en.categories[2] != "") {
+              type2.set(item.en.categories[2], new Map())
             }
           }
         }
@@ -203,26 +355,26 @@
 
 
       <% [...types.get(key).keys()].forEach(subkey => {  %>
-        <% if(subkey == pos[1]) {%>
-          <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>"><%- subkey %></a></li>
+      <% if(subkey == pos[1]) {%>
+      <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>"><%- subkey %></a></li>
 
 
-          <% [...types.get(key).get(subkey).keys()].forEach(subsubkey => {  %>
-            <% if(subsubkey == pos[2]) {%>
-              <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>"><%- subsubkey %></a></li>
-        
-            <% } else { %>
-              <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>"><%- subsubkey %></a></li>
-            <% } %>
-      
-          <% }) %>
+      <% [...types.get(key).get(subkey).keys()].forEach(subsubkey => {  %>
+      <% if(subsubkey == pos[2]) {%>
+      <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>"><%- subsubkey %></a></li>
+
+      <% } else { %>
+      <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>"><%- subsubkey %></a></li>
+      <% } %>
+
+      <% }) %>
 
 
-    
-        <% } else { %>
-          <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>"><%- subkey %></a></li>
-        <% } %>
-  
+
+      <% } else { %>
+      <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>"><%- subkey %></a></li>
+      <% } %>
+
       <% }) %>
 
       <% } else { %>
@@ -247,13 +399,16 @@
         <div class="card" data-aos="zoom-out-down" data-bs-toggle="modal" data-bs-target="<%- "#modal_"+news.id %>">
           <div class="card-body">
             <div>
-              <img src="<%- news.image %> " alt="" width="250px" height="250px">
+              <img src="<%- news.en.image %> " alt="" width="250px" height="250px">
             </div>
             <h5 class="card-title">
-              <%- news.name %>
+              <%- news.en.name %>
             </h5>
             <button type="button" class="btn btn-primary">
               $<%- news.price %> usd
+            </button>
+            <button type="button" class="btn btn-outline-primary">
+              Add to cart
             </button>
           </div>
         </div>
@@ -270,13 +425,13 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="<%- " modal_"+ban.id+"_Label" %>"><%- ban.name%> </h5>
+          <h5 class="modal-title" id="<%- " modal_"+ban.id+"_Label" %>"><%- ban.en.name%> </h5>
           <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
 
           <p>
-            <%- ban.description %>
+            <%- ban.en.description %>
           </p>
           <% if (user) {%>
           <div id="<%- `item-${ban.id}` %>"></div>
@@ -287,6 +442,9 @@
 
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary" id="<%- `itemCart-${ban.id}` %>">
+            Add to cart
+          </button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Okay!</button>
         </div>
       </div>
@@ -306,6 +464,21 @@
     })
   </script>
 </body>
+
+<script>
+  function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+
+  let cart = getCookie("cartItems") ? JSON.parse(getCookie("cartItems")) : []
+</script>
 
 <% if(user) {%>
 <% content.forEach( news=> { %>
@@ -328,7 +501,7 @@
         const body = {
           details: details,
           user: <%- user ? JSON.stringify(user._doc.username) : 'null' %>,
-          productID: <%- news.id%>
+          products: [<%- news.id%>]
         }
         fetch('/shop/verify', {
           method: 'POST',
@@ -338,7 +511,108 @@
     }
 
   }).render('<%- `#item-${news.id}` %>');
+
+  <% news._id = null %>
+  <% news.createdAt = null %>
+
+  document.getElementById('<%- `itemCart-${news.id}` %>').addEventListener('click', (ev) => {
+    cart.push({
+      product: <%- news %>,
+      productID: "<%- news.id%>"
+    })
+    const thisb = document.getElementById('<%- `itemCart-${news.id}` %>')
+    thisb.textContent = "Item Added to the cart!"
+    setTimeout(() => {
+      thisb.textContent = "Add to cart"
+
+    }, 2000);
+  })
 </script>
 <% })} %>
+
+<script>
+  setInterval(() => {
+    const cartNumber = document.getElementById("cart-number")
+    cartNumber.textContent = cart.length
+    const unrealCart = new Map()
+
+    cart.forEach(p => {
+      if (unrealCart.has(p.product.id)) {
+        const v = unrealCart.get(p.product.id)
+        v.quantity += 1
+        unrealCart.set(p.product.id, v)
+      } else {
+        p.quantity = 1
+        unrealCart.set(p.product.id, p)
+      }
+    })
+
+    document.cookie = `cartItems=${JSON.stringify(cart)}`
+
+
+  }, 500);
+
+  const cartModal = document.getElementById("cartModal")
+  const cartPrice = document.getElementById("cartTotal")
+  const checkoutContainer = document.getElementById("checkoutContainer")
+  cartModal.addEventListener('shown.bs.modal', () => {
+    const cartBody = document.getElementById("cartBody");
+
+    [...document.getElementsByClassName("cart-item")].map(c => c.remove())
+
+    const unrealCart = new Map()
+
+    cart.forEach(p => {
+      if (unrealCart.has(p.product.id)) {
+        const v = unrealCart.get(p.product.id)
+        v.quantity += 1
+        unrealCart.set(p.product.id, v)
+      } else {
+        p.quantity = 1
+        unrealCart.set(p.product.id, p)
+      }
+    })
+
+
+
+    unrealCart.forEach(p => {
+      var html = `          <div class="cart-item row" id="${p.product.id}">
+            <hr>
+            <div class="cart-img col-2">
+              <img src="${p.product.en.image}" alt="" width="64" height="64">
+            </div>
+            <div class="col-5 cart-text" style="display: flex; justify-content: left; align-items: center;">
+              <div>
+                <strong>${p.product.en.name}</strong>
+                <p style="font-weight: lighter !important;">${p.product.en.description.length >= 20 ?  p.product.en.description.slice(0,20)+"..." : p.product.en.description}</p>
+              </div>
+            </div>
+            <div class="col-2" style="display: flex; justify-content: center; align-items: center;">
+              <p>$${p.product.price}</p>
+            </div>
+            <div class="col-1" style="display: flex; justify-content: center; align-items: center; text-align:center">
+              <p>x${p.quantity}</p>
+            </div>
+            <div class="col-2" style="display: flex; justify-content: center; align-items: center;">
+              <div class="deleteCartItem btn btn-danger cid-${p.product.id}" onclick=removeItem(${p.product.id})>
+                -
+              </div>
+            </div>
+            <hr>
+          </div>`;
+      cartBody.insertAdjacentHTML('afterbegin', html)
+    })
+
+
+
+    cartPrice.textContent = `Total Price: $${cart.reduce((prev,now)=>{
+      return prev += now.product.price
+    }, 0)}`
+
+  })
+</script>
+
+
+
 
 </html>
