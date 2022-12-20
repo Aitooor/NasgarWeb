@@ -103,7 +103,7 @@ router.get('/panel/timings/user', (req, res, next) => {
   next()
 }, async (req, res) => {
   let timings = await getStaffTimings()
-  if (!req.query.name) req.query.name = ''
+  if (!req.query.username) req.query.username = ''
   timings = [...timings.values()].filter(m => m.username.toLowerCase() == req.query.username.toLowerCase())
   if (req.user && req.user._doc.lang == 'es') return res.render('panelTimingsES', { content: timings, type: 'main', user: req.user._doc, ref: req.headers.referer });
   res.render('panelTimings', { content: timings, type: 'main', user: req.user._doc, ref: req.headers.referer })

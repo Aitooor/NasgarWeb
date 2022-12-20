@@ -5,12 +5,12 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nasgar | Timings</title>
+  <title>Nasgar | Orders</title>
   <link rel="shortcut icon" href="/img/logo-128x.png" type="image/x-icon">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#36A2DF">
   <meta property="og:site_name" content="Nasgar.online">
-  <meta name="og:title" content="Nasgar Network | Timings">
+  <meta name="og:title" content="Nasgar Network | Orders">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="og:icon" content="/img/logo-128x.png">
   <meta name="description" content="description">
@@ -39,12 +39,8 @@
       <li><a class="optionTitle1" href="/panel/news">News</a></li>
       <li><a class="optionTitle1" href="/panel/shop">Shop</a></li>
       <li><a class="optionTitle1" href="/panel/timings">StaffTimings</a></li>
-      <li><a class="option1" href="/panel/timings">All staff members</a></li>
-      <li><a class="option1" href="/panel/timings/group/owner">Owners</a></li>
-      <li><a class="option1" href="/panel/timings/group/admin">Administrators</a></li>
-      <li><a class="option1" href="/panel/timings/group/mod">Moderators</a></li>
       <li><a class="optionTitle1" href="/panel/orders">Orders</a></li>
-
+      <li><a class="option1" href="/panel/orders">All orders</a></li>
       <hr>
 
     </ul>
@@ -61,8 +57,8 @@
       <div class="col-12">
         <a href="/panel" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
       </div>
-      <form action="/panel/timings/user" method="get" class="col-12 d-flex">
-        <input type="text" name="username" placeholder="Staff member username" class="form-control">
+      <form action="/panel/orders/user" method="get" class="col-12 d-flex">
+        <input type="text" name="username" placeholder="Username" class="form-control">
         <input type="submit" value="Search" class="btn btn-primary">
       </form>
 
@@ -70,25 +66,30 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">UUID</th>
-              <th scope="col">Username</th>
-              <th scope="col">Group</th>
+              <th scope="col">Order ID</th>
+              <th scope="col">User</th>
+              <th scope="col">Paid</th>
+              <th scope="col">Used</th>
               <th scope="col">View</th>
+
             </tr>
           </thead>
           <tbody>
             <% content.forEach(item=>{ %>
             <tr>
               <td>
-                <%- item.uuid %>
+                <%- item.id %>
               </td>
               <td>
-                <%- item.username %>
+                <%- item.user %>
               </td>
               <td>
-                <%- item.permissions.permission.split('group.')[1] %>
+                <%- item.used ? "Yes" : "Not"%>
               </td>
-              <td><a href="<%- `/panel/timings/member/${item.uuid}` %>" class="btn btn-outline-primary">Manage</a>
+              <td>
+                <%- item.paid ? "Yes" : "Not"%>
+              </td>
+              <td><a href="<%- `/panel/orders/${item.id}` %>" class="btn btn-outline-primary">Manage</a>
               </td>
             </tr>
             <% }) %>
@@ -97,54 +98,87 @@
       </div>
       <% } else if (type=='manage' ){%>
       <div class="col-12">
-        <a href="/panel/timings" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        <a href="/panel/orders" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
       </div>
 
       <div class="col-12">
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Username</th>
-              <th scope="col">UUID</th>
-              <th scope="col">Total Time</th>
+              <th scope="col">User</th>
+              <th scope="col">Order ID</th>
+              <th scope="col">Used</th>
+              <th scope="col">Paid</th>
+              <th scope="col">Products</th>
+              <th scope="col">Total</th>
+
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>
-                <%- content.username %>
+                <%- content.user %>
               </td>
               <td>
-                <%- content.uuid %>
+                <%- content.id %>
               </td>
               <td>
-                <%- getTime(content.timings.reduce((a,b)=> { return a += Number(b.TIME)}, 0)*1000) %>
+                <%- content.used ? "Yes" : "Not"%>
+              </td>
+              <td>
+                <%- content.paid ? "Yes" : "Not"%>
+              </td>
+              <td>
+                <%- content._doc.products.length%>
               </td>
 
+              <td>
+                $<%- content._doc.products.reduce((acc,next)=>{ return acc += next.price}, 0)%>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
 
+      <% console.log(content._doc) %>
+
+
       <div class="col-12">
+        <br>
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Date</th>
-              <th scope="col">Time</th>
+              <th scope="col">Item ID</th>
+              <th scope="col">Product name</th>
+              <th scope="col">Product price</th>
+              <th scope="col">Preview</th>
+              <th scope="col">Manage</th>
             </tr>
           </thead>
           <tbody>
-            <% content.timings.forEach(item=>{ %>
             <tr>
-              <td>
-                <%- item.DATE.replaceAll('_','/') %>
-              </td>
-              <td>
-                <%- getTime(item.TIME*1000) %>
-              </td>
+              <% content._doc.products.forEach(product =>{ %>
+              <td><%- product.id %> </td>
+              <td><%- product[content._doc.userLang].name %></td>
+              <td>$<%- product.price %></td>
+              <td> <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-<%- product.id %> ">
+                  Preview
+                </button></td>
+              <td><a type="button" class="btn btn-outline-primary" href="/panel/shop/<%- product.id %>">
+                Manage
+              </a></td>
+
+
+              <div class="modal" id="modal-<%- product.id %>">
+                <div class="modal-dialog modal-dialog-centered" style="margin-right: 50% !important; width: 1000px !important;">
+                  <div class="modal-body">
+                    <iframe width="1000" height="600" src="/panel/shop/<%- product.id %>" allowfullscreen></iframe>
+                  </div>
+                </div>
+              </div>
+
+              <% }) %>
             </tr>
-            <% }) %>
           </tbody>
         </table>
       </div>
@@ -159,7 +193,6 @@
     const leftBTN = document.getElementById("leftBTN")
     const left = document.getElementById("left-container")
     left.addEventListener('click', () => {
-      console.log('a')
       if (left.classList.contains('active')) left.classList.replace('active', 'unactive')
       else left.classList.replace('unactive', 'active')
     })
