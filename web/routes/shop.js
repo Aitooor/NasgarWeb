@@ -4,6 +4,8 @@ const productModel = require('../../database/Product');
 const fetch = require('node-fetch')
 const orderModel = require('../../database/Order')
 const marked = require("marked")
+const userModel = require("../../database/User")
+
 
 
 router.get('/shop', async (req, res) => {
@@ -69,9 +71,17 @@ router.post('/shop/verify', (req, res, next) => {
       createdAt: new Date(),
       used: false,
       paid: true,
-      user: data.user
+      user: data.user,
+      paypal: getOrder
     })
   }
+
+  const mailService = require('../../utils/mailService')
+  const user = await userModel.findOne({ username: data.user })
+
+  // mailService.sendMail(data.details.id, getOrder.payer.email_address, user.lang)
+  mailService.sendMail(data.details.id, "emanuel250gameryt@gmail.com", user.lang)
+
 
   res.send({ message: 'ok' })
 })

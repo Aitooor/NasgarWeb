@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nasgar | Shop</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/css/panel.css">
+  <link rel="stylesheet" href="/css/sup.css">
+  <link rel="shortcut icon" href="/img/logo-128x.png" type="image/x-icon">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nasgar.online">
+  <meta name="og:title" content="Nasgar Network | Shop">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="og:icon" content="/img/logo-128x.png">
+  <meta name="description" content="description">
+  <meta name="og:description" content="description">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <style>
+    html {
+      -webkit-print-color-adjust: exact;
+    }
+
+    main {
+      margin: 0px !important;
+      width: 100%;
+    }
+
+    li p {
+      margin-top: 20px;
+      margin-bottom: 0px;
+      color: rgba(240, 248, 255, 0.507);
+    }
+
+    ul li {
+      margin: 0px 10px;
+      text-align: left !important;
+    }
+
+    .categoryT,
+    .categoryT2 {
+      color: rgba(240, 248, 255, 0.507);
+      padding: 0px !important;
+    }
+
+    .categorySub1 a {
+      margin: 0px 10px 0px 15px;
+
+    }
+
+    .categorySub1 {
+      padding-bottom: 0px !important;
+    }
+
+    .categorySub2 a {
+      margin: 0px 10px 0px 25px;
+
+    }
+
+    .categorySub2 {
+      padding-bottom: 0px !important;
+    }
+
+    .categoryT2 {
+      margin: 0px 10px 0px 25px !important;
+    }
+
+
+    .card-body {
+      transition-duration: 0.3s;
+    }
+
+    .card-body:hover {
+      bottom: 30px;
+      transform: translateY(-10px);
+      font-weight: bolder !important;
+    }
+
+    .left-container {
+      overflow-y: scroll;
+    }
+
+    ::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #1F4068;
+    }
+
+    .cart-img {
+      margin-bottom: 15px;
+    }
+
+    @media (max-width: 768px) {
+      li p {
+        font-size: 15px;
+      }
+
+      .col-7,
+      .col-2,
+      .col-1 {
+        width: 100% !important;
+      }
+
+      .col-7 div,
+      .col-2 div,
+      .col-1 div {
+        width: 100% !important;
+        text-align: center;
+        align-items: center;
+      }
+
+      .cart-img {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    * {
+      margin-left: 0px !important;
+    }
+
+    .cart-item p {
+      margin-bottom: 15px !important;
+      font-weight: bolder !important;
+    }
+  </style>
+
+  <style>
+    .cart-icon {
+      background-color: #4f85c8;
+      width: 50px;
+      height: 50px;
+      position: fixed;
+      bottom: 50px;
+      right: 50px;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      transition-duration: 0.3s;
+      z-index: 30;
+    }
+
+    .cart-number {
+      position: absolute;
+      top: -2px;
+      left: 0px;
+      border-radius: 100%;
+      background-color: #1F4068;
+      width: 17px;
+      height: 17px;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .cart-icon:hover {
+      width: 55px;
+      height: 55px;
+    }
+
+    .modal-body * {
+      margin: 0px !important;
+    }
+
+    .modal-body img {
+      margin: 10px 0px !important;
+    }
+
+    .cart-text p {
+      font-weight: lighter !important;
+    }
+
+    .cart-item {
+      overflow-x: hidden !important;
+    }
+
+    .left-container {
+      z-index: 500;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <main>
+
+    <style>
+      .iHeader,
+      .title {
+        background-color: #171562;
+        height: 200px;
+        color: white;
+      }
+
+      .title {
+        height: 30px;
+      }
+
+      .iClient p {
+        font-weight: lighter !important;
+        margin-bottom: 0px;
+      }
+    </style>
+
+    <div class="row iHeader">
+      <div class="col-7" style="display: flex; align-items: center; justify-content: left;">
+        <h1 style="margin: 0px; padding-left: 30px;">Nasgar</h1>
+      </div>
+      <div class="col-5" style="display: flex; align-items: center; justify-content: right; text-align: right;">
+        <div>
+          <h4 style="margin: 0px; padding-right: 30px;">Transaction ID: <%- order.id %> </h4>
+          <p style="margin: 0px; padding-right: 30px;">Date: <%- new Date().toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) %> </p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <br>
+    <div class="row iClient">
+
+      <h4>Transaction Information</h4>
+      <br>
+      <br>
+
+      <p><strong>PayPal Mail:</strong> <%- order.paypal.payer.email_address %> </p>
+      <p><strong>PayPal Name:</strong> <%- order.paypal.payer.name.given_name %> <%- order.paypal.payer.name.surname %></p>
+      <p><strong>PayPal Transaction ID:</strong> <%- order.id %></p>
+      <p><strong>Minecraft Account:</strong> <%- order.user %></p>
+
+      <br>
+      <br>
+      <br>
+
+    </div>
+
+    <div class="row title" style="text-align: center;">
+
+      <div class="cart-img col-2" style="margin-bottom: 0px; padding-left: 27px;">
+        <p>Image</p>
+      </div>
+      <div class="col-4 cart-text" style="align-items: center; padding-left: 27px;">
+        <p style="font-weight: bolder !important; text-align:center">Name</p>
+      </div>
+
+      <div class="col-3 cart-text" style="align-items: center;">
+        <p style="font-weight: bolder !important; text-align:center">Product ID</p>
+      </div>
+      <div class="col-2" style="align-items: center; text-align:center; padding-right: 30px;">
+        <p>Quantity</p>
+      </div>
+      <div class="col-1" style="align-items: center; text-align:center;padding-right: 30px;">
+        <p> Price</p>
+      </div>
+
+
+    </div>
+
+    <div class="row" id="main">
+    </div>
+
+    <div class="row" style="text-align: center; margin-bottom: 0px;">
+      <div class="col-9 title"></div>
+      <!-- <div class="col-4"></div> -->
+      <div class="col-2 title" style="min-height: auto !important;padding-right: 27px;">Total Products</div>
+      <div class="col-1 title" style="min-height: auto !important;padding-right: 27px;"> Total</div>
+      <!-- <div class="col-4"></div> -->
+
+      <div class="col-9"></div>
+      <!-- <div class="col-4"></div> -->
+      <div class="col-2" style="min-height: auto !important; padding-right: 27px; text-align: center; padding-top: 10px; padding-bottom: 10px;"><%- order.products.length %> </div>
+      <div class="col-1" style="min-height: auto !important;padding-right: 27px; padding-top: 10px; padding-bottom: 10px;" id="cartPrice"> </div>
+      <!-- <div class="col-4"></div> -->
+
+    </div>
+
+    <div class="separator"></div>
+
+  </main>
+
+  <script>
+    const cart = <%- JSON.stringify(order) %>;
+
+
+    const unrealCart = new Map()
+
+    cart.products.forEach(p => {
+      if (unrealCart.has(p.id)) {
+        const v = unrealCart.get(p.id)
+        v.quantity += 1
+        unrealCart.set(p.id, v)
+      } else {
+        p.quantity = 1
+        unrealCart.set(p.id, p)
+      }
+    })
+
+
+    unrealCart.forEach(p => {
+      const html = `          <div class="cart-item row" id="${p.id}-${p.quantity}" style="text-align: center">
+              <hr>
+              <div class="cart-img col-2">
+                <img src="${p.en.image}" alt="" width="64" height="64">
+              </div>
+              <div class="col-4 cart-text" style="display:flex; justify-content:center;align-items: center;text-align:center">
+                  <p style="font-weight: bolder !important;">${p.en.name}</p>
+              </div>
+
+              <div class="col-3 cart-text" style="display:flex; justify-content:center;align-items: center;text-align:center">
+                  <p style="font-weight: bolder !important;">${p.id}</p>
+              </div>
+              <div class="col-2" style="display:flex;align-items: center;text-align:center;justify-content:center;">
+                <p>${p.quantity}</p>
+              </div>
+              <div class="col-1" style="display:flex; align-items: center; text-align:center; justify-content:center;">
+                <p >$${p.price}</p>
+              </div>
+
+            </div>`;
+      document.getElementById("main").insertAdjacentHTML('afterbegin', html)
+
+    })
+
+
+    const cartPrice = document.getElementById("cartPrice");
+
+    cartPrice.textContent = `$${cart.products.reduce((prev,now)=>{
+        return prev += now.price
+    }, 0)}`
+  </script>
+</body>
+
+</html>
