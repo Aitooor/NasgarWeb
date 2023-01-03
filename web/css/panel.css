@@ -6,7 +6,8 @@
     font-weight: bold !important;
 }
 
-html,body {
+html,
+body {
     top: 0px;
     overflow-x: hidden;
 }
@@ -23,7 +24,7 @@ main {
     height: 150px;
 }
 
-form{
+form {
     padding-top: 30px;
 }
 
@@ -45,7 +46,6 @@ form{
     border-radius: 10px;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.318);
     transition-duration: 0.3s;
-
 }
 
 .card {
@@ -112,11 +112,12 @@ form{
         width: 100%;
         overflow: scroll;
     }
-    
+
     table {
         margin-top: 50px;
     }
-    .row .col-4{
+
+    .row .col-4 {
         width: 100%;
     }
 
@@ -149,4 +150,3 @@ form{
         margin-top: 160px !important;
     }
 }
-    
