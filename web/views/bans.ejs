@@ -56,20 +56,20 @@
       <a href="/"><img src="/img/logo-480x.png" alt="" height="50px"></a>
     </div>
     <div class="col-4 colm">
-      <form action="/bans" method="get">
+      <form action="/bans?lang=en" method="get">
         <input type="text" name="victimName" placeholder="Username" class="form-control">
         <input type="submit" value="Search" class="btn btn-primary">
       </form>
     </div>
     <div class="col-4 colr">
-      <a href="/news" class="nav-btn">News</a>
-      <a href="/shop" class="nav-btn">Shop</a>
-      <a href="/bans" class="nav-btn">Bans</a>
+      <a href="/news?lang=en" class="nav-btn">News</a>
+      <a href="/shop?lang=en" class="nav-btn">Shop</a>
+      <a href="/bans?lang=en" class="nav-btn">Bans</a>
       <a href="https://www.40servidoresmc.es/nasgar-network-votar" class="nav-btn" target="_blank">Vote</a>
       <% if(user) {%>
-      <a class="nav-btn" href="/panel"><%- user.username %> </a>
+      <a class="nav-btn" href="/panel?lang=en"><%- user.username %> </a>
       <% } else { %>
-      <a class="nav-btn" href="/login">Login</a>
+      <a class="nav-btn" href="/login?lang=en">Login</a>
       <% } %>
     </div>
     <div class="col-1"></div>
@@ -84,12 +84,12 @@
       <li><a class="optionTitle1" href="/">Home</a></li>
       <li><a class="optionTitle1" href="/panel">Panel</a></li>
       <hr>
-      <li><a href="/bans" class="optionTitle1">Punishments List</a></li>
-      <li><a class="option1" href="/bans">All</a></li>
-      <li><a class="option1" href="/bans?type=BAN">Banned</a></li>
-      <li><a class="option1" href="/bans?type=WARN">Warned</a></li>
-      <li><a class="option1" href="/bans?type=KICK">Kicked</a></li>
-      <li><a class="option1" href="/bans?type=MUTE">Muted</a></li>
+      <li><a href="/bans?lang=en" class="optionTitle1">Punishments List</a></li>
+      <li><a class="option1" href="/bans?lang=en">All</a></li>
+      <li><a class="option1" href="/bans?type=BAN&lang=en">Banned</a></li>
+      <li><a class="option1" href="/bans?type=WARN&lang=en">Warned</a></li>
+      <li><a class="option1" href="/bans?type=KICK&lang=en">Kicked</a></li>
+      <li><a class="option1" href="/bans?type=MUTE&lang=en">Muted</a></li>
       <hr>
 
     </ul>

@@ -46,7 +46,8 @@
     </ul>
     <% } else { %>
     <ul>
-
+      <li><a class="optionTitle1" href="/panel">Inicio</a></li>
+      <li><a class="optionTitle1" href="/panel/orders">Ordenes</a></li>
     </ul>
     <% } %>
 
@@ -57,10 +58,12 @@
       <div class="col-12">
         <a href="/panel" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Atrás</a>
       </div>
+      <% if(user.admin){ %>
       <form action="/panel/orders/user" method="get" class="col-12 d-flex">
         <input type="text" name="username" placeholder="Username" class="form-control">
         <input type="submit" value="Buscar" class="btn btn-primary">
       </form>
+      <% } %>
 
       <div class="col-12">
         <table class="table">
@@ -88,7 +91,12 @@
               <td>
                 <%- item.paid ? "Si" : "No"%>
               </td>
-              <td><a href="<%- `/panel/orders/${item.id}` %>" class="btn btn-outline-primary">Administrar</a>
+              <td>
+                <% if(user.admin){ %> 
+                <a href="<%- `/panel/orders/${item.id}` %>" class="btn btn-outline-primary">Administrar</a>
+                <% } else { %>
+                <a href="<%- `/public/orders/${item.id}` %>" class="btn btn-outline-primary" target="_blank">Recibo</a>
+                <% } %> 
               </td>
             </tr>
             <% }) %>
@@ -163,8 +171,8 @@
                   Previsualizar
                 </button></td>
               <td><a type="button" class="btn btn-outline-primary" href="/panel/shop/<%- product.id %>">
-                Administrar
-              </a></td>
+                  Administrar
+                </a></td>
 
 
               <div class="modal" id="modal-<%- product.id %>">

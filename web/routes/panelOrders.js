@@ -5,10 +5,14 @@ const dayjs = require('dayjs');
 const orderModel = require('../../database/Order')
 
 //#region Timings
-router.get('/panel/orders', (req, res, next) => {
+router.get('/panel/orders', async (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.admin) {
+    const content = await orderModel.find({ user: req.user.username })
+    if (req.user && req.user._doc.lang == 'es') return res.render('panelOrdersES', { content: content, type: 'main', user: req.user._doc, ref: req.headers.referer });
+    return res.render('panelOrders', { content: content, type: 'main', user: req.user._doc, ref: req.headers.referer })
+  }
   next()
 }, async (req, res) => {
   const content = await orderModel.find({})

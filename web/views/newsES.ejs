@@ -63,15 +63,16 @@
       <a href="/"><img src="/img/logo-480x.png" alt="" height="50px"></a>
     </div>
     <div class="col-4 colm">
-      <form action="/news" method="get">
+      <form action="/news?lang=es" method="get">
         <input type="text" name="content" placeholder="Contenido de la noticia" class="form-control">
+        <input type="text" name="lang" value="es" style="display: none;">
         <input type="submit" value="Buscar" class="btn btn-primary">
       </form>
     </div>
     <div class="col-4 colr">
-      <a href="/news" class="nav-btn">Noticias</a>
-      <a href="/shop" class="nav-btn">Tienda</a>
-      <a href="/bans" class="nav-btn">Baneos</a>
+      <a href="/news?lang=es" class="nav-btn">Noticias</a>
+      <a href="/shop?lang=es" class="nav-btn">Tienda</a>
+      <a href="/bans?lang=es" class="nav-btn">Baneos</a>
       <a href="https://www.40servidoresmc.es/nasgar-network-votar" class="nav-btn" target="_blank">Votar</a>
       <% if(user) {%>
       <a class="nav-btn" href="/panel">
@@ -108,7 +109,7 @@
             </div>
             <div class="new-item-title">
               <p>
-                <%- news.es.title %>
+                <%- news.es.title.length > 40 ? news.es.title.slice(0,37) + "..." :  news.es.title %>
               </p>
             </div>
             <div class="new-item-content">
@@ -123,7 +124,7 @@
             </div>
             <div class="new-item-date">
               <p>
-                <%- news.es.date %>
+                <%- new Date(news.date).toLocaleDateString("es-AR", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) %>
               </p>
             </div>
           </a>

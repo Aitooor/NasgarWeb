@@ -7,8 +7,8 @@ router.get('/news', async (req, res) => {
   let news = await newModel.find({})
   if (req.query.content) {
     const original = await newModel.find({})
-    news = news.filter(n => n.en.content.includes(req.query.content))
-    news.concat(original.filter(n => n.es.content.includes(req.query.content)))
+    news = original.filter(n => n.en.content.toLowerCase().includes(req.query.content.toLowerCase()) || n.en.title.toLowerCase().includes(req.query.content.toLowerCase()))
+    news.concat(original.filter(n => n.es.content.toLowerCase().includes(req.query.content.toLowerCase()) || n.es.title.toLowerCase().includes(req.query.content.toLowerCase())))
   }
   news = news.map(n => {
     n.en.content = marked.marked.parse(n.en.content)
@@ -25,6 +25,7 @@ router.get('/news/:id', async (req, res) => {
   if (!news) return res.redirect('/news')
   news.en.content = marked.marked.parse(news.en.content);
   news.es.content = marked.marked.parse(news.es.content);
+
   if (req.query.lang && req.query.lang == 'es') return res.render('newES', { content: news, user: req.user, ref: req.headers.referer, translate: true });
 
   if (req.user && req.user._doc.lang == 'es') return res.render('newES', { content: news, user: req.user, ref: req.headers.referer, translate: false });

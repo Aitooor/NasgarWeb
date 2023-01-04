@@ -12,7 +12,16 @@ router.get('/login', async (req, res, next) => {
 })
 
 router.get('/logout', async (req, res) => {
-  req.logout()
+  try {
+    req.logout(() => {
+
+    })
+
+  } catch (err) {
+    console.log(err)
+    return res.redirect('/login')
+
+  }
   res.redirect('/login')
 })
 

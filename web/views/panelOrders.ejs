@@ -46,7 +46,8 @@
     </ul>
     <% } else { %>
     <ul>
-
+      <li><a class="optionTitle1" href="/panel">Panel home</a></li>
+      <li><a class="optionTitle1" href="/panel/orders">Orders</a></li>
     </ul>
     <% } %>
 
@@ -57,10 +58,12 @@
       <div class="col-12">
         <a href="/panel" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
       </div>
+      <% if(user.admin){ %> 
       <form action="/panel/orders/user" method="get" class="col-12 d-flex">
         <input type="text" name="username" placeholder="Username" class="form-control">
         <input type="submit" value="Search" class="btn btn-primary">
       </form>
+      <% } %> 
 
       <div class="col-12">
         <table class="table">
@@ -89,7 +92,12 @@
               <td>
                 <%- item.paid ? "Yes" : "Not"%>
               </td>
-              <td><a href="<%- `/panel/orders/${item.id}` %>" class="btn btn-outline-primary">Manage</a>
+              <td>
+                <% if (user.admin) {%> 
+                <a href="<%- `/panel/orders/${item.id}` %>" class="btn btn-outline-primary">Manage</a>
+                <% } else { %>
+                <a href="<%- `/public/orders/${item.id}` %>" class="btn btn-outline-primary" target="_blank">Recip</a>
+                <% } %>  
               </td>
             </tr>
             <% }) %>

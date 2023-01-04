@@ -90,7 +90,9 @@
         font-size: 15px;
       }
 
-      .cart-item .col-2,.cart-item .col-5,.cart-item .col-1 {
+      .cart-item .col-2,
+      .cart-item .col-5,
+      .cart-item .col-1 {
         display: flex !important;
         width: 100%;
         text-align: center !important;
@@ -141,12 +143,12 @@
         var html = `          <div class="cart-item row" id="${p.product.id}">
             <hr>
             <div class="cart-img col-2">
-              <img src="${p.product.en.image}" alt="" width="64" height="64">
+              <img src="${p.product.es.image}" alt="" width="64" height="64">
             </div>
             <div class="col-5 cart-text" style="display: flex; justify-content: left; align-items: center;">
               <div>
-                <strong>${p.product.en.name}</strong>
-                <p style="font-weight: lighter !important;">${p.product.en.description.length >= 20 ?  p.product.en.description.slice(0,20)+"..." : p.product.en.description}</p>
+                <strong>${p.product.es.name}</strong>
+                <p style="font-weight: lighter !important;">${p.product.es.description.length >= 20 ?  p.product.es.description.slice(0,20)+"..." : p.product.es.description}</p>
               </div>
             </div>
             <div class="col-2" style="display: flex; justify-content: center; align-items: center;">
@@ -273,8 +275,9 @@
     </div>
     <div class="col-4 colm">
       <form action="/shop" method="get">
-        <input type="text" name="product" placeholder="Product name or description" class="form-control">
-        <input type="submit" value="Search" class="btn btn-primary">
+        <input type="text" name="product" placeholder="Nombre del producto o descripción" class="form-control">
+        <input type="text" name="lang" value="es" style="display: none;">
+        <input type="submit" value="Buscar" class="btn btn-primary">
       </form>
     </div>
     <div class="col-4 colr">
@@ -328,22 +331,23 @@
         <a class="optionTitle1" href="/shop">Categorías</a>
       </li>
 
+      <% console.log(all) %>
 
       <%
       const types = new Map()
+
+      
+
       all.forEach(item => {
-        if(!types.has(item.en.categories[0]) && item.en.categories[0] != "") {
+        if(!types.has(item.es.categories[0]) && item.es.categories[0] != "") types.set(item.es.categories[0], new Map())
 
-          types.set(item.en.categories[0], new Map())
+        const type1 = types.get(item.es.categories[0])
 
-          const type1 = types.get(item.en.categories[0])
-
-          if(!type1.has(item.en.categories[1]) && item.en.categories[1] != "") {
-            type1.set(item.en.categories[1], new Map())
-            const type2 = type1.get(item.en.categories[1])
-            if(!type2.has(item.en.categories[2]) && item.en.categories[2] != "") {
-              type2.set(item.en.categories[2], new Map())
-            }
+        if(!type1.has(item.es.categories[1]) && item.es.categories[1] != "") {
+          type1.set(item.es.categories[1], new Map())
+          const type2 = type1.get(item.es.categories[1])
+          if(!type2.has(item.es.categories[2]) && item.es.categories[2] != "") {
+            type2.set(item.es.categories[2], new Map())
           }
         }
       }); 
@@ -351,20 +355,20 @@
 
       <% [...types.keys()].forEach(key => {  %>
       <% if(key == pos[0]) {%>
-      <li><a class="option1" href="/shop?type1=<%- key %>"><%- key %></a></li>
+      <li><a class="option1" href="/shop?type1=<%- key %>&lang=es"><%- key %></a></li>
 
 
       <% [...types.get(key).keys()].forEach(subkey => {  %>
       <% if(subkey == pos[1]) {%>
-      <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>"><%- subkey %></a></li>
+      <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>&lang=es"><%- subkey %></a></li>
 
 
       <% [...types.get(key).get(subkey).keys()].forEach(subsubkey => {  %>
       <% if(subsubkey == pos[2]) {%>
-      <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>"><%- subsubkey %></a></li>
+      <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>&lang=es"><%- subsubkey %></a></li>
 
       <% } else { %>
-      <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>"><%- subsubkey %></a></li>
+      <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>&lang=es"><%- subsubkey %></a></li>
       <% } %>
 
       <% }) %>
@@ -372,13 +376,13 @@
 
 
       <% } else { %>
-      <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>"><%- subkey %></a></li>
+      <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>&lang=es"><%- subkey %></a></li>
       <% } %>
 
       <% }) %>
 
       <% } else { %>
-      <li><a class="option1" href="/shop?type1=<%- key %>"><%- key %></a></li>
+      <li><a class="option1" href="/shop?type1=<%- key %>&lang=es"><%- key %></a></li>
       <% } %>
 
       <% }) %>

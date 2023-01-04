@@ -10,7 +10,7 @@ const dayjs = require('dayjs');
 router.get('/panel/shop', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   let products = await productModel.find({})
@@ -25,7 +25,7 @@ router.get('/panel/shop', (req, res, next) => {
 router.get('/panel/shop/:id', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/shop')
@@ -45,7 +45,7 @@ router.get('/panel/shop/:id', (req, res, next) => {
 router.get('/panel/shop/:id/delete', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/shop')
@@ -56,7 +56,7 @@ router.get('/panel/shop/:id/delete', (req, res, next) => {
 router.post('/panel/shop/create', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   const keysES = Object.keys(req.body).filter(k => k.endsWith("ES"))
@@ -100,7 +100,7 @@ router.post('/panel/shop/create', (req, res, next) => {
 router.get('/panel/shop/:id/clone', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/shop')
@@ -116,7 +116,7 @@ router.get('/panel/shop/:id/clone', (req, res, next) => {
 router.post('/panel/shop/:id', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/shop')

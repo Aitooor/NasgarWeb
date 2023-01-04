@@ -7,5 +7,7 @@ module.exports = model('User', new Schema({
     id: String,
     username: String,
     password: String,
-    lang: String
+    lang: String,
+    owner: Boolean,
+    admin: Boolean
 }));

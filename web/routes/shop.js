@@ -13,11 +13,12 @@ router.get('/shop', async (req, res) => {
   const all = await productModel.find({})
   const pos = []
   if (req.query.type1) {
-    products = products.filter(p => p.en.categories[0] == req.query.type1 || p.es.categories[0] == req.query.type1)
+    products = products.filter(p => p.en.categories[0].toLowerCase() == req.query.type1.toLowerCase() || p.es.categories[0].toLowerCase() == req.query.type1.toLowerCase())
     pos.push(req.query.type1)
   }
+
   if (req.query.type2) {
-    products = products.filter(p => p.en.categories[1] == req.query.type2 || p.es.categories[0] == req.query.type1)
+    products = products.filter(p => p.en.categories[1].toLowerCase() == req.query.type2.toLowerCase() || p.es.categories[1].toLowerCase() == req.query.type2.toLowerCase())
     pos.push(req.query.type2)
   }
 
@@ -30,8 +31,10 @@ router.get('/shop', async (req, res) => {
   })
 
 
+
+
   if (req.query.max) products = products.filter(p => p.price <= req.query.max)
-  if (req.query.product) products = products.filter(p => p.name.toLowerCase().includes(req.query.product.toLowerCase()) || p.description.toLowerCase().includes(req.query.product.toLowerCase()))
+  if (req.query.product) products = products.filter(p => p.en.name.toLowerCase().includes(req.query.product.toLowerCase()) || p.en.description.toLowerCase().includes(req.query.product.toLowerCase()) || p.es.name.toLowerCase().includes(req.query.product.toLowerCase()) || p.es.description.toLowerCase().includes(req.query.product.toLowerCase()))
   if (req.query.lang && req.query.lang == 'es') return res.render('shopES', { content: products, user: req.user, all: all, paypalClient: process.env.PAYPALID, pos: pos, ref: req.headers.referer, translate: true });
   if (req.user && req.user._doc.lang == 'es') return res.render('shopES', { content: products, user: req.user, all: all, paypalClient: process.env.PAYPALID, pos: pos, ref: req.headers.referer, translate: false });
   res.render('shop', { content: products, user: req.user, all: all, paypalClient: process.env.PAYPALID, pos: pos, ref: req.headers.referer, translate: false })

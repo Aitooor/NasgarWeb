@@ -59,19 +59,20 @@
     </div>
     <div class="col-4 colm">
       <form action="/bans" method="get">
+        <input type="text" value="es" name="lang" style="display: none;">
         <input type="text" name="victimName" placeholder="Usuario" class="form-control">
         <input type="submit" value="Buscar" class="btn btn-primary">
       </form>
     </div>
     <div class="col-4 colr">
-      <a href="/news" class="nav-btn">Noticias</a>
-      <a href="/shop" class="nav-btn">Tienda</a>
-      <a href="/bans" class="nav-btn">Baneos</a>
+      <a href="/news?lang=es" class="nav-btn">Noticias</a>
+      <a href="/shop?lang=es" class="nav-btn">Tienda</a>
+      <a href="/bans?lang=es" class="nav-btn">Baneos</a>
       <a href="https://www.40servidoresmc.es/nasgar-network-votar" class="nav-btn" target="_blank">Votar</a>
       <% if(user) {%>
       <a class="nav-btn" href="/panel"><%- user.username %> </a>
       <% } else { %>
-      <a class="nav-btn" href="/login">Iniciar sesión</a>
+      <a class="nav-btn" href="/login?lang=es">Iniciar sesión</a>
       <% } %>
     </div>
     <div class="col-1"></div>
@@ -86,12 +87,12 @@
       <li><a class="optionTitle1" href="/">Inicio</a></li>
       <li><a class="optionTitle1" href="/panel">Panel</a></li>
       <hr>
-      <li><a href="/bans" class="optionTitle1">Lista de Sanciones</a></li>
+      <li><a href="/bans?lang=es" class="optionTitle1">Lista de Sanciones</a></li>
       <li><a class="option1" href="/bans">Todos</a></li>
-      <li><a class="option1" href="/bans?type=BAN">Baneado</a></li>
-      <li><a class="option1" href="/bans?type=WARN">Advertido</a></li>
-      <li><a class="option1" href="/bans?type=KICK">Expulsado</a></li>
-      <li><a class="option1" href="/bans?type=MUTE">Muteado</a></li>
+      <li><a class="option1" href="/bans?type=BAN&lang=es">Baneado</a></li>
+      <li><a class="option1" href="/bans?type=WARN&lang=es">Advertido</a></li>
+      <li><a class="option1" href="/bans?type=KICK&lang=es">Expulsado</a></li>
+      <li><a class="option1" href="/bans?type=MUTE&lang=es">Muteado</a></li>
       <hr>
     </ul>
   </div>

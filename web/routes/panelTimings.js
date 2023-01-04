@@ -7,7 +7,7 @@ const dayjs = require('dayjs');
 router.get('/panel/timings', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   const timings = await getStaffTimings()
@@ -18,7 +18,7 @@ router.get('/panel/timings', (req, res, next) => {
 router.get('/panel/timings/member/:id', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   const timings = await getStaffTimings()
@@ -85,7 +85,7 @@ router.get('/panel/timings/member/:id', (req, res, next) => {
 router.get('/panel/timings/group/:name', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   let timings = await getStaffTimings()
@@ -99,7 +99,7 @@ router.get('/panel/timings/group/:name', (req, res, next) => {
 router.get('/panel/timings/user', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   let timings = await getStaffTimings()

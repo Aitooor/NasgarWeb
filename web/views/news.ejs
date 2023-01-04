@@ -109,7 +109,7 @@
             </div>
             <div class="new-item-title">
               <p>
-                <%- news.en.title %>
+                <%- news.en.title.length > 40 ? news.en.title.slice(0,37) + "..." :  news.en.title %>
               </p>
             </div>
             <div class="new-item-content">
@@ -124,7 +124,7 @@
             </div>
             <div class="new-item-date">
               <p>
-                <%- news.en.date %>
+                <%- new Date(news.date).toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) %>
               </p>
             </div>
           </a>

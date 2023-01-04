@@ -8,7 +8,7 @@ const dayjs = require('dayjs');
 router.get('/panel/category', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   const products = await categoryModel.find({ type: "main" })
@@ -19,7 +19,7 @@ router.get('/panel/category', (req, res, next) => {
 router.get('/panel/category/:id', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/category')
@@ -37,7 +37,7 @@ router.get('/panel/category/:id', (req, res, next) => {
 router.get('/panel/category/:id/delete', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/category')
@@ -48,7 +48,7 @@ router.get('/panel/category/:id/delete', (req, res, next) => {
 router.post('/panel/category/create', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   const keysES = Object.keys(req.body).filter(k => k.endsWith("ES"))
@@ -80,7 +80,7 @@ router.post('/panel/category/create', (req, res, next) => {
 router.get('/panel/category/:id/clone', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/category')
@@ -96,7 +96,7 @@ router.get('/panel/category/:id/clone', (req, res, next) => {
 router.post('/panel/category/:id', (req, res, next) => {
   if (!req.isAuthenticated() || !req.user) return res.redirect('/login')
   const u = req.user._doc
-  if (!u.admin) return res.redirect('/panel')
+  if (!u.owner) return res.redirect('/panel')
   next()
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/category')

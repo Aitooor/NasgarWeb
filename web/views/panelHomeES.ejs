@@ -51,7 +51,7 @@
     <div class="leftBTNC">
       <i id="leftBTN" class="fa-solid fa-forward-step"></i>
     </div>
-    <% if(user.admin) {%>
+    <% if(user.owner) {%>
     <ul>
       <hr>
       <li><a href="/panel">Inicio</a></li>
@@ -61,15 +61,26 @@
       <li><a class="optionTitle1" href="/panel/orders">Ordenes</a></li>
       <hr>
     </ul>
+
+    <% } else if (user.admin){ %>
+    <ul>
+      <hr>
+      <li><a href="/panel">Inicio</a></li>
+      <li><a href="/panel/news">Noticias</a></li>
+      <li><a class="optionTitle1" href="/panel/orders">Ordenes</a></li>
+      <hr>
+    </ul>
     <% } else { %>
     <ul>
+      <li><a href="/panel">Inicio</a></li>
+      <li><a class="optionTitle1" href="/panel/orders">Ordenes</a></li>
 
     </ul>
     <% } %>
 
   </div>
   <main>
-    <% if(user.admin) {%>
+    <% if(user.owner) {%>
     <div class="row">
       <div class="col-4">
         <div class="card">
@@ -130,6 +141,47 @@
       </div>
     </div>
 
+    <% } else if(user.admin) {%>
+      <div class="row">
+        <div class="col-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Noticias</h5>
+              <p class="card-text">¡Gestiona las noticias libremente editando su contenido, imagen y mucho más!</p>
+              <a href="/panel/news" class="btn btn-primary">Panel de noticias</a>
+            </div>
+          </div>
+        </div>  
+        <div class="col-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Ordenes</h5>
+              <p class="card-text">Mira el estado de las ordenes actuales!</p>
+              <a href="/panel/orders" class="btn btn-primary">Ordenes</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Idioma</h5>
+              <p class="card-text">¡Elige un idioma!</p>
+              <a href="/panel/lang/es" class="btn btn-primary">Español</a>
+              <a href="/panel/lang/en" class="btn btn-primary">Inglés</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Cerrar sesión</h5>
+              <p class="card-text">¡Cierra la sesión!</p>
+              <a href="/logout" class="btn btn-primary">Cerrar sesión</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <% }else { %>
     <div class="row">
       <div class="col-4">
@@ -148,6 +200,15 @@
             <h5 class="card-title">Cerrar sesión</h5>
             <p class="card-text">¡Cierra la sesión!</p>
             <a href="/logout" class="btn btn-primary">Cerrar sesión</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Ordenes</h5>
+            <p class="card-text">Mira el estado de tus ordenes actuales!</p>
+            <a href="/panel/orders" class="btn btn-primary">Ordenes</a>
           </div>
         </div>
       </div>
