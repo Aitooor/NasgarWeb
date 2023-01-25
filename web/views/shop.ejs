@@ -281,7 +281,7 @@
       <a href="/news" class="nav-btn">News</a>
       <a href="/shop" class="nav-btn">Shop</a>
       <a href="/bans" class="nav-btn">Bans</a>
-      <a href="https://www.40servidoresmc.es/nasgar-network-votar" class="nav-btn" target="_blank">Vote</a>
+      <a href="https://www.40servidoresmc.en/nasgar-network-votar" class="nav-btn" target="_blank">Vote</a>
       <% if(user) {%>
       <a class="nav-btn" href="/panel">
         <%- user.username %>
@@ -331,40 +331,45 @@
 
       <%
       const types = new Map()
+
+      
+
       all.forEach(item => {
-        if(!types.has(item.en.categories[0]) && item.en.categories[0] != "") {
+        item.en.categories = item.en.categories.map(c => c.trim())
+        if(!types.has(item.en.categories[0]) && item.en.categories[0] != "") types.set(item.en.categories[0], new Map())
 
-          types.set(item.en.categories[0], new Map())
+        const type1 = types.get(item.en.categories[0])
 
-          const type1 = types.get(item.en.categories[0])
-
-          if(!type1.has(item.en.categories[1]) && item.en.categories[1] != "") {
-            type1.set(item.en.categories[1], new Map())
-            const type2 = type1.get(item.en.categories[1])
-            if(!type2.has(item.en.categories[2]) && item.en.categories[2] != "") {
-              type2.set(item.en.categories[2], new Map())
-            }
+        if(!type1.has(item.en.categories[1]) && item.en.categories[1] != "") {
+          type1.set(item.en.categories[1], new Map())
+          const type2 = type1.get(item.en.categories[1])
+          if(!type2.has(item.en.categories[2]) && item.en.categories[2] != "") {
+            type2.set(item.en.categories[2], new Map())
           }
         }
       }); 
       %>
 
+
       <% [...types.keys()].forEach(key => {  %>
+      <% key = key.trim() %>
       <% if(key == pos[0]) {%>
-      <li><a class="option1" href="/shop?type1=<%- key %>"><%- key %></a></li>
+      <li><a class="option1" href="/shop?type1=<%- key %>&lang=en"><%- key %></a></li>
 
 
       <% [...types.get(key).keys()].forEach(subkey => {  %>
+      <% subkey = subkey.trim() %>
       <% if(subkey == pos[1]) {%>
-      <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>"><%- subkey %></a></li>
+      <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>&lang=en"><%- subkey %></a></li>
 
 
       <% [...types.get(key).get(subkey).keys()].forEach(subsubkey => {  %>
+      <% subsubkey = subsubkey.trim() %>
       <% if(subsubkey == pos[2]) {%>
-      <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>"><%- subsubkey %></a></li>
+      <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>&lang=en"><%- subsubkey %></a></li>
 
       <% } else { %>
-      <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>"><%- subsubkey %></a></li>
+      <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>&lang=en"><%- subsubkey %></a></li>
       <% } %>
 
       <% }) %>
@@ -372,13 +377,13 @@
 
 
       <% } else { %>
-      <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>"><%- subkey %></a></li>
+      <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>&lang=en"><%- subkey %></a></li>
       <% } %>
 
       <% }) %>
 
       <% } else { %>
-      <li><a class="option1" href="/shop?type1=<%- key %>"><%- key %></a></li>
+      <li><a class="option1" href="/shop?type1=<%- key %>&lang=en"><%- key %></a></li>
       <% } %>
 
       <% }) %>

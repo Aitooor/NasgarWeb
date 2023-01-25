@@ -331,14 +331,13 @@
         <a class="optionTitle1" href="/shop">Categorías</a>
       </li>
 
-      <% console.log(all) %>
-
       <%
       const types = new Map()
 
       
 
       all.forEach(item => {
+        item.es.categories = item.es.categories.map(c => c.trim())
         if(!types.has(item.es.categories[0]) && item.es.categories[0] != "") types.set(item.es.categories[0], new Map())
 
         const type1 = types.get(item.es.categories[0])
@@ -353,17 +352,21 @@
       }); 
       %>
 
+
       <% [...types.keys()].forEach(key => {  %>
+      <% key = key.trim() %>
       <% if(key == pos[0]) {%>
       <li><a class="option1" href="/shop?type1=<%- key %>&lang=es"><%- key %></a></li>
 
 
       <% [...types.get(key).keys()].forEach(subkey => {  %>
+      <% subkey = subkey.trim() %>
       <% if(subkey == pos[1]) {%>
       <li><a class="option2" href="/shop?type1=<%- key %>&type2=<%- subkey %>&lang=es"><%- subkey %></a></li>
 
 
       <% [...types.get(key).get(subkey).keys()].forEach(subsubkey => {  %>
+      <% subsubkey = subsubkey.trim() %>
       <% if(subsubkey == pos[2]) {%>
       <li><a class="option3" href="/shop?type1=<%- key %>&type2=<%- subkey %>&type3=<%- subsubkey %>&lang=es"><%- subsubkey %></a></li>
 

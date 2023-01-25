@@ -13,12 +13,12 @@ router.get('/shop', async (req, res) => {
   const all = await productModel.find({})
   const pos = []
   if (req.query.type1) {
-    products = products.filter(p => p.en.categories[0].toLowerCase() == req.query.type1.toLowerCase() || p.es.categories[0].toLowerCase() == req.query.type1.toLowerCase())
+    products = products.filter(p => p.en.categories[0].toLowerCase().trim() == req.query.type1.toLowerCase() || p.es.categories[0].toLowerCase().trim() == req.query.type1.toLowerCase())
     pos.push(req.query.type1)
   }
 
   if (req.query.type2) {
-    products = products.filter(p => p.en.categories[1].toLowerCase() == req.query.type2.toLowerCase() || p.es.categories[1].toLowerCase() == req.query.type2.toLowerCase())
+    products = products.filter(p => p.en.categories[1].toLowerCase().trim() == req.query.type2.toLowerCase() || p.es.categories[1].toLowerCase().trim() == req.query.type2.toLowerCase())
     pos.push(req.query.type2)
   }
 
