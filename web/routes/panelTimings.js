@@ -23,8 +23,13 @@ router.get('/panel/timings/member/:id', (req, res, next) => {
 }, async (req, res) => {
   const timings = await getStaffTimings()
   if (!timings.has(req.params.id)) return res.redirect('/panel/timings')
+  let content = timings.get(req.params.id)
+  if (req.query.date) {
+    const dayFormat = req.query.date.split('-').reverse().join('_')
+    content.timings = content.timings.filter(d => d.DATE == dayFormat)
+  }
   if (req.user && req.user._doc.lang == 'es') return res.render('panelTimingsES', {
-    content: timings.get(req.params.id), type: 'manage', user: req.user._doc, ref: req.headers.referer, getTime: (ms) => {
+    content: content, type: 'manage', user: req.user._doc, ref: req.headers.referer, getTime: (ms) => {
       ms = Number(ms)
       let text = ""
       if (ms >= 86400000) {
@@ -53,7 +58,7 @@ router.get('/panel/timings/member/:id', (req, res, next) => {
   });
   res.render('panelTimings', {
     ref: req.headers.referer,
-    content: timings.get(req.params.id), type: 'manage', user: req.user._doc, ref: req.headers.referer, getTime: (ms) => {
+    content: content, type: 'manage', user: req.user._doc, ref: req.headers.referer, getTime: (ms) => {
       ms = Number(ms)
       let text = ""
       if (ms >= 86400000) {
@@ -115,13 +120,15 @@ async function getStaffTimings() {
   const lPlayers = await db.query('SELECT * FROM `luckperms_players`')
   const lPermissions = await db.query('SELECT * FROM `luckperms_user_permissions`')
   const sTm = await db.query('SELECT * FROM `StaffTimings`')
+
   const pMap = new Map()
   await Promise.all(lPlayers.map(async (player, pos) => {
-    const lp = lPermissions.find(p => p.uuid == player.uuid)
+    const lp = lPermissions.filter(p => p.uuid == player.uuid)
     let utm = sTm.filter(t => t.UUID == player.uuid)
 
-    if (lp && (lp.permission.includes('owner') || lp.permission.includes('admin') || lp.permission.includes('mod') || lp.permission.includes('*'))) {
-      player.permissions = lp
+
+    if (lp && (lp.find(v => v.permission.includes('owner') || v.permission.includes('admin') || v.permission.includes('mod')))) {
+      player.permissions = lp.find(v => v.permission.includes('owner') || v.permission.includes('admin') || v.permission.includes('mod'))
       utm = utm.map(u => {
         const d = new Date()
         const parts = u.DATE.split('_')

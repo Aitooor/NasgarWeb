@@ -4,12 +4,19 @@ const newModel = require('../../database/News');
 const marked = require("marked")
 
 router.get('/news', async (req, res) => {
-  let news = await newModel.find({})
-  if (req.query.content) {
-    const original = await newModel.find({})
-    news = original.filter(n => n.en.content.toLowerCase().includes(req.query.content.toLowerCase()) || n.en.title.toLowerCase().includes(req.query.content.toLowerCase()))
-    news.concat(original.filter(n => n.es.content.toLowerCase().includes(req.query.content.toLowerCase()) || n.es.title.toLowerCase().includes(req.query.content.toLowerCase())))
-  }
+  const allnews = await newModel.find({})
+  let news = []
+  if (req.query.content && req.query.content.length > 0) {
+    const queryParts = req.query.content.split(/ +/g)
+
+    queryParts.forEach(part => {
+      news.push(...allnews.filter(n => n.es.content.toLowerCase().includes(part.toLowerCase()) || n.es.title.toLowerCase().includes(part.toLowerCase())))
+      news.push(...allnews.filter(n => n.en.content.toLowerCase().includes(part.toLowerCase()) || n.en.title.toLowerCase().includes(part.toLowerCase())))
+    });
+
+
+  } else news = allnews
+
   news = news.map(n => {
     n.en.content = marked.marked.parse(n.en.content)
     n.es.content = marked.marked.parse(n.es.content)

@@ -116,6 +116,11 @@
       </div>
 
       <div class="col-12">
+        <form action="" method="get" class="col-12 d-flex" style="justify-content: right;">
+          <input type="date" name="date" id="date" style="margin-right: 50px;">
+          <input type="submit" value="Buscar" class="btn btn-primary" style="margin-right: 50px;">
+          <a href="<%- `/panel/timings/member/${content.uuid}` %>" class="btn btn-primary"> Todas las fechas</a>
+        </form>
         <table class="table">
           <thead>
             <tr>

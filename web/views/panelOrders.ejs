@@ -59,8 +59,8 @@
         <a href="/panel" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Back</a>
       </div>
       <% if(user.admin){ %> 
-      <form action="/panel/orders/user" method="get" class="col-12 d-flex">
-        <input type="text" name="username" placeholder="Username" class="form-control">
+      <form action="/panel/orders" method="get" class="col-12 d-flex">
+        <input type="text" name="id" placeholder="Order ID or Username" class="form-control">
         <input type="submit" value="Search" class="btn btn-primary">
       </form>
       <% } %> 

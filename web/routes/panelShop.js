@@ -15,7 +15,7 @@ router.get('/panel/shop', (req, res, next) => {
 }, async (req, res) => {
   let products = await productModel.find({})
   if (req.query.category) {
-    products = products.filter(c => c.categories.includes(req.query.category))
+    products = products.filter(c => c.en.categories.map(i => i.trim()).includes(req.query.category) || c.es.categories.map(i => i.trim()).includes(req.query.category))
   }
   if (req.user && req.user._doc.lang == 'es') return res.render('panelShopES', { content: products, type: 'main', user: req.user._doc, ref: req.headers.referer, categories: await categoryModel.find({}) });
 
@@ -121,7 +121,7 @@ router.post('/panel/shop/:id', (req, res, next) => {
 }, async (req, res) => {
   if (!req.params.id) return res.redirect('/panel/shop')
   if (req.params.id == 'create') return res.render('panelShop', { type: 'create', user: req.user._doc, categories: await categoryModel.find({}), ref: req.headers.referer })
-  
+
   const product = await productModel.findOne({ id: req.params.id })
   if (!product) return res.redirect('/panel/shop')
 
@@ -158,7 +158,7 @@ router.post('/panel/shop/:id', (req, res, next) => {
   else productInfo.price = req.body.price
 
   Object.keys(product._doc).forEach(k => {
-    if(productInfo[k] != undefined) product[k] = productInfo[k]
+    if (productInfo[k] != undefined) product[k] = productInfo[k]
   })
 
 
