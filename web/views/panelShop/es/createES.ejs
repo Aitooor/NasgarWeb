@@ -46,10 +46,10 @@
     </div>
   </div>
 
-  <div class="mb-3">
+  <!-- <div class="mb-3">
     <label for="description" class="form-label">Nombre del server</label>
     <input type="text" class="form-control" id="serverName-ES" name="serverName-ES" <% if(content){ %> value='<%- content.es.serverName %>' <% } %>>
-  </div>
+  </div> -->
 
   <div class="mb-3" style="display: none;">
     <input type="text" class="form-control" id="commands-ES" name="commands-ES" <% if(content){ %> value='<%- content.es.commands.join(',')%>' <% } %>>
@@ -59,7 +59,8 @@
   <div class="commandsContainer-ES mb-3" id="commandsContainer-ES">
     <% if(content) for (i = 0; i < content.es.commands.length; i++){%>
     <div class="commandBase-ES mb-3 d-flex" id="<%- "command-"+i %>-ES">
-      <input type="text" class="commandAdded-ES form-control" value="<%- content.es.commands[i]%>">
+      <input type="text" class="commandAdded-ES form-control" placeholder="Comando" value="<%- content.es.commands[i].split("|")[0]%>">
+      <input type="text" class="commandAddedServer-ES form-control" placeholder="Server" value="<%- content.es.commands[i].split("|")[1]%>">
       <div class="btn btn-danger deleteCommand-ES" id="<%- "commandBTN-"+i+"-ES" %>">-</div>
     </div>
     <% } %>
@@ -154,15 +155,26 @@
         const commandBase = document.createElement("div")
         const commandInput = document.createElement("input")
         const commandDel = document.createElement("div")
-        commandBase.className = "commandBase-ES mb-3 d-flex"
+        const commandServer = document.createElement("input")
+
+
+        commandBase.className = "commandBase-EN mb-3 d-flex"
         commandBase.id = "command-" + [...commandsBase.getElementsByClassName("commandAdded-ES")].length + "-ES"
         commandContainer.insertAdjacentElement("beforeend", commandBase)
         commandInput.className = "commandAdded-ES form-control"
+        commandInput.placeholder = "Comando"
         commandBase.insertAdjacentElement("afterbegin", commandInput)
+
+        commandServer.className = "commandAddedServer-ES form-control"
+        commandServer.placeholder = "Server"
+        commandBase.insertAdjacentElement("beforeend", commandServer)
+
         commandDel.className = "btn btn-danger deleteCommand-ES"
+
         commandDel.textContent = "-"
         commandDel.id = "commandBTN-" + ([...commandsBase.getElementsByClassName("commandAdded-ES")].length - 1) + "-ES"
         commandBase.insertAdjacentElement("beforeend", commandDel)
+
         commandDel.addEventListener("click", (ev) => {
           console.log(commandDel.id)
           const cmd = document.getElementById(commandDel.id.replace("BTN", ""))
@@ -173,8 +185,12 @@
       setInterval(() => {
         const commandsBase = document.getElementById("commandsContainer-ES")
         const commands = [...commandsBase.getElementsByClassName("commandAdded-ES")].filter(c => c.value.trim() != "").map(c => c.value.trim())
+        const commandssv = [...commandsBase.getElementsByClassName("commandAddedServer-ES")].filter(c => c.value.trim() != "").map(c => c.value.trim())
         const commandInput = document.getElementById("commands-ES")
-        commandInput.value = commands.join(",")
+
+        commandInput.value = commands.map((v, i) => {
+          return `${v}|${commandssv[i]}`
+        }).join(",")
       }, 10);
     }
 
